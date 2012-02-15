@@ -1,0 +1,61 @@
+My Wordpress Meta box Class
+=======================
+Contributors: bainternet
+Requires at least: 3.1
+Tested up to: 3.3.1
+
+Description
+-----------
+The Meta Box Class is used by including it in your plugin files and using its methods to 
+create custom meta boxes for custom post types. It is meant to be very simple and 
+straightforward. For name spacing purposes, All Types metabox ( meaning you can do anything with it )
+is used. 
+
+This class is derived from Meta Box script by Rilwis<rilwis@gmail.com> version 3.2. which later was forked 
+by Cory Crowley (email: cory.ivan@gmail.com) The purpose of this class is not to rewrite the script but to 
+modify and change small things and adding a few field types that i needed to my personal preference. 
+The original author did a great job in writing this class, so all props goes to him.
+
+Usage
+--------
+Take a look at the `class-usage-demo.php` file which can also be tested as a WordPress Plugin. 
+Other options are available for each field which can be see in the 'my-meta-box-class.php' file, 
+
+
+Changelog
+---------
+= 2.0 =
+* Fixed Insert To Post bug
+
+= 1.9 = 
+* Fixed Image field functions in repeater block.
+
+= 1.8 =
+* fixed multiple image upload issue.
+* cleaned js file from unused function.
+
+
+= 1.7 =
+* Fixed demo plugi file with new function names.
+* Fixed Wysiwyg for version 3.3 once more, (which should work now).
+* Fixed image upload field.
+
+= 1.6 =
+* Added an option to set path for themes.
+* Fixed repeater dynamic editing
+
+= 1.5 =
+* Fixed Wysiwyg for version 3.3
+
+
+= 1.2 =
+* Fixed repeater block JS code.
+* Offloaded images with an option to use local images.
+* Added inline for repater block.
+* Added genric addFiled function.
+
+= 1.1 =
+* Reapater Implemented and removed debug leftover var_dump
+
+= 1.0 =
+* First Release
