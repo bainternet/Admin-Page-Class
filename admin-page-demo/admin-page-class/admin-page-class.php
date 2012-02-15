@@ -157,6 +157,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
 			//set defualts
 			$this->_div_or_row = true;
+			//store args
+			$this->args = $args;
 			//sub $menu
 			if(!is_array($args['menu'])) {
 				if(is_object($args['menu'])) {
@@ -260,10 +262,15 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 		public function AddMenuTopPage() {
 			$default = array(
 				'capability' => 'edit_themes',
+				'menu_title' => '',
+				'id' => 'id',
+				'icon_url' => '',
+				'position' => null
 			);
+
 			$this->args = array_merge($default, $this->args);
-			add_menu_page($this->args['page_title'], $this->args['menu_title'], $this->args['capability'], $this->args['menu_slug'], array($this, 'DisplayPage'), $this->args['icon_url'], $this->args['position']);
-			$page = add_submenu_page($this->args['menu_slug'], $this->args['page_title'], $this->args['page_title'], $this->args['capability'], $this->args['menu_slug'], array($this, 'DisplayPage'));
+			$id = add_menu_page($this->args['page_title'], $this->args['page_title'], $this->args['capability'], $this->args['id'], array($this, 'DisplayPage'), $this->args['icon_url'], $this->args['position']);
+			$page = add_submenu_page($id, $this->args['page_title'], $this->args['page_title'], $this->args['capability'], $this->args['id'], array($this, 'DisplayPage'));
 			if ($page){
 			   $this->_Slug = $page;
 			   // Adds my_help_tab when my_admin_page loads
