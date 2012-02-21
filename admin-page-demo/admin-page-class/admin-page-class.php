@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 0.1
+ * @version 0.2
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -229,9 +229,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 			$this->_div_or_row = (isset($args['div_or_row'])) ? $args['div_or_row'] : false;
 			$this->add_missed_values();
 			if (isset($args['use_with_theme'])){
-				if ($args['use_with_theme'] == true){
+				if ($args['use_with_theme'] === true){
 					$this->SelfPath = get_stylesheet_directory_uri() . '/admin-page-class';
-				}elseif($args['use_with_theme'] == false){
+				}elseif($args['use_with_theme'] === false){
 					$this->SelfPath = plugins_url( 'admin-page-class', plugin_basename( dirname( __FILE__ ) ) );
 				}else{
 					$this->SelfPath = $args['use_with_theme'];
