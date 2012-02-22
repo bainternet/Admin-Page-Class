@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 0.2
+ * @version 0.3
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -965,7 +965,6 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 	 * @since 0.1
 	 * @access public
 	 *
-	 
 	 */
 	public function delete_attachments( $post_id ) {
 		
@@ -1550,6 +1549,51 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 		}
 		echo $html;
 	}
+
+	/**
+	 * Show Typography Field.
+	 *
+	 * @author Ohad Raz
+	 * @param array $field 
+	 * @param array $meta 
+	 * @since 0.3
+	 * @access public
+	 */
+	public function show_field_typo( $field, $meta ) {
+		$this->show_field_begin( $field, $meta );
+		$html = '<select class="at-typography at-typography-size" name="' . esc_attr( $field['id'] . '[size]' ) . '" id="' . esc_attr( $field['id'] . '_size' ) . '">';
+		for ($i = 9; $i < 71; $i++) {
+			$size = $i . 'px';
+			$html .= '<option value="' . esc_attr( $size ) . '" ' . selected( $meta['size'], $size, false ) . '>' . esc_html( $size ) . '</option>';
+		}
+		$html .= '</select>';
+
+		// Font Face
+		$html .= '<select class="at-typography at-typography-face" name="' . esc_attr( $field['id'] .'[face]' ) . '" id="' . esc_attr( $field['id'] . '_face' ) . '">';
+
+		$faces = $this->get_fonts_family();
+		foreach ( $faces as $key => $face ) {
+			$html .= '<option value="' . esc_attr( $key ) . '" ' . selected( $meta['face'], $key, false ) . '>' . esc_html( $face['name'] ) . '</option>';
+		}
+
+		$html .= '</select>';
+
+		// Font Weight
+		$html .= '<select class="at-typography at-typography-style" name="'.$field['id'].'[style]" id="'. $field['id'].'_style">';
+
+		/* Font Style */
+		$styles = $this->get_font_style();
+		foreach ( $styles as $key => $style ) {
+			$html .= '<option value="' . esc_attr( $key ) . '" ' . selected( $meta['style'], $key, false ) . '>'. $style .'</option>';
+		}
+		$html .= '</select>';
+
+		// Font Color
+		$html .= "<input class='at-color' type='text' name='".$field['id']."[color]' id='".$field['id']."[color]' value='".$meta['color']."' size='5' />";
+		$html .= "<input type='button' class='at-color-select button' rel='".$field['id']."[color]' value='" . __( 'Select a color' ) . "'/>";
+		$html .= "<div style='display:none' class='at-color-picker' rel='".$field['id']."[color]'></div>";
+		echo $html;
+	}
 	
 	/**
 	 * Show Color Field.
@@ -1566,7 +1610,6 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 			
 		$this->show_field_begin( $field, $meta );
 			echo "<input class='at-color' type='text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='8' />";
-		//	echo "<a href='#' class='at-color-select button' rel='{$field['id']}'>" . __( 'Select a color' ) . "</a>";
 			echo "<input type='button' class='at-color-select button' rel='{$field['id']}' value='" . __( 'Select a color' ) . "'/>";
 			echo "<div style='display:none' class='at-color-picker' rel='{$field['id']}'></div>";
 		$this->show_field_end($field, $meta);
@@ -1811,7 +1854,6 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 	/**
 	 * function for saving image field.
 	 *
-	 
 	 * @param string $field 
 	 * @param string $old 
 	 * @param string|mixed $new 
@@ -1843,7 +1885,6 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 	/**
 	 * Save repeater Fields.
 	 *
-	 
 	 * @param string $field 
 	 * @param string|mixed $old 
 	 * @param string|mixed $new 
@@ -1992,6 +2033,36 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 	 */
 	public function addField($id,$args){
 		$new_field = array('id'=> $id,'std' => '','desc' => '','style' =>'');
+		$new_field = array_merge($new_field, $args);
+		$this->_fields[] = $new_field;
+	}
+
+	/**
+	 * Add typography Field 
+	 * 
+	 * @author Ohad    Raz
+	 * @since 0.3
+	 * 
+	 * @access public
+	 * 
+	 * @param  $id string  id of the field
+	 * @param  $args mixed|array
+	 * @param  boolean $repeater=false 
+	 */
+	public function addTypo($id,$args,$repeater=false){
+		$new_field = array(
+			'type' => 'typo', 
+			'id'=> $id,
+			'std' => array(
+				'size' => '12px', 
+				'color' => '#000000',
+				'face' => 'arial', 
+				'style' => 'normal'
+			),
+			'desc' => '',
+			'style' =>'',
+			'name'=> 'Typography field'
+		);
 		$new_field = array_merge($new_field, $args);
 		$this->_fields[] = $new_field;
 	}
@@ -2336,8 +2407,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 	 *  @param $id string  field id, i.e. the meta key
 	 *  @param $options mixed|array options of taxonomy field
 	 *  	'taxonomy' =>    // taxonomy name can be category,post_tag or any custom taxonomy default is category
-			'type' =>  // how to show taxonomy? 'select' (default) or 'checkbox_list'
-			'args' =>  // arguments to query taxonomy, see http://goo.gl/uAANN default ('hide_empty' => false)  
+	 *  	'type' =>  // how to show taxonomy? 'select' (default) or 'checkbox_list'
+	 *  	'args' =>  // arguments to query taxonomy, see http://goo.gl/uAANN default ('hide_empty' => false)  
 	 *  @param $args mixed|array
 	 *  	'name' => // field name/label string optional
 	 *  	'desc' => // field description, string optional
@@ -2396,8 +2467,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 	 *  @param $id string  field id, i.e. the meta key
 	 *  @param $options mixed|array options of taxonomy field
 	 *  	'post_type' =>    // post type name, 'post' (default) 'page' or any custom post type
-			'type' =>  // how to show posts? 'select' (default) or 'checkbox_list'
-			'args' =>  // arguments to query posts, see http://goo.gl/is0yK default ('posts_per_page' => -1)  
+	 *  	type' =>  // how to show posts? 'select' (default) or 'checkbox_list'
+	 *  	args' =>  // arguments to query posts, see http://goo.gl/is0yK default ('posts_per_page' => -1)  
 	 *  @param $args mixed|array
 	 *  	'name' => // field name/label string optional
 	 *  	'desc' => // field description, string optional
@@ -2477,6 +2548,92 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Get the list of avialable Fonts
+	 * 
+	 * @author Ohad   Raz
+	 * @since 0.3
+	 * @access public
+	 * 
+	 * @return mixed|array
+	 */
+	public function get_fonts_family($font=null) {
+    	$fonts = array(
+	        'open-sans' => array(
+	            'name' => 'Open Sans',
+	            'import' => '@import url(http://fonts.googleapis.com/css?family=Open+Sans);',
+	            'css' => "font-family: 'Open Sans', sans-serif;",
+	            'api' => "Open+Sans"
+	        ),
+	        'lato' => array(
+	            'name' => 'Lato',
+	            'import' => '@import url(http://fonts.googleapis.com/css?family=Lato);',
+	            'css' => "font-family: 'Lato', sans-serif;",
+	            'api' => "Lato"
+	        ),
+	        'arial' => array(
+	            'name' => 'Arial',
+	            'css' => "font-family: Arial, sans-serif;",
+	        ),
+	        'verdana' => array(
+		        'name' => "Verdana, Geneva",
+		        'css' => "font-family: Verdana, Geneva;",
+		    ),
+		    'trebuchet' => array(
+		        'name' => "Trebuchet",
+		        'css' => "font-family: Trebuchet;",
+		    ),
+		    'georgia' => array(
+		        'name' => "Georgia",
+		        'css' => "font-family: Georgia;",
+		    ),
+		    'times' => array(
+		        'name' => "Times New Roman",
+		        'css' => "font-family: Times New Roman;",
+		    ),
+		    'tahoma' => array(
+		        'name' => "Tahoma, Geneva",
+		        'css' => "font-family: Tahoma, Geneva;",
+		    ),
+		    'palatino' => array(
+		        'name' => "Palatino",
+		        'css' => "font-family: Palatino;",
+		    ),
+		    'helvetica' => array(
+		        'name' => "Verdana, Geneva",
+		        'css' => "font-family: Helvetica*;",
+		    ),
+    	);
+    	$fonts = apply_filters( 'BF_available_fonts_family', $fonts );
+    	if ($font === null){
+    		return $fonts;
+    	}else{
+    		foreach ($fonts as $f => $value) {
+    			if ($f == $font)
+    				return $value;
+    		}
+    	}
+	}
+
+	/**
+	 * Get list of font faces
+	 * 
+	 * @author Ohad   Raz
+	 * @since 0.3
+	 * @access public
+	 * 
+	 * @return array
+	 */
+	public function get_font_style(){
+		$default = array(
+			'normal' => 'Normal',
+			'italic' => 'Italic',
+			'bold' => 'Bold',
+			'bold italic' => 'Bold Italic'
+		);
+		return apply_filters( 'BF_available_fonts_style', $default );
 	}
 	
 } // End Class

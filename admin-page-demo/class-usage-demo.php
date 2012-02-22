@@ -3,7 +3,7 @@
 Plugin Name: Demo Admin Page
 Plugin URI: http://en.bainternet.info
 Description: My Admin Page Class usage demo
-Version: 0.2
+Version: 0.3
 Author: Bainternet, Ohad Raz
 Author URI: http://en.bainternet.info
 */
@@ -94,6 +94,8 @@ if (is_admin()){
 	 */
 	//title
 	$options_panel->Title("Fancy Options");
+	//Typography field
+	$options_panel->addTypo('typography_field_id',array('name' => "My Typography",'std' => array('size' => '14px', 'color' => '#000000', 'face' => 'arial', 'style' => 'normal')));
 	//Image field
 	$options_panel->addImage('image_field_id',array('name'=> 'My Image '));
 	//date field
@@ -102,6 +104,7 @@ if (is_admin()){
 	$options_panel->addTime('time_field_id',array('name'=> 'My Time '));
 	//Color field
 	$options_panel->addColor('color_field_id',array('name'=> 'My Color '));
+	
 	/**
 	 * Close second tab
 	 */ 
