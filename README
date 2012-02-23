@@ -19,6 +19,9 @@ Other options are available for each field which can be see in the 'admin-page-c
 
 Changelog
 ---------
+= 0.3 =
+Added Typography field type
+
 = 0.2 =
 Fixed use with theme custom path
 
