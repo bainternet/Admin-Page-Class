@@ -350,7 +350,19 @@ jQuery(document).ready(function($) {
 		return false;
 	});
 
-		
+	/**
+	 * initiate repeater sortable option
+	 * since 0.4
+	 */
+	jQuery(".repeater-sortable").sortable();
+	/**
+	 * initiate sortable fields option
+	 * since 0.4
+	 */
+	jQuery(".at-sortable").sortable({
+			placeholder: "ui-state-highlight"
+	});
+
 	/**
 	 * Helper Function
 	 *
@@ -370,7 +382,9 @@ jQuery(document).ready(function($) {
 		jQuery(".mupload_img_holder").each(function(i,v){
 			if (jQuery(this).next().next().val() != ''){
 				if (!jQuery(this).children().size() > 0){
-					jQuery(this).append('<img src="' + jQuery(this).next().next().val() + '" style="height: 150px;width: 150px;" />');
+					var h = jQuery(this).attr('data-he');
+					var w = jQuery(this).attr('data-wi');
+					jQuery(this).append('<img src="' + jQuery(this).next().next().val() + '" style="height: '+ h +';width: '+ w +';" />');
 					jQuery(this).next().next().next().val("Delete");
 					jQuery(this).next().next().next().removeClass('at-upload_image_button').addClass('at-delete_image_button');
 				}

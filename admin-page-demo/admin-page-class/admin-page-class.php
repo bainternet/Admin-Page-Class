@@ -540,7 +540,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 	      	}
 	      	
 	        $saved = get_option($this->option_group);
-	        
+	        $this->_saved = $saved;
 	        $skip = array('title','paragraph','subtitle','TABS','CloseDiv','TABS_Listing','OpenTab','custom');
 	      
 	      	foreach($this->_fields as $field) {
@@ -1147,13 +1147,17 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 	 * @param string $field 
 	 * @param string $meta 
 	 * @since 0.1
+	 * @modified at 0.4 added sortable option
 	 * @access public
 	 */
 	public function show_field_repeater( $field, $meta ) {
 		// Get Plugin Path
 		$plugin_path = $this->SelfPath;
 		$this->show_field_begin( $field, $meta );
-		echo "<div class='at-repeat' id='{$field['id']}'>";
+		$class = '';
+		if ($field['sortable'])
+			$class = " repeater-sortable";
+		echo "<div class='at-repeat".$class."' id='{$field['id']}'>";
 		
 		$c = 0;
 
@@ -1326,6 +1330,35 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 				echo "</td>";
 			}
 		}
+	}
+
+	/**
+	 * Show Sortable Field
+	 * @author Ohad   Raz
+	 * @since 0.4
+	 * @access public
+	 * @param  (array) $field 
+	 * @param  (array) $meta 
+	 * @return void
+	 */
+	public function show_field_sortable( $field, $meta ) {
+			
+		$this->show_field_begin( $field, $meta );
+		$re = '<div class="at-sortable-con"><ul class="at-sortable">';
+		$i = 0;
+		if ( ! is_array( $meta ) || empty($meta) ){
+			foreach ( $field['options'] as $value => $label ) {
+				$re .= '<li class="widget-sort at-sort-item_'.$i.'">'.$label.'<input type="hidden" value="'.$label.'" name="'.$field['id'].'['.$value.']">';
+			}
+		}
+		else{
+			foreach ( $meta as $value => $label ) {
+				$re .= '<li class="widget-sort at-sort-item_'.$i.'">'.$label.'<input type="hidden" value="'.$label.'" name="'.$field['id'].'['.$value.']">';
+			}
+		}
+		$re .= '</ul></div>';
+		echo $re;
+		$this->show_field_end( $field, $meta );
 	}
 	
 	/**
@@ -1532,17 +1565,19 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 	public function show_field_image( $field, $meta ) {
 		$this->show_field_begin( $field, $meta );
 		$html = wp_nonce_field( "at-delete-mupload_{$field['id']}", "nonce-delete-mupload_".$field['id'], false, false );
+		$height = (isset($field['preview_height']))? $field['preview_height'] : '150px';
+		$width = (isset($field['preview_width']))? $field['preview_width'] : '150px';
 		if (is_array($meta)){
 			if(isset($meta[0]) && is_array($meta[0]))
 			$meta = $meta[0];
 		}
 		if (is_array($meta) && isset($meta['src']) && $meta['src'] != ''){
-			$html .= "<span class='mupload_img_holder'><img src='".$meta['src']."' style='height: 150px;width: 150px;' /></span>";
+			$html .= "<span class='mupload_img_holder' data-wi='".$width."' data-he='".$height."'><img src='".$meta['src']."' style='height: ".$height.";width: ".$width.";' /></span>";
 			$html .= "<input type='hidden' name='".$field['id']."[id]' id='".$field['id']."[id]' value='".$meta['id']."' />";
 			$html .= "<input type='hidden' name='".$field['id']."[src]' id='".$field['id']."[src]' value='".$meta['src']."' />";
 			$html .= "<input class='at-delete_image_button' type='button' rel='".$field['id']."' value='Delete Image' />";
 		}else{
-			$html .= "<span class='mupload_img_holder'></span>";
+			$html .= "<span class='mupload_img_holder'  data-wi='".$width."' data-he='".$height."'></span>";
 			$html .= "<input type='hidden' name='".$field['id']."[id]' id='".$field['id']."[id]' value='' />";
 			$html .= "<input type='hidden' name='".$field['id']."[src]' id='".$field['id']."[src]' value='' />";
 			$html .= "<input class='at-upload_image_button' type='button' rel='".$field['id']."' value='Upload Image' />";
@@ -2255,6 +2290,30 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 			return $new_field;
 		}
 	}
+
+	/**
+	 *  Add Sortable Field to Page
+	 *  @author Ohad Raz
+	 *  @since 0.4
+	 *  @access public
+	 *  @param $id string field id, i.e. the meta key
+	 *  @param $options (array)  array of key => value pairs for sortable options  as value => label
+	 *  @param $args mixed|array
+	 *  	'name' => // field name/label string optional
+	 *  	'desc' => // field description, string optional
+	 *  	'std' => // default value, (array) optional
+	 *  	'validate_func' => // validate function, string optional
+	 *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+	 */
+	public function addSortable($id,$options,$args,$repeater=false){
+		$new_field = array('type' => 'sortable','id'=> $id,'std' => array(),'desc' => '','style' =>'','name' => 'Select Field','multiple' => false,'options' => $options);
+		$new_field = array_merge($new_field, $args);
+		if(false === $repeater){
+			$this->_fields[] = $new_field;
+		}else{
+			return $new_field;
+		}
+	}
 	
 	
 	/**
@@ -2502,9 +2561,10 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 	 *  	'style' => 	// custom style for field, string optional
 	 *  	'validate_func' => // validate function, string optional
 	 *  	'fields' => //fields to repeater  
+	 *  @modified 0.4 added sortable option
 	 */
 	public function addRepeaterBlock($id,$args){
-		$new_field = array('type' => 'repeater','id'=> $id,'name' => 'Reapeater Field','fields' => array(),'inline'=> false);
+		$new_field = array('type' => 'repeater','id'=> $id,'name' => 'Reapeater Field','fields' => array(),'inline'=> false, 'sortable' => false);
 		$new_field = array_merge($new_field, $args);
 		$this->_fields[] = $new_field;
 	}

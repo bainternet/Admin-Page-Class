@@ -3,7 +3,7 @@
 Plugin Name: Demo Admin Page
 Plugin URI: http://en.bainternet.info
 Description: My Admin Page Class usage demo
-Version: 0.3
+Version: 0.4
 Author: Bainternet, Ohad Raz
 Author URI: http://en.bainternet.info
 */
@@ -43,7 +43,7 @@ if (is_admin()){
 		'options_2' =>  __('Fancy Options'),
 		'options_3' => __('Editor Options'),
 		'options_4' => __('WordPress Options'),
-		'options_5' =>  __('Repeater')
+		'options_5' =>  __('Advanced Options')
 		)
 	));
 	
@@ -97,7 +97,7 @@ if (is_admin()){
 	//Typography field
 	$options_panel->addTypo('typography_field_id',array('name' => "My Typography",'std' => array('size' => '14px', 'color' => '#000000', 'face' => 'arial', 'style' => 'normal')));
 	//Image field
-	$options_panel->addImage('image_field_id',array('name'=> 'My Image '));
+	$options_panel->addImage('image_field_id',array('name'=> 'My Image ','preview_height' => '120px', 'preview_width' => '440px'));
 	//date field
 	$options_panel->addDate('date_field_id',array('name'=> 'My Date '));
 	//Time field
@@ -174,21 +174,27 @@ if (is_admin()){
 	 * Open admin page 5th tab
 	 */
 	$options_panel->OpenTab('options_5');
+	//title
+	$options_panel->Title("Advanced Options");
+
+	//sortable field
+	 $options_panel->addSortable('sortable_field_id',array('1' => 'One','2'=> 'Two', '3' => 'three', '4'=> 'four'),array('name' => "my sortable field"));
 
 	/*
 	 * To Create a reapeater Block first create an array of fields
 	 * use the same functions as above but add true as a last param
 	 */
 	$repeater_fields[] = $options_panel->addText('re_text_field_id',array('name'=> 'My Text '),true);
-	$repeater_fields[] = $options_panel->addTextarea('re_textarea_field_id',array('name'=> 'My Textarea '),true);
-	$repeater_fields[] = $options_panel->addCheckbox('re_checkbox_field_id',array('name'=> 'My Checkbox '),true);
-	$repeater_fields[] = $options_panel->addImage('image_field_id',array('name'=> 'My Image '),true);
+   	$repeater_fields[] = $options_panel->addTextarea('re_textarea_field_id',array('name'=> 'My Textarea '),true);
+    $repeater_fields[] = $options_panel->addImage('image_field_id',array('name'=> 'My Image '),true);
 	
 	/*
 	 * Then just add the fields to the repeater block
 	 */
 	//repeater block
-	$options_panel->addRepeaterBlock('re_',array('inline' => false, 'name' => 'This is a Repeater Block','fields' => $repeater_fields));
+	$options_panel->addRepeaterBlock('re_',array('sortable' => true, 'inline' => true, 'name' => 'This is a Repeater Block','fields' => $repeater_fields));
+	
+	 
 	/**
 	 * Close 5th tab
 	 */

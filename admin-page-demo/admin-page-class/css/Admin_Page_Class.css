@@ -149,3 +149,23 @@
 .alert-success, .alert-success .alert-heading {
     color: #468847;
 }
+.widget-sort{
+    background-color: #F5F5F5;
+    background-image: -moz-linear-gradient(center top , #F9F9F9, #F5F5F5);
+    border: 1px solid #DFDFDF;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 1px 0 #FFFFFF inset;
+    padding: 4px;
+    text-align: center;
+    width: 65%;
+}
+.ui-state-highlight{
+    background-color: #FFFFE0;
+    border-color: #E6DB55;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 1px 0 #FFFFFF inset;
+    padding: 14px;
+    width: 60%;
+}
+.ui-sortable li{cursor: move;}
+.ui-sortable .at-repater-block{cursor: move;}
