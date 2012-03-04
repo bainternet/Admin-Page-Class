@@ -19,6 +19,11 @@ Other options are available for each field which can be see in the 'admin-page-c
 
 Changelog
 ---------
+= 0.4 =
+Added sortable field.
+Added Sortable option to repeater block.
+Added custom image preview sizes.
+
 = 0.3 =
 Added Typography field type
 
