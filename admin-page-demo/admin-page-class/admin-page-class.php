@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 0.3
+ * @version 0.4
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -1593,38 +1593,56 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 	 * @param array $meta 
 	 * @since 0.3
 	 * @access public
+	 * 
+	 * @last modified 0.4 - faster better selected handeling
 	 */
 	public function show_field_typo( $field, $meta ) {
 		$this->show_field_begin( $field, $meta );
+		if (!is_array($meta)){
+			$meta = array(
+				'size' => '',
+				'face' => '',
+				'style' => '',
+				'color' => '#',
+			);
+		}
 		$html = '<select class="at-typography at-typography-size" name="' . esc_attr( $field['id'] . '[size]' ) . '" id="' . esc_attr( $field['id'] . '_size' ) . '">';
+		$op = '';
 		for ($i = 9; $i < 71; $i++) {
 			$size = $i . 'px';
-			$html .= '<option value="' . esc_attr( $size ) . '" ' . selected( $meta['size'], $size, false ) . '>' . esc_html( $size ) . '</option>';
+			$op .= '<option value="' . esc_attr( $size ) . '">' . esc_html( $size ) . '</option>';
 		}
-		$html .= '</select>';
+		if (isset($meta['size']))
+			$op = str_replace('value="'.$meta['size'].'"', 'value="'.$meta['size'].'" selected="selected"', $op);
+		$html .=$op. '</select>';
 
 		// Font Face
 		$html .= '<select class="at-typography at-typography-face" name="' . esc_attr( $field['id'] .'[face]' ) . '" id="' . esc_attr( $field['id'] . '_face' ) . '">';
 
 		$faces = $this->get_fonts_family();
+		$op = '';
 		foreach ( $faces as $key => $face ) {
-			$html .= '<option value="' . esc_attr( $key ) . '" ' . selected( $meta['face'], $key, false ) . '>' . esc_html( $face['name'] ) . '</option>';
+			$op .= '<option value="' . esc_attr( $key ) . '">' . esc_html( $face['name'] ) . '</option>';
 		}
-
-		$html .= '</select>';
+		if (isset($meta['face']))
+			$op = str_replace('value="'.$meta['face'].'"', 'value="'.$meta['face'].'" selected="selected"', $op);
+		$html .= $op. '</select>';
 
 		// Font Weight
 		$html .= '<select class="at-typography at-typography-style" name="'.$field['id'].'[style]" id="'. $field['id'].'_style">';
 
 		/* Font Style */
 		$styles = $this->get_font_style();
+		$op = '';
 		foreach ( $styles as $key => $style ) {
-			$html .= '<option value="' . esc_attr( $key ) . '" ' . selected( $meta['style'], $key, false ) . '>'. $style .'</option>';
+			$op .= '<option value="' . esc_attr( $key ) . '">'. $style .'</option>';
 		}
-		$html .= '</select>';
+		if (isset($meta['style']))
+			$op = str_replace('value="'.$meta['style'].'"', 'value="'.$meta['style'].'" selected="selected"', $op);
+		$html .= $op. '</select>';
 
 		// Font Color
-		$html .= "<input class='at-color' type='text' name='".$field['id']."[color]' id='".$field['id']."[color]' value='".$meta['color']."' size='5' />";
+		$html .= "<input class='at-color' type='text' name='".$field['id']."[color]' id='".$field['id']."[color]' value='".$meta['color'] ."' size='6' />";
 		$html .= "<input type='button' class='at-color-select button' rel='".$field['id']."[color]' value='" . __( 'Select a color' ) . "'/>";
 		$html .= "<div style='display:none' class='at-color-picker' rel='".$field['id']."[color]'></div>";
 		echo $html;
