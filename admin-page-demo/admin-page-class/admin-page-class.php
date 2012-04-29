@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 0.6
+ * @version 0.7
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -584,8 +584,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
             $data = '';
           if (isset($saved[$field['id']]))
               $data = $saved[$field['id']];
-          if (isset($field['standard']) && $data === '')
-              $data = $field['standard'];
+          if (isset($field['std']) && $data === '')
+              $data = $field['std'];
 
             if (method_exists(&$this,'show_field_' . $field['type'])){
               if ($this->_div_or_row){echo '<td>';}else{echo apply_filters('admin_page_class_field_container_open','<div class="field">',$field);}
@@ -652,7 +652,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $text = (null == $text)? '': $text;
       $args['text'] = $text;
       $args['id'] = 'TABS';
-      $args['standard'] = '';
+      $args['std'] = '';
       $this->SetField($args);
       }
       /**
@@ -666,7 +666,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       public function CloseDiv_Container() {
       $args['type'] = 'CloseDiv';
       $args['id'] = 'CloseDiv';
-      $args['standard'] = '';
+      $args['std'] = '';
       $this->SetField($args);
       }
       /**
@@ -680,7 +680,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       public function TabsListing($args) {
         $args['type'] = 'TABS_Listing';
         $args['id'] = 'TABS_Listing';
-        $args['standard'] = '';
+        $args['std'] = '';
         $this->SetField($args);
       }
       /**
@@ -694,7 +694,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       public function OpenTab($name) {
         $args['type'] = 'OpenTab';
         $args['id'] = $name;
-        $args['standard'] = '';
+        $args['std'] = '';
         $this->SetField($args);
       }
     
@@ -707,7 +707,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       public function CloseTab() {
       $args['type'] = 'CloseDiv';
       $args['id'] = 'CloseDiv';
-      $args['standard'] = '';
+      $args['std'] = '';
       $this->SetField($args);
       }
 
@@ -722,7 +722,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
        */
       private function SetField($args) {
         $default = array(
-            'standard' => '',
+            'std' => '',
           'id' => ''
          );
         $args = array_merge($default, $args);
@@ -731,7 +731,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       }
 
       /**
-       * Builds all the options with their standard values
+       * Builds all the options with their std values
        * 
        * @access public
        * @param $args (mixed|array) contains everything needed to build the field
@@ -740,14 +740,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
        */
       private function buildOptions($args) {
         $default = array(
-            'standard' => '',
+            'std' => '',
           'id' => ''
           );
           $args = array_merge($default, $args);
           $saved = get_option($this->option_group);
         if (isset($saved[$args['id']])){
           if($saved[$args['id']] === false) {
-              $saved[$args['id']] = $args['standard'];
+              $saved[$args['id']] = $args['std'];
               update_option($this->args['option_group'],$saved);
             }
         }
@@ -765,7 +765,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
        */
       public function Title($label,$repeater = false) {
       $args['type'] = 'title';
-      $args['standard'] = '';
+      $args['std'] = '';
       $args['label'] = $label;
       $args['id'] = 'title'.$label;
       $this->SetField($args);
@@ -785,7 +785,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $args['type'] = 'subtitle';
       $args['label'] = $label;
       $args['id'] = 'title'.$label;
-      $args['standard'] = '';
+      $args['std'] = '';
       $this->SetField($args);
       }
       
@@ -803,7 +803,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $args['type'] = 'paragraph';
       $args['text'] = $text;
       $args['id'] = 'paragraph';
-      $args['standard'] = '';
+      $args['std'] = '';
       $this->SetField($args);
       }
   
@@ -1527,7 +1527,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $display = '';
     }
     echo '<div class="conditinal_container"'.$display.'>';
-    foreach ($field['fields'] as $f){
+    foreach ((array)$field['fields'] as $f){
       //reset var $id for cond
       $id = '';
       $id = $field['id'].'['.$f['id'].']';
@@ -1538,9 +1538,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $m = ( $m !== '' ) ? $m : $f['std'];
       if ('image' != $f['type'] && $f['type'] != 'repeater')
         $m = is_array( $m) ? array_map( 'esc_attr', $m ) : esc_attr( $m);
-      //set new id for field in array format
-      $f['id'] = $id;
-      call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, $m);
+        //set new id for field in array format
+        $f['id'] = $id;
+        call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, $m);
     }
     echo '</div>';
     $this->show_field_end( $field, $meta );

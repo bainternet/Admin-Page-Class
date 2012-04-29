@@ -3,7 +3,7 @@
 Plugin Name: Demo Admin Page
 Plugin URI: http://en.bainternet.info
 Description: My Admin Page Class usage demo
-Version: 0.6
+Version: 0.7
 Author: Bainternet, Ohad Raz
 Author URI: http://en.bainternet.info
 */
@@ -64,15 +64,15 @@ if (is_admin()){
   //An optionl descrption paragraph
   $options_panel->addParagraph("This is a simple paragraph");
   //text field
-  $options_panel->addText('text_field_id',array('name'=> 'My Text '));
+  $options_panel->addText('text_field_id',array('name'=> 'My Text ', 'std'=> 'std TEXT'));
   //textarea field
-  $options_panel->addTextarea('textarea_field_id',array('name'=> 'My Textarea '));
+  $options_panel->addTextarea('textarea_field_id',array('name'=> 'My Textarea ', 'std'=> 'std TEXTarea'));
   //checkbox field
-  $options_panel->addCheckbox('checkbox_field_id',array('name'=> 'My Checkbox '));
+  $options_panel->addCheckbox('checkbox_field_id',array('name'=> 'My Checkbox ', 'std' => true));
   //select field
   $options_panel->addSelect('select_field_id',array('selectkey1'=>'Select Value1','selectkey2'=>'Select Value2'),array('name'=> 'My select ', 'std'=> array('selectkey2')));
   //radio field
-  $options_panel->addRadio('radio_field_id',array('radiokey1'=>'Radio Value1','radiokey2'=>'Radio Value2'),array('name'=> 'My Radio Filed', 'std'=> array('radionkey2')));
+  $options_panel->addRadio('radio_field_id',array('radiokey1'=>'Radio Value1','radiokey2'=>'Radio Value2'),array('name'=> 'My Radio Filed', 'std'=> array('radiokey2')));
   /**
    * Close first tab
    */   
@@ -185,8 +185,8 @@ if (is_admin()){
    * use the same functions as above but add true as a last param
    */
   $repeater_fields[] = $options_panel->addText('re_text_field_id',array('name'=> 'My Text '),true);
-     $repeater_fields[] = $options_panel->addTextarea('re_textarea_field_id',array('name'=> 'My Textarea '),true);
-    $repeater_fields[] = $options_panel->addImage('image_field_id',array('name'=> 'My Image '),true);
+  $repeater_fields[] = $options_panel->addTextarea('re_textarea_field_id',array('name'=> 'My Textarea '),true);
+  $repeater_fields[] = $options_panel->addImage('image_field_id',array('name'=> 'My Image '),true);
   
   /*
    * Then just add the fields to the repeater block
@@ -194,7 +194,25 @@ if (is_admin()){
   //repeater block
   $options_panel->addRepeaterBlock('re_',array('sortable' => true, 'inline' => true, 'name' => 'This is a Repeater Block','fields' => $repeater_fields));
   
-   
+  /**
+   * To Create a Conditional Block first create an array of fields (just like a repeater block
+   * use the same functions as above but add true as a last param
+   */
+  $Conditinal_fields[] = $options_panel->addText('con_text_field_id',array('name'=> 'My Text '),true);
+  $Conditinal_fields[] = $options_panel->addTextarea('con_textarea_field_id',array('name'=> 'My Textarea '),true);
+  $Conditinal_fields[] = $options_panel->addImage('con_image_field_id',array('name'=> 'My Image '),true);
+  
+  /**
+   * Then just add the fields to the repeater block
+   */
+  //conditinal block 
+  $options_panel->addCondition('conditinal_fields',
+      array(
+        'name'=> __('Enable menu Tweaks? '),
+        'desc' => __('<small>Turn ON if you want to enable the <strong>conditinal fields</strong>.</small>'),
+        'fields' => $Conditinal_fields,
+        'std' => false
+      ));
   /**
    * Close 5th tab
    */
