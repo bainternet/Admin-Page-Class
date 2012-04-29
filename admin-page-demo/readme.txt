@@ -3,8 +3,8 @@ Contributors: bainternet
 Donate link:http://en.bainternet.info/donations
 Tags: admin page, option page, options panel, admin options panel
 Requires at least: 2.9.2
-Tested up to: 3.3.1
-Stable tag: 0.4
+Tested up to: 3.3.2
+Stable tag: 0.6
 
 The Admin Page Class is used by including it in your plugin files and using its methods to create custom Admin Pages. It is meant to be very simple and straightforward. 
  
@@ -29,6 +29,12 @@ PHP 5.2 and up.
 
 
 == Changelog ==
+= 0.6 =
+Added Conditional field block
+
+= 0.5 =
+Added admin branding filters.
+
 = 0.4 =
 Added sortable field.
 Added Sortable option to repeater block.
