@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 0.7
+ * @version 0.8
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -160,6 +160,19 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
      */
      
     public function __construct($args) {
+      if(is_array($args)) {
+        if (isset($args['option_group'])){
+          $this->option_group = $args['option_group'];
+        }
+        $this->args = $args;
+      } else {
+        $array['page_title'] = $args;
+        $this->args = $array;
+      }
+
+      //add hooks for export download
+      add_action('template_redirect',array($this, 'admin_redirect_download_files'));
+      add_filter('init', array($this,'add_query_var_vars'));
       // If we are not in admin area exit.
       if ( ! is_admin() )
         return;
@@ -222,15 +235,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         $this->Top_Slug = $args['menu']['top'];
         add_action('admin_menu', array($this, 'AddMenuTopPage'));
       }
-      if(is_array($args)) {
-        if (isset($args['option_group'])){
-          $this->option_group = $args['option_group'];
-        }
-        $this->args = $args;
-      } else {
-        $array['page_title'] = $args;
-        $this->args = $array;
-      }
+      
 
       // Assign page values to local variables and add it's missed values.
       $this->_Page_Config = $args;
@@ -256,10 +261,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       
       
       //add_action('admin_head', array($this, 'loadScripts'));
-      add_filter('gettext',array($this,'edit_insert_to_post_text'));
+      add_filter('attribute_escape',array($this,'edit_insert_to_post_text'),10,2);
+
       // Delete file via Ajax
       add_action( 'wp_ajax_apc_delete_mupload', array( $this, 'wp_ajax_delete_image' ) );
-      
+      //import export
+      add_action( 'wp_ajax_apc_import_'.$this->option_group, array( $this, 'import' ) );
+      add_action( 'wp_ajax_apc_export_'.$this->option_group, array( $this, 'export' ) );
+
     }
 
 
@@ -510,15 +519,17 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
      * @param  string $input insert to post text
      * @return string
      */
-    public function edit_insert_to_post_text( $input ) {
-
-      if( is_admin() && 'Insert into Post' == $input && isset($_GET['apc']) && 'insert_file' == $_GET['apc'] )
-        return 'Select Image';
-
-      return $input;
+    public function edit_insert_to_post_text( $safe_text, $text ) {
+      if( is_admin() && 'Insert into Post' == $safe_text){
+        if ('insert_file' == $_GET['apc'] )
+          return str_replace(__('Insert into Post'), __('Use this File'), $safe_text);
+        else
+          return str_replace(__('Insert into Post'), __('Use this Image'), $safe_text);
+      }
+      return $text;
     }
 
-    /* print out panel Style
+    /* print out panel Style (deprecated)
      * 
      * @access public
        * @since 0.1
@@ -555,7 +566,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
           
           $saved = get_option($this->option_group);
           $this->_saved = $saved;
-          $skip = array('title','paragraph','subtitle','TABS','CloseDiv','TABS_Listing','OpenTab','custom');
+          $skip = array('title','paragraph','subtitle','TABS','CloseDiv','TABS_Listing','OpenTab','custom','import_export');
 
           foreach($this->_fields as $field) {
             if (!in_array($field['type'],$skip)){
@@ -593,36 +604,40 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
               if ($this->_div_or_row){echo '</td>';}else{echo apply_filters('admin_page_class_field_container_close','</div>',$field);}
             }else{
               switch($field['type']) {
-            case 'TABS':
-                      echo '<div id="tabs">';
-                      break;
-            case 'CloseDiv':
-              $this->tab_div = false;
-              echo '</div>';
-                      break;
-            case 'TABS_Listing':
-                      echo '<div class="panel_menu"><ul>';
-                    foreach($field['links'] as $id => $name){
-                echo '<li><a class="nav_tab_link" href="#'.$id.'">'.$name.'</a></li>';
-                    }
-              echo '</ul></div><div class="sections">';
-                      break;
-            case 'OpenTab':
-              $this->tab_div = true;
-                      echo '<div class="setingstab" id="'.$field['id'].'">';
-                      break;
-            case 'title':
-                    echo '<h2>'.$field['label'].'</h2>';
-                    break;
-            case 'subtitle':
-                    echo '<h3>'.$field['label'].'</h3>';
-                    break;
-            case 'paragraph':
-                    echo '<p>'.$field['text'].'</p>';
-                    break;
-            case 'repeater':
-                    $this->output_repeater_fields($field,$data);
-                    break;
+                case 'TABS':
+                  echo '<div id="tabs">';
+                  break;
+                case 'CloseDiv':
+                  $this->tab_div = false;
+                  echo '</div>';
+                  break;
+                case 'TABS_Listing':
+                  echo '<div class="panel_menu"><ul>';
+                  foreach($field['links'] as $id => $name){
+                    $extra_classes = strtolower(str_replace(' ','-',$name)).' '.strtolower(str_replace(' ','-',$id));
+                    echo '<li class="'.apply_filters('APC_tab_li_extra_class',$extra_classes).'"><a class="nav_tab_link" href="#'.$id.'">'.$name.'</a></li>';
+                  }
+                  echo '</ul></div><div class="sections">';
+                  break;
+                case 'OpenTab':
+                  $this->tab_div = true;
+                  echo '<div class="setingstab" id="'.$field['id'].'">';
+                  break;
+                case 'title':
+                  echo '<h2>'.$field['label'].'</h2>';
+                  break;
+                case 'subtitle':
+                  echo '<h3>'.$field['label'].'</h3>';
+                  break;
+                case 'paragraph':
+                  echo '<p>'.$field['text'].'</p>';
+                  break;
+                case 'repeater':
+                  $this->output_repeater_fields($field,$data);
+                  break;
+                case 'import_export':
+                  $this->show_import_export();
+                  break;
               }
             }
             if (!in_array($field['type'],$skip)){ echo '</tr>';}
@@ -1903,7 +1918,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     
     If ($post_data == NULL) return;
 
-    $skip = array('title','paragraph','subtitle','TABS','CloseDiv','TABS_Listing','OpenTab');
+    $skip = array('title','paragraph','subtitle','TABS','CloseDiv','TABS_Listing','OpenTab','import_export');
     
     //check nonce
     if ( ! check_admin_referer( basename( __FILE__ ), 'BF_Admin_Page_Class_nonce') )
@@ -2793,7 +2808,183 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     );
     return apply_filters( 'BF_available_fonts_style', $default );
   }
-  
+
+  /**
+   *  Export Import Functions
+   */
+
+  /**
+   *  Add import export to Page
+   *  @author Ohad Raz
+   *  @since 0.8
+   *  @access public
+   *  
+   *  @return void
+   */
+  public function addImportExport(){
+    $new_field = array('type' => 'import_export','id'=> '','value' => '');
+    $this->_fields[] = $new_field;
+  }
+
+
+  public function show_import_export(){
+    $this->show_field_begin(array('name' => ''),null);
+    $ret ='
+    <div class="apc_ie_panel field">
+      <div style="padding 10px;" class="apc_export"><h3>'.__('Export').'</h3>
+        <p>'. __('To export saved settings click the Export button bellow and you will get the export Code in the box bellow, which you can later use to import.').'</p>
+        <div class="export_code">
+          <label for="export_code">'. __('Export Code').'</label><br/>
+          <textarea id="export_code"></textarea>        
+          <input class="button-primary" type="button" value="'. __('Get Export').'" id="apc_export_b" />'.$this->create_export_download_link().'
+          <div class="export_status" style="display: none;"><img src="http://i.imgur.com/l4pWs.gif" alt="loading..."/></div>
+          <div class="export_results alert" style="display: none;"></div>
+        </div>
+      </div>
+      <div style="padding 10px;" class="apc_import"><h3>'.__('Import').'</h3>
+        <p>'. __('To Import saved settings paste the Export output in to the Import Code box bellow and click Import.').'</p>
+        <div class="import_code">
+          <label for="import_code">'. __('Import Code').'</label><br/>
+          <textarea id="import_code"></textarea>
+                  <input class="button-primary" type="button"  value="'. __('Import').'" id="apc_import_b" />
+          <div class="import_status" style="display: none;"><img src="http://i.imgur.com/l4pWs.gif" alt="loading..."/></div>
+          <div class="import_results alert" style="display: none;"></div>
+        </div>
+      </div>
+      <input type="hidden" id="option_group_name" value="'.$this->option_group.'" />
+      <input type="hidden" id="apc_import_nonce" name="apc_Import" value="'.wp_create_nonce("apc_import").'" />
+      <input type="hidden" id="apc_export_nonce" name="apc_export" value="'.wp_create_nonce("apc_export").'" />
+    ';
+    echo apply_filters('apc_import_export_panel',$ret);
+    $this->show_field_end(array('name' => ''),null);
+  }
+
+  /**
+   * Ajax export 
+   * 
+   * @author Ohad   Raz
+   * @since 0.8
+   * @access public
+   * 
+   * @return json object
+   */
+  public function export(){
+    check_ajax_referer( 'apc_export', 'seq' );
+    if (!isset($_GET['group'])){
+      $re['err'] = __('error in ajax request! (1)');
+      $re['nonce'] = wp_create_nonce("apc_export");
+      echo json_encode($re);
+      die();
+    }
+
+    $options = get_option($this->option_group,false);
+    if ($options !== false)
+      $re['code']= "<!*!* START export Code !*!*>\n".base64_encode(serialize($options))."\n<!*!* END export Code !*!*>";
+    else
+      $re['err'] = __('error in ajax request! (2)');
+    
+    //update_nonce
+    $re['nonce'] = wp_create_nonce("apc_export");
+    echo json_encode($re);
+    die();
+
+  }
+
+  /**
+   * Ajax import 
+   * 
+   * @author Ohad   Raz
+   * @since 0.8
+   * @access public
+   * 
+   * @return json object
+   */
+  public function import(){
+    check_ajax_referer( 'apc_import', 'seq' );
+    if (!isset($_POST['imp'])){
+      $re['err'] = __('error in ajax request! (3)');
+      $re['nonce'] = wp_create_nonce("apc_import");
+      echo json_encode($re);
+      die();
+    }
+    $import_code = $_POST['imp'];
+    $import_code = str_replace("<!*!* START export Code !*!*>\n","",$import_code);
+    $import_code = str_replace("\n<!*!* END export Code !*!*>","",$import_code);
+    $import_code = base64_decode($import_code);
+    $import_code = unserialize($import_code);
+    if (is_array($import_code)){
+      update_option($this->option_group,$import_code);
+      $re['success']= __('Setting imported, make sure you '). '<input class="button-primary" type="button"  value="'. __('Refresh this page').'" id="apc_refresh_page_b" />';
+    }else{
+      $re['err'] = __('Could not import settings! (4)');
+    }
+    //update_nonce
+      $re['nonce'] = wp_create_nonce("apc_import");
+    echo json_encode($re);
+    die();
+  }
+
+
+  //then define the function that will take care of the actual download
+  public function download_file($content = null, $file_name = null){
+    if (! wp_verify_nonce($_REQUEST['nonce'], 'theme_export_options') ) 
+        wp_die('Security check'); 
+
+    //here you get the options to export and set it as content, ex:
+    $options= get_option($_REQUEST['option_group']);
+    $content = "<!*!* START export Code !*!*>\n".base64_encode(serialize($options))."\n<!*!* END export Code !*!*>";
+    $file_name = 'theme_export.txt';
+    header('HTTP/1.1 200 OK');
+
+    if ( !current_user_can('edit_themes') )
+        wp_die('<p>'.__('You do not have sufficient permissions to edit templates for this site.').'</p>');
+    
+    if ($content === null || $file_name === null){
+        wp_die('<p>'.__('Error Downloading file.').'</p>');     
+    }
+    $fsize = strlen($content);
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header('Content-Description: File Transfer');
+    header("Content-Disposition: attachment; filename=" . $file_name);
+    header("Content-Length: ".$fsize);
+    header("Expires: 0");
+    header("Pragma: public");
+    echo $content;
+    exit;
+  }
+
+  public function create_export_download_link($echo = false){
+    $site_url = get_bloginfo('url');
+    $args = array(
+        'theme_export_options' => 'safe_download',
+        'nonce' => wp_create_nonce('theme_export_options'),
+        'option_group' => $this->option_group
+    );
+    $export_url = add_query_arg($args, $site_url);
+    if ($echo === true)
+        echo '<a href="'.$export_url.'" target="_blank">Download Export</a>';
+    elseif ($echo == 'url')
+        return $export_url;
+    return '<a class="button-primary" href="'.$export_url.'" target="_blank">Download Export</a>';
+  }
+
+  //first  add a new query var
+  public function add_query_var_vars() {
+      global $wp;
+      $wp->add_query_var('theme_export_options');
+  }
+
+  //then add a template redirect which looks for that query var and if found calls the download function
+  public function admin_redirect_download_files(){
+      global $wp;
+      global $wp_query;
+      //download theme export
+      if (array_key_exists('theme_export_options', $wp->query_vars) && $wp->query_vars['theme_export_options'] == 'safe_download' && $this->option_group == $_REQUEST['option_group'] ){
+          $this->download_file();
+          die();
+      }
+  }
+
 } // End Class
 
 endif; // End Check Class Exists

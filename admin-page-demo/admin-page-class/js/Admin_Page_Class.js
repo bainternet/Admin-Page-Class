@@ -124,7 +124,7 @@ function update_repeater_fields(){
       };
   
       // note that we pass the field_id and post_id here
-      tb_show('', 'media-upload.php?post_id=' + post_id + '&field_id=' + field_id + '&type=image&TB_iframe=true');
+      tb_show('', 'media-upload.php?post_id=' + post_id + '&field_id=' + field_id + '&type=image&TB_iframe=true&apc=apc');
   
       return false;
     });
@@ -358,7 +358,7 @@ jQuery(document).ready(function($) {
     };
 
     // note that we pass the field_id and post_id here
-    tb_show('', 'media-upload.php?post_id=' + post_id + '&field_id=' + field_id + '&type=image&TB_iframe=true');
+    tb_show('', 'media-upload.php?post_id=' + post_id + '&field_id=' + field_id + '&type=image&TB_iframe=true&apc=apc');
 
     return false;
   });
@@ -443,7 +443,7 @@ jQuery(document).ready(function($) {
     jQuery('.at-upload_image_button').live('click',function(e){
       formfield1 = jQuery(this).prev();
       formfield2 = jQuery(this).prev().prev();      
-      tb_show('', 'media-upload.php?post_id='+ jQuery('#post_ID').val() + '&type=image&amp;TB_iframe=true');
+      tb_show('', 'media-upload.php?post_id='+ jQuery('#post_ID').val() + '&type=image&apc=apc&TB_iframe=true');
       //store old send to editor function
       window.restore_send_to_editor = window.send_to_editor;
       //overwrite send to editor function
@@ -466,4 +466,208 @@ jQuery(document).ready(function($) {
       }
       return false;
     });
+  
+  //
+  /**
+   * microtime used as hack to avoid ajax cache
+   * 
+   * @author Ohad Raz <admin@bainternet.info> 
+   * @since 0.8
+   * @param  boolean get_as_float 
+   * 
+   * @return microtime as int or float 
+   */
+  function microtime(get_as_float) { 
+    var now = new Date().getTime() / 1000; 
+    var s = parseInt(now); 
+    return (get_as_float) ? now : (Math.round((now - s) * 1000) / 1000) + " " + s; 
+  }
+
+  /**
+   * do_ajax 
+   * 
+   * @author Ohad Raz <admin@bainternet.info> 
+   * @since 0.8
+   * @param  string which  (import|export)
+   * 
+   * @return void
+   */
+  function do_ajax_import_export(which){
+    before_ajax_import_export(which);
+    var group = jQuery("#option_group_name").val();
+    var seq_selector = "#apc_" + which + "_nonce";
+    var action_selctor = "apc_" + which + "_" + group;
+    jQuery.ajaxSetup({ cache: false });
+    if (which == 'export')
+      export_ajax_call(action_selctor,group,seq_selector,which);
+    else
+      import_ajax_call(action_selctor,group,seq_selector,which);
+    jQuery.ajaxSetup({ cache: true });
+  }
+
+  /**
+   * export_ajax_call make export ajax call
+   * 
+   * @author Ohad Raz <admin@bainternet.info> 
+   * @since 0.8
+   * 
+   * @param  string action 
+   * @param  string group
+   * @param  string seq_selector
+   * @param  string which   
+   * @return void
+   */
+  function export_ajax_call(action,group,seq_selector,which){
+    jQuery.getJSON(ajaxurl,
+      {
+        group: group,
+        rnd: microtime(false), //hack to avoid request cache
+        action: action,
+        seq: jQuery(seq_selector).val()
+      },
+      function(data) {
+        if (data){
+          export_response(data);
+        }else{
+          alert("Something Went Wrong, try again later");
+        }
+        after_ajax_import_export(which);
+      }
+    );
+  }
+
+  /**
+   * import_ajax_call make import ajax call
+   * 
+   * @author Ohad Raz <admin@bainternet.info> 
+   * @since 0.8
+   * 
+   * @param  string action 
+   * @param  string group
+   * @param  string seq_selector
+   * @param  string which   
+   * @return void
+   */
+  function import_ajax_call(action,group,seq_selector,which){
+    jQuery.post(ajaxurl,
+      {
+        group: group,
+        rnd: microtime(false), //hack to avoid request cache
+        action: action,
+        seq: jQuery(seq_selector).val(),
+        imp: jQuery("#import_code").val(),
+      },
+      function(data) {
+        if (data){
+           import_response(data);
+        }else{
+          alert("Something Went Wrong, try again later");
+        }
+        after_ajax_import_export(which);
+      },
+       "json"
+    );
+  }
+
+  /**
+   * before_ajax_import_export 
+   * 
+   * @author Ohad Raz <admin@bainternet.info> 
+   * @since 0.8
+   * @param  string which  (import|export)
+   * 
+   * @return void
+   */
+  function before_ajax_import_export(which){
+    jQuery(".import_status").hide("fast");
+    jQuery(".export_status").hide("fast");
+    jQuery(".export_results").html('').removeClass('alert-success').hide();
+    jQuery(".import_results").html('').removeClass('alert-success').hide();
+    if (which == 'import')
+      jQuery(".import_status").show("fast");
+    else
+      jQuery(".export_status").show("fast");
+  }
+
+  /**
+   * after_ajax_import_export
+   * 
+   * @author Ohad Raz <admin@bainternet.info> 
+   * @since 0.8
+   * @param  string which  (import|export)
+   * 
+   * @return void
+   */
+  function after_ajax_import_export(which){
+    if (which == 'import')
+      jQuery(".import_status").hide("fast");
+    else
+      jQuery(".export_status").hide("fast");
+  }
+
+  /**
+   * export_reponse
+   * 
+   * @author Ohad Raz <admin@bainternet.info> 
+   * @since 0.8
+   * @param  json data ajax response
+   * @return void
+   */
+  function export_response(data){
+    if (data.code)
+      jQuery('#export_code').val(data.code);
+    if (data.nonce)
+      jQuery("#apc_export_nonce").val(data.nonce);
+    if(data.err)
+      jQuery(".export_results").html(data.err).show('slow');
+  }
+
+  /**
+   * import_reponse
+   * 
+   * @author Ohad Raz <admin@bainternet.info> 
+   * @since 0.8
+   * @param  json data ajax response
+   * 
+   * @return void
+   */
+  function import_response(data){
+    if (data.nonce)
+      jQuery("#apc_import_nonce").val(data.nonce);
+    if(data.err)
+      jQuery(".import_results").html(data.err);
+    if (data.success)
+      jQuery(".import_results").html(data.success).addClass('alert-success').show('slow');
+  }
+
+  /**
+   * listen for import button click
+   * @since 0.8
+   * @return void
+   */
+  jQuery("#apc_import_b").live("click",function(){
+    do_ajax_import_export('import');
+  });
+
+  /**
+   * listen for export button click
+   * @since 0.8
+   * @return void
+   */
+  jQuery("#apc_export_b").live("click",function(){
+    do_ajax_import_export('export');
+  });
+
+  jQuery("#apc_refresh_page_b").live("click",function(){
+    refresh_page();
+  });
+
+  /**
+   * refresh_page 
+   * @since 0.8
+   * @return void
+   */
+  function refresh_page(){
+    location.reload();
+  }
 });

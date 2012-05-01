@@ -3,13 +3,13 @@
 Plugin Name: Demo Admin Page
 Plugin URI: http://en.bainternet.info
 Description: My Admin Page Class usage demo
-Version: 0.7
+Version: 0.8
 Author: Bainternet, Ohad Raz
 Author URI: http://en.bainternet.info
 */
 
 
-if (is_admin()){
+
   //include the main class file
   require_once("admin-page-class/admin-page-class.php");
   
@@ -43,7 +43,8 @@ if (is_admin()){
     'options_2' =>  __('Fancy Options'),
     'options_3' => __('Editor Options'),
     'options_4' => __('WordPress Options'),
-    'options_5' =>  __('Advanced Options')
+    'options_5' =>  __('Advanced Options'),
+	'options_6' =>  __('Import Export'),
     )
   ));
   
@@ -208,7 +209,7 @@ if (is_admin()){
   //conditinal block 
   $options_panel->addCondition('conditinal_fields',
       array(
-        'name'=> __('Enable menu Tweaks? '),
+        'name'=> __('Enable conditinal fields? '),
         'desc' => __('<small>Turn ON if you want to enable the <strong>conditinal fields</strong>.</small>'),
         'fields' => $Conditinal_fields,
         'std' => false
@@ -216,6 +217,25 @@ if (is_admin()){
   /**
    * Close 5th tab
    */
+  $options_panel->CloseTab();
+   
+  /**
+   * Open admin page 6th tab
+   */
+  $options_panel->OpenTab('options_6');
+  
+  //title
+  $options_panel->Title("Import Export");
+  
+  /**
+   * add import export functionallty
+   */
+  $options_panel->addImportExport();
+
+  /**
+   * Close 6th tab
+   */
+  $options_panel->CloseTab();
   $options_panel->CloseTab();
 
   //Now Just for the fun I'll add Help tabs
@@ -234,4 +254,3 @@ if (is_admin()){
   function help_tab_callback_demo(){
     echo '<p>This is my 2nd Help Tab content from a callback function</p>';
   }
-}

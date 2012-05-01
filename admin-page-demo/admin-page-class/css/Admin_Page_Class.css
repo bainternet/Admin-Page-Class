@@ -106,14 +106,14 @@
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 .btn-info {
-    background-color: #49AFCD;
+    background-color: #49AFCD !important;
     background-image: -moz-linear-gradient(center top , #5BC0DE, #2F96B4);
     background-repeat: repeat-x;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
     color: #FFFFFF !important;
 }
 .btn-primary {
-    background-color: #006DCC;
+    background-color: #006DCC !important;
     background-image: -moz-linear-gradient(center top , #0088CC, #0044CC);
     background-repeat: repeat-x;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
