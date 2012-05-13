@@ -3,7 +3,7 @@
 Plugin Name: Demo Admin Page
 Plugin URI: http://en.bainternet.info
 Description: My Admin Page Class usage demo
-Version: 0.8
+Version: 0.8.1
 Author: Bainternet, Ohad Raz
 Author URI: http://en.bainternet.info
 */
@@ -44,7 +44,7 @@ Author URI: http://en.bainternet.info
     'options_3' => __('Editor Options'),
     'options_4' => __('WordPress Options'),
     'options_5' =>  __('Advanced Options'),
-	'options_6' =>  __('Import Export'),
+  'options_6' =>  __('Import Export'),
     )
   ));
   

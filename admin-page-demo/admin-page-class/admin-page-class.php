@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 0.8
+ * @version 0.8.1
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -598,9 +598,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
           if (isset($field['std']) && $data === '')
               $data = $field['std'];
 
-            if (method_exists(&$this,'show_field_' . $field['type'])){
+            if (method_exists($this,'show_field_' . $field['type'])){
               if ($this->_div_or_row){echo '<td>';}else{echo apply_filters('admin_page_class_field_container_open','<div class="field">',$field);}
-              call_user_func ( array( &$this, 'show_field_' . $field['type'] ), $field, $data );
+              call_user_func ( array( $this, 'show_field_' . $field['type'] ), $field, $data );
               if ($this->_div_or_row){echo '</td>';}else{echo apply_filters('admin_page_class_field_container_close','</div>',$field);}
             }else{
               switch($field['type']) {
