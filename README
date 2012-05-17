@@ -29,6 +29,9 @@ PHP 5.2 and up.
 
 
 == Changelog ==
+= 0.9 =
+Fixed checkbox field default value true bug
+
 = 0.8.1 =
 Fixed issue #2
 

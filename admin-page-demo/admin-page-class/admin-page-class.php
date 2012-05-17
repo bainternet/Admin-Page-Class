@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 0.8.1
+ * @version 0.9
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -1516,7 +1516,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   public function show_field_checkbox( $field, $meta ) {
   
     $this->show_field_begin($field, $meta);
-    echo "<input type='checkbox' class='rw-checkbox' name='{$field['id']}' id='{$field['id']}'" . checked(!empty($meta), true, false) . " />";
+    echo "<input type='checkbox' class='rw-checkbox' name='{$field['id']}' id='{$field['id']}'" . checked($meta, true, false) . " />";
     $this->show_field_end( $field, $meta );
   }
 
@@ -2006,6 +2006,22 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $this->save_field(  $field, $old, htmlentities($new) );
   }
   
+  /*
+   * Save checkbox Field.
+   *
+   * @param string $field 
+   * @param string $old 
+   * @param string $new 
+   * @since 0.9
+   * @access public 
+   */
+  public function save_field_checkbox(  $field, $old, $new ) {
+    if ( $new === '' )
+      $this->save_field(  $field, $old, false );
+    else
+      $this->save_field(  $field, $old, true );
+  }  
+    
   /**
    * Save repeater Fields.
    *
