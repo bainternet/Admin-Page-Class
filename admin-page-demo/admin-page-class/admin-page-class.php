@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 0.9
+ * @version 0.9.1
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -71,7 +71,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       /**
        * Contains all the information needed to build the form structure of the page
        * 
-       * @access private
+       * @access public
        * @var array
        * @since 0.1
        */
@@ -80,20 +80,20 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       /**
        * True if the table is opened, false if it is not opened
        * 
-       * @access private
+       * @access protected
        * @var boolean
        * @since 0.1
        */
-      private $table = false;
+      protected $table = false;
     
     /**
        * True if the tab div is opened, false if it is not opened
        * 
-       * @access private
+       * @access protected
        * @var boolean
        * @since 0.1
        */
-      private $tab_div = false;
+      protected $tab_div = false;
       
     /**
        * Contains the menu_slug for the current TopLeve-Menu
