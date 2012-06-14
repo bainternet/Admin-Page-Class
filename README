@@ -29,6 +29,9 @@ PHP 5.2 and up.
 
 
 == Changelog ==
+= 0.9.2 =
+Fixed media uploader on 3.4 issue #3
+
 = 0.9.1 = 
 Changed private vars to protected.
 

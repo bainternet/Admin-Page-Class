@@ -124,7 +124,7 @@ function update_repeater_fields(){
       };
   
       // note that we pass the field_id and post_id here
-      tb_show('', 'media-upload.php?post_id=' + post_id + '&field_id=' + field_id + '&type=image&TB_iframe=true&apc=apc');
+      tb_show('', 'media-upload.php?post_id=0&field_id=' + field_id + '&type=image&TB_iframe=true&apc=apc');
   
       return false;
     });
@@ -358,7 +358,7 @@ jQuery(document).ready(function($) {
     };
 
     // note that we pass the field_id and post_id here
-    tb_show('', 'media-upload.php?post_id=' + post_id + '&field_id=' + field_id + '&type=image&TB_iframe=true&apc=apc');
+    tb_show('', 'media-upload.php?post_id=0&field_id=' + field_id + '&type=image&TB_iframe=true&apc=apc');
 
     return false;
   });
@@ -443,7 +443,7 @@ jQuery(document).ready(function($) {
     jQuery('.at-upload_image_button').live('click',function(e){
       formfield1 = jQuery(this).prev();
       formfield2 = jQuery(this).prev().prev();      
-      tb_show('', 'media-upload.php?post_id='+ jQuery('#post_ID').val() + '&type=image&apc=apc&TB_iframe=true');
+      tb_show('', 'media-upload.php?post_id=0&type=image&apc=apc&TB_iframe=true');
       //store old send to editor function
       window.restore_send_to_editor = window.send_to_editor;
       //overwrite send to editor function
