@@ -3,8 +3,8 @@ Contributors: bainternet
 Donate link:http://en.bainternet.info/donations
 Tags: admin page, option page, options panel, admin options panel
 Requires at least: 2.9.2
-Tested up to: 3.3.2
-Stable tag: 0.9.1
+Tested up to: 3.4.1
+Stable tag: 0.9.3
 
 The Admin Page Class is used by including it in your plugin files and using its methods to create custom Admin Pages. It is meant to be very simple and straightforward. 
  
@@ -29,13 +29,17 @@ PHP 5.2 and up.
 
 
 == Changelog ==
+= 0.9.3 =
+Added stripslashes for repater text and textarea fields on admin panel.
+
+
 = 0.9.2 =
 Fixed media uploader on 3.4 issue #3
 
-= 0.9.1 =
-changed private vars  to protected.
+= 0.9.1 = 
+Changed private vars to protected.
 
-= 0.9 = 
+= 0.9 =
 Fixed checkbox field default value true bug
 
 = 0.8.1 =
