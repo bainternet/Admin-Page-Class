@@ -10,10 +10,10 @@
 ----------------------------------------------- */
 .form-table td.at-field{ border: 1px solid #DDD; padding: 10px 10px 20px; margin: 0px; font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue", Helvetica, Arial, sans-serif; }
 .at-label { margin: 0 !important; padding: 5px 0 0 0; 
-						font: 20px/31px "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue", Helvetica, Arial, sans-serif; 
-						text-shadow: rgba(255, 255, 255, 1) 0 1px 0; width: auto; }
-.at-radio-label{ padding-right: 10px; }				
-.at-file-upload-label{ clear: both; margin: 5px 0px 5px 1px; }	
+            font: 20px/31px "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue", Helvetica, Arial, sans-serif; 
+            text-shadow: rgba(255, 255, 255, 1) 0 1px 0; width: auto; }
+.at-radio-label{ padding-right: 10px; }        
+.at-file-upload-label{ clear: both; margin: 5px 0px 5px 1px; }  
 
 
 /* =Form Fields
@@ -24,7 +24,7 @@
 .postbox .at-field input.at-color{ border: 0px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-right: 10px; min-width: 100px; }
 .at-field input:focus, 
 .at-field textarea:focus { background: #fffff8; }
-#wpcontent select.at-select { height: 30px !important; padding: 5px; display: block; min-width: 200px; }
+#wpcontent select.at-select { min-height: 30px !important; padding: 5px; display: block; min-width: 200px; }
 .at-field .desc-field { color: #AAA; font-style: italic; margin: 5px 0 0 3px !important; font-size: 13px; }
 .at-field .wp_themeSkin table.mceLayout{ border: 1px solid #DFDFDF; }
 #post-body .at-field .wp_themeSkin .mceStatusbar a.mceResize{ top: -25px; } 
@@ -60,8 +60,8 @@
 /* =panel style
 ----------------------------------------------- */
 .wrap{background: none repeat scroll 0 0 #EAEEF3; border: 1px solid #CCCCCC; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); margin: 17px 0 40px 10px;width: 800px;border-radius: 6px 6px 6px 6px;}
-.header_wrap{border-radius: 6px 6px 6px 6px;background: -moz-linear-gradient(center top , #FEFEFE, #E9EAEE) repeat scroll 0 0 transparent;	padding: 5px 20px 10px;}
-.footer_wrap{border-radius: 6px 6px 6px 6px;background: -moz-linear-gradient(center top , #E9EAEE,#FEFEFE) repeat scroll 0 0 transparent;	padding: 5px 20px 10px;}
+.header_wrap{border-radius: 6px 6px 6px 6px;background: -moz-linear-gradient(center top , #FEFEFE, #E9EAEE) repeat scroll 0 0 transparent;  padding: 5px 20px 10px;}
+.footer_wrap{border-radius: 6px 6px 6px 6px;background: -moz-linear-gradient(center top , #E9EAEE,#FEFEFE) repeat scroll 0 0 transparent;  padding: 5px 20px 10px;}
 .panel_menu{float: left;width: 160px;}
 .clearboth{clear: both;}
 .f_row{border-bottom: 1px solid #F9F9F9;}
