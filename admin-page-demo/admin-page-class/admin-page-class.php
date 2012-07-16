@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 0.9.3
+ * @version 0.9.4
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -521,7 +521,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
      */
     public function edit_insert_to_post_text( $safe_text, $text ) {
       if( is_admin() && 'Insert into Post' == $safe_text){
-        if ('insert_file' == $_GET['apc'] )
+        if (isset($_REQUEST['apc']) && 'insert_file' == $_REQUEST['apc'] )
           return str_replace(__('Insert into Post'), __('Use this File'), $safe_text);
         else
           return str_replace(__('Insert into Post'), __('Use this Image'), $safe_text);
