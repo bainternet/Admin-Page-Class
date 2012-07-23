@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 0.9.4
+ * @version 0.9.5
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -2874,7 +2874,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       <input type="hidden" id="apc_export_nonce" name="apc_export" value="'.wp_create_nonce("apc_export").'" />
     ';
     echo apply_filters('apc_import_export_panel',$ret);
-    $this->show_field_end(array('name' => ''),null);
+    $this->show_field_end(array('name' => '','desc' => ''),null);
   }
 
   /**
