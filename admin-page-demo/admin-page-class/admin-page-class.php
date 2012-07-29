@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 0.9.5
+ * @version 0.9.6
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -547,6 +547,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
        * @since 0.1
        */
       public function DisplayPage() {
+        do_action('admin_page_class_before_page');
         echo '<div class="wrap">';
         echo '<form method="post" action="" enctype="multipart/form-data">
           <div class="header_wrap">
@@ -555,7 +556,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
           echo '<h2>'.apply_filters('admin_page_class_h2',$this->args['page_title']).'</h2>'.((isset($this->args['page_header_text']))? $this->args['page_header_text'] : '').' 
           </div>
           <div style="float:right;margin:32px 0 0 0">
-            <input type="submit" style="margin-left: 25px;" value="Save changes" name="Submit" class="btn-info btn"><br><br>
+            <input type="submit" style="margin-left: 25px;" value="Save changes" name="Submit" class="'.apply_filters('admin_page_class_submit_class', 'btn-info').' btn"><br><br>
           </div>
         <br style="clear:both"><br>
         </div>';
@@ -622,6 +623,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
                 case 'OpenTab':
                   $this->tab_div = true;
                   echo '<div class="setingstab" id="'.$field['id'].'">';
+                  do_action('admin_page_class_after_tab_open');
                   break;
                 case 'title':
                   echo '<h2>'.$field['label'].'</h2>';
@@ -633,10 +635,13 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
                   echo '<p>'.$field['text'].'</p>';
                   break;
                 case 'repeater':
+                  do_action('admin_page_class_before_repeater');
                   $this->output_repeater_fields($field,$data);
+                  do_action('admin_page_class_after_repeater');
                   break;
                 case 'import_export':
                   $this->show_import_export();
+                  do_action('admin_page_class_import_export_tab');
                   break;
               }
             }
@@ -646,13 +651,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       if($this->tab_div) echo '</div>';
       echo '</div><div style="clear:both"></div><div class="footer_wrap">
           <div style="float:right;margin:32px 0 0 0">
-            <input type="submit" style="margin-left: 25px;" name="Submit" class="btn-info btn" value="'.esc_attr(__('Save Changes')).'" />
+            <input type="submit" style="margin-left: 25px;" name="Submit" class="'.apply_filters('admin_page_class_submit_class', 'btn-info').' btn" value="'.esc_attr(__('Save Changes')).'" />
             <br><br>
           </div>
           <br style="clear:both"><br>
         </div>';
       echo '<input type="hidden" name="action" value="save" />';
       echo '</form></div></div>';
+      do_action('admin_page_class_after_page');
       }
 
     /**
@@ -1187,7 +1193,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $class = '';
     if ($field['sortable'])
       $class = " repeater-sortable";
-    echo "<div class='at-repeat".$class."' id='{$field['id']}'>";
+    $jsid = ltrim(strtolower(str_replace(' ','',$field['id'])), '0123456789');
+    echo "<div class='at-repeat".$class."' id='{$jsid}'>";
     
     $c = 0;
 
@@ -1196,31 +1203,35 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       if (count($meta) > 0 && is_array($meta) ){
          foreach ($meta as $me){
            //for labling toggles
-           $mmm =  $me[$field['fields'][0]['id']];
+           $mmm =  isset($me[$field['fields'][0]['id']])? $me[$field['fields'][0]['id']]: '';
            echo '<div class="at-repater-block">'.$mmm.'<br/><table class="repeater-table" style="display: none;">';
            if ($field['inline']){
              echo '<tr class="at-inline" VALIGN="top">';
            }
-        foreach ($field['fields'] as $f){
-          //reset var $id for repeater
-          $id = '';
-          $id = $field['id'].'['.$c.']['.$f['id'].']';
-          $m = $me[$f['id']];
-          $m = ( $m !== '' ) ? $m : $f['std'];
-          if ('image' != $f['type'] && $f['type'] != 'repeater')
-            $m = is_array( $m) ? array_map( 'esc_attr', $m ) : esc_attr( $m);
-          if (in_array($f['type'],array('text','textarea')))
-            $m = stripslashes($m);
-          //set new id for field in array format
-          $f['id'] = $id;
-          if (!$field['inline']){
-            echo '<tr>';
-          } 
-          call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, $m);
-          if (!$field['inline']){
-            echo '</tr>';
-          } 
-        }
+          foreach ($field['fields'] as $f){
+            //reset var $id for repeater
+            $id = '';
+            $id = $field['id'].'['.$c.']['.$f['id'].']';
+            $m = isset($me[$f['id']])? $me[$f['id']]: '';
+            if ( $m !== '' ) {
+              $m = $m;
+            }else{
+              $m = isset($f['std'])? $f['std'] : '';
+            }
+            if ('image' != $f['type'] && $f['type'] != 'repeater')
+              $m = is_array( $m) ? array_map( 'esc_attr', $m ) : esc_attr( $m);
+            if (in_array($f['type'],array('text','textarea')))
+              $m = stripslashes($m);
+            //set new id for field in array format
+            $f['id'] = $id;
+            if (!$field['inline']){
+              echo '<tr>';
+            } 
+            call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, $m);
+            if (!$field['inline']){
+              echo '</tr>';
+            } 
+          }
         if ($field['inline']){  
           echo '</tr>';
         }
@@ -1250,7 +1261,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     }else{
       echo 'http://i.imgur.com/w5Tuc.png';
     }
-    echo '" alt="'.__('Add').'" title="'.__('Add').'" id="add-'.$field['id'].'"><br/></div>';
+    echo '" alt="'.__('Add').'" title="'.__('Add').'" id="add-'.$jsid.'"><br/></div>';
     
     //create all fields once more for js function and catch with object buffer
     ob_start();
@@ -1261,12 +1272,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     foreach ($field['fields'] as $f){
       //reset var $id for repeater
       $id = '';
+
       $id = $field['id'].'[CurrentCounter]['.$f['id'].']';
       $f['id'] = $id; 
       if (!$field['inline']){
         echo '<tr>';
       }
-      call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, '');
+      $m = isset($f['std'])? $f['std'] : '';
+      call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, $m);
       if (!$field['inline']){
         echo '</tr>';
       }  
@@ -1280,20 +1293,21 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     }else{
       echo 'http://i.imgur.com/g8Duj.png';
     }
-    echo '" alt="'.__('Remove').'" title="'.__('Remove').'" id="remove-'.$field['id'].'"></div>';
-    $counter = 'countadd_'.$field['id'];
+    
+    echo '" alt="'.__('Remove').'" title="'.__('Remove').'" id="remove-'.$jsid.'"></div>';
+    $counter = 'countadd_'.$jsid;
     $js_code = ob_get_clean ();    
     $js_code = str_replace("'","\"",$js_code);
     $js_code = str_replace("CurrentCounter","' + ".$counter." + '",$js_code);
     echo '<script>
         jQuery(document).ready(function() {
           var '.$counter.' = '.$c.';
-          jQuery("#add-'.$field['id'].'").live(\'click\', function() {
+          jQuery("#add-'.$jsid.'").live(\'click\', function() {
             '.$counter.' = '.$counter.' + 1;
             jQuery(this).before(\''.$js_code.'\');            
             update_repeater_fields();
           });
-              jQuery("#remove-'.$field['id'].'").live(\'click\', function() {
+              jQuery("#remove-'.$jsid.'").live(\'click\', function() {
                   jQuery(this).parent().remove();
               });
           });
@@ -1484,7 +1498,6 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       }
       echo "</select>";
     $this->show_field_end( $field, $meta );
-    
   }
   
   /**
