@@ -3,7 +3,7 @@
 Plugin Name: Demo Admin Page
 Plugin URI: http://en.bainternet.info
 Description: My Admin Page Class usage demo
-Version: 0.9.5
+Version: 0.9.6
 Author: Bainternet, Ohad Raz
 Author URI: http://en.bainternet.info
 */
