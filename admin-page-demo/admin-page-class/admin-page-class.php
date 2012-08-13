@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 0.9.6
+ * @version 0.9.7
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -269,6 +269,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       add_action( 'wp_ajax_apc_import_'.$this->option_group, array( $this, 'import' ) );
       add_action( 'wp_ajax_apc_export_'.$this->option_group, array( $this, 'export' ) );
 
+      //plupload ajax
+      add_action('wp_ajax_plupload_action', array( $this,"Handle_plupload_action"));
+
     }
 
 
@@ -326,6 +329,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $page = $this->_Slug;
       //help tabs
       add_action('admin_head-'.$page, array($this,'admin_add_help_tab'));
+      //pluploader code
+      add_action('admin_head-'.$page, array($this,'plupload_head_js'));
       //scripts and styles
       add_action( 'admin_print_styles', array( &$this, 'load_scripts_styles' ) );
       //panel script
@@ -337,6 +342,35 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
             $this->saved_flag = true;
           }
 
+    }
+
+    public function plupload_head_js(){
+      if ($this->has_field('plupload')){
+         $plupload_init = array(
+            'runtimes' => 'html5,silverlight,flash,html4',
+            'browse_button' => 'plupload-browse-button', // will be adjusted per uploader
+            'container' => 'plupload-upload-ui', // will be adjusted per uploader
+            'drop_element' => 'drag-drop-area', // will be adjusted per uploader
+            'file_data_name' => 'async-upload', // will be adjusted per uploader
+            'multiple_queues' => true,
+            'max_file_size' => wp_max_upload_size() . 'b',
+            'url' => admin_url('admin-ajax.php'),
+            'flash_swf_url' => includes_url('js/plupload/plupload.flash.swf'),
+            'silverlight_xap_url' => includes_url('js/plupload/plupload.silverlight.xap'),
+            'filters' => array(array('title' => __('Allowed Files'), 'extensions' => '*')),
+            'multipart' => true,
+            'urlstream_upload' => true,
+            'multi_selection' => false, // will be added per uploader
+             // additional post data to send to our ajax hook
+            'multipart_params' => array(
+                '_ajax_nonce' => "", // will be added per uploader
+                'action' => 'plupload_action', // the ajax action name
+                'imgid' => 0 // will be added per uploader
+            )
+          );
+          echo '<script type="text/javascript">'."\n".'var base_plupload_config=';
+          echo json_encode($plupload_init)."\n".'</script>';
+      }
     }
     
     /**
@@ -903,6 +937,23 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     }
   }
 
+  /**
+   * Check Field Plupload
+   *
+   * @since 0.9.7
+   * @access public
+   */
+  public function check_filed_plupload(){
+    if ( $this->has_field( 'plupload' )  && $this->is_edit_page() ) {
+      $plugin_path = $this->SelfPath;
+      wp_enqueue_script('plupload-all');
+      wp_register_script('myplupload', $plugin_path .'/js/plupload/myplupload.js', array('jquery'));
+      wp_enqueue_script('myplupload');
+       wp_register_style('myplupload', $plugin_path .'/js/plupload/myplupload.css');
+      wp_enqueue_style('myplupload');
+    }
+  }
+
 
   /**
    * Check the Field Upload, Add needed Actions
@@ -1094,7 +1145,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function check_field_color() {
     
-    if ( $this->has_field( 'color' ) && $this->is_edit_page() ) {
+    if ( ($this->has_field( 'color' ) || $this->has_field( 'typo' ))  && $this->is_edit_page() ) {
       // Enqueu built-in script and style for color picker.
       wp_enqueue_style( 'farbtastic' );
       wp_enqueue_script( 'farbtastic' );
@@ -1420,6 +1471,41 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     echo "<input type='text' class='at-text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='30' />";
     $this->show_field_end( $field, $meta );
   }
+
+  /**
+   * Show Field Plupload.
+   *
+   * @param string $field 
+   * @param string $meta 
+   * @since 0.9.7
+   * @access public
+   */
+  public function show_field_plupload( $field, $meta) {  
+
+    $this->show_field_begin($field,$meta);
+    $id = $field['id']; // this will be the name of form field. Image url(s) will be submitted in $_POST using this key. So if $id == “img1” then $_POST[“img1”] will have all the image urls
+    $multiple = $field['multiple']; // allow multiple files upload
+    $m1 = ($multiple)? 'plupload-upload-uic-multiple':'';
+    $m2 = ($multiple)? 'plupload-thumbs-multiple':'';
+    $width = $field['width']; // If you want to automatically resize all uploaded images then provide width here (in pixels)
+    $height = $field['height']; // If you want to automatically resize all uploaded images then provide height here (in pixels)
+    $html = '
+        <input type="hidden" name="'.$id.'" id="'. $id.'" value="'.$meta .'" />
+        <div class="plupload-upload-uic hide-if-no-js '.$m1.'" id="'.$id.'plupload-upload-ui">
+          <input id="'.$id.'plupload-browse-button" type="button" value="'.__('Select Files').'" class="button" />
+          <span class="ajaxnonceplu" id="ajaxnonceplu'.wp_create_nonce($id . 'pluploadan').'"></span>';
+          if ($width && $height){
+            $html .= '<span class="plupload-resize"></span><span class="plupload-width" id="plupload-width'.$width.'"></span>
+              <span class="plupload-height" id="plupload-height'.$height.'"></span>';
+          }
+          $html .= '<div class="filelist"></div>
+        </div>
+        <div class="plupload-thumbs '.$m2.'" id="'.$id.'plupload-thumbs">
+        </div>
+        <div class="clear"></div>';
+      echo $html;
+      $this->show_field_end($field,$meta);
+  }
   
   /**
    * Show Field code editor.
@@ -1669,6 +1755,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $html .= "<input class='at-upload_image_button' type='button' rel='".$field['id']."' value='Upload Image' />";
     }
     echo $html;
+    $this->show_field_end( $field, $meta );
   }
 
   /**
@@ -1732,6 +1819,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $html .= "<input type='button' class='at-color-select button' rel='".$field['id']."[color]' value='" . __( 'Select a color' ) . "'/>";
     $html .= "<div style='display:none' class='at-color-picker' rel='".$field['id']."[color]'></div>";
     echo $html;
+    $this->show_field_end( $field, $meta );
   }
   
   /**
@@ -1980,7 +2068,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     unset($this->_saved[$name]);
     if ( $new === '' || $new === array() ) 
       return;
-    if ( isset($field['multiple'] ) && $field['multiple']) {
+    if ( isset($field['multiple'] ) && $field['multiple'] && $field['type'] != 'plupload') {
       foreach ( $new as $add_new ) {
         $temp[] = $add_new;
       }
@@ -2245,6 +2333,31 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       return $new_field;
     }
   }
+
+  /**
+   *  Add Pluploader Field to Page
+   *  @author Ohad Raz
+   *  @since 0.9.7
+   *  @access public
+   *  @param $id string  field id, i.e. the meta key
+   *  @param $args mixed|array
+   *    'name' => // field name/label string optional
+   *    'desc' => // field description, string optional
+   *    'std' => // default value, string optional
+   *    'style' =>   // custom style for field, string optional
+   *    'validate_func' => // validate function, string optional
+   *   @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   */
+  public function addPlupload($id,$args,$repeater=false){
+    $new_field = array('type' => 'plupload','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'PlUpload Field','width' => null, 'height' => null,'multiple' => false);
+    $new_field = array_merge($new_field, $args);
+    if(false === $repeater){
+      $this->_fields[] = $new_field;
+    }else{
+      return $new_field;
+    }
+  }
+
   /**
    *  Add Hidden Field to Page
    *  @author Ohad Raz
@@ -2260,7 +2373,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *   @param $repeater bool  is this a field inside a repeatr? true|false(default) 
    */
   public function addHidden($id,$args,$repeater=false){
-    $new_field = array('type' => 'hidden','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Text Field');
+    $new_field = array('type' => 'hidden','id'=> $id,'std' => '','desc' => '','style' =>'','name' => '');
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -2286,7 +2399,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function addCode($id,$args,$repeater=false){
     $new_field = array('type' => 'code','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Code Editor Field','syntax' => 'php', 'theme' => 'defualt');
-    $new_field = array_merge($new_field, $args);
+    $new_field = array_merge($new_field, (array)$args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
     }else{
@@ -2723,6 +2836,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   public function Finish() {
     $this->add_missed_values();
     $this->check_field_upload();
+    $this->check_filed_plupload();
     $this->check_field_color();
     $this->check_field_date();
     $this->check_field_time();
@@ -3014,6 +3128,19 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
           $this->download_file();
           die();
       }
+  }
+
+  function Handle_plupload_action(){
+    // check ajax noonce
+    $imgid = $_POST["imgid"];
+    check_ajax_referer($imgid . 'pluploadan');
+ 
+    // handle file upload
+    $status = wp_handle_upload($_FILES[$imgid . 'async-upload'], array('test_form' => true, 'action' => 'plupload_action'));
+ 
+    // send the uploaded file url in response
+    echo $status['url'];
+    exit;
   }
 
 } // End Class
