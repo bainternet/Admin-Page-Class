@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 0.9.7
+ * @version 0.9.8
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -601,7 +601,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
           
           $saved = get_option($this->option_group);
           $this->_saved = $saved;
-          $skip = array('title','paragraph','subtitle','TABS','CloseDiv','TABS_Listing','OpenTab','custom','import_export');
+          $skip = array('title','paragraph','subtitle','TABS','CloseDiv','TABS_Listing','OpenTab','custom','import_export','hidden');
 
           foreach($this->_fields as $field) {
             if (!in_array($field['type'],$skip)){
@@ -1532,9 +1532,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function show_field_hidden( $field, $meta) {  
-    //$this->show_field_begin( $field, $meta );
-    echo "<input type='hidden' class='at-text' name='{$field['id']}' id='{$field['id']}' value='{$meta}'/>";
-    //$this->show_field_end( $field, $meta );
+    echo "<input type='hidden' name='{$field['id']}' id='{$field['id']}' value='{$meta}'/>";
   }
   
   /**
@@ -1545,9 +1543,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function show_field_paragraph( $field) {  
-    //$this->show_field_begin( $field, $meta );
     echo '<p>'.$field['value'].'</p>';
-    //$this->show_field_end( $field, $meta );
   }
     
   /**
