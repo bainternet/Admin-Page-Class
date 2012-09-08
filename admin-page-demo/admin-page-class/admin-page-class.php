@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 0.9.8
+ * @version 0.9.9
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -138,7 +138,13 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
      */
     public $saved_flag = false;
     
-    
+    /**
+     * use google fonts for typo filed?
+     * @var boolean
+     * @since 0.9.9
+     * @access public
+     */
+    public $google_fonts = false;
     
       /**
      * Builds a new Page 
@@ -182,6 +188,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $this->saved = false;
       //store args
       $this->args = $args;
+      //google_fonts
+      $this->google_fonts = isset($args['google_fonts'])? true : false;
+
       //sub $menu
       if(!is_array($args['menu'])) {
         if(is_object($args['menu'])) {
@@ -601,7 +610,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
           
           $saved = get_option($this->option_group);
           $this->_saved = $saved;
-          $skip = array('title','paragraph','subtitle','TABS','CloseDiv','TABS_Listing','OpenTab','custom','import_export','hidden');
+          $skip = array('title','paragraph','subtitle','TABS','CloseDiv','TABS_Listing','OpenTab','custom','import_export');
 
           foreach($this->_fields as $field) {
             if (!in_array($field['type'],$skip)){
@@ -882,12 +891,6 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
     // @TODO only load styles and js when needed
       wp_enqueue_script('common');
-      //wp_enqueue_script('jquery-color');
-      //wp_admin_css('thickbox');
-      //wp_print_scripts('post');
-      //wp_print_scripts('media-upload');
-      //wp_print_scripts('jquery');
-      //wp_print_scripts('jquery-ui-core');
       if ($this->has_Field('TABS')){
         wp_print_scripts('jquery-ui-tabs');
       }
@@ -1532,7 +1535,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function show_field_hidden( $field, $meta) {  
-    echo "<input type='hidden' name='{$field['id']}' id='{$field['id']}' value='{$meta}'/>";
+    echo "<input type='hidden' class='at-text' name='{$field['id']}' id='{$field['id']}' value='{$meta}'/>";
   }
   
   /**
@@ -1773,6 +1776,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         'face' => '',
         'style' => '',
         'color' => '#',
+        'weight' => '',
       );
     }
     $html = '<select class="at-typography at-typography-size" name="' . esc_attr( $field['id'] . '[size]' ) . '" id="' . esc_attr( $field['id'] . '_size' ) . '">';
@@ -1798,9 +1802,18 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $html .= $op. '</select>';
 
     // Font Weight
-    $html .= '<select class="at-typography at-typography-style" name="'.$field['id'].'[style]" id="'. $field['id'].'_style">';
+    $html .= '<select class="at-typography at-typography-weight" name="' . esc_attr( $field['id'] .'[weight]' ) . '" id="' . esc_attr( $field['id'] . '_weight' ) . '">';
+    $weights = $this->get_font_weight();
+    $op = '';
+    foreach ( $weights as $key => $label ) {
+      $op .= '<option value="' . esc_attr( $key ) . '">' . esc_html( $label ) . '</option>';
+    }
+    if (isset($meta['weight']))
+      $op = str_replace('value="'.$meta['weight'].'"', 'value="'.$meta['weight'].'" selected="selected"', $op);
+    $html .= $op. '</select>';
 
-    /* Font Style */
+    /* Font Style */    
+    $html .= '<select class="at-typography at-typography-style" name="'.$field['id'].'[style]" id="'. $field['id'].'_style">';
     $styles = $this->get_font_style();
     $op = '';
     foreach ( $styles as $key => $style ) {
@@ -2296,7 +2309,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         'size' => '12px', 
         'color' => '#000000',
         'face' => 'arial', 
-        'style' => 'normal'
+        'style' => 'normal',
+        'weight' => 'normal'
       ),
       'desc' => '',
       'style' =>'',
@@ -2873,23 +2887,13 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * 
    * @return mixed|array
    */
-  public function get_fonts_family($font=null) {
+  public function get_fonts_family($font = null) {
+    $fonts = get_option('WP_EX_FONTS_LIST', $default = false);
+    if ($fonts === false){
       $fonts = array(
-          'open-sans' => array(
-              'name' => 'Open Sans',
-              'import' => '@import url(http://fonts.googleapis.com/css?family=Open+Sans);',
-              'css' => "font-family: 'Open Sans', sans-serif;",
-              'api' => "Open+Sans"
-          ),
-          'lato' => array(
-              'name' => 'Lato',
-              'import' => '@import url(http://fonts.googleapis.com/css?family=Lato);',
-              'css' => "font-family: 'Lato', sans-serif;",
-              'api' => "Lato"
-          ),
           'arial' => array(
-              'name' => 'Arial',
-              'css' => "font-family: Arial, sans-serif;",
+            'name' => 'Arial',
+            'css' => "font-family: Arial, sans-serif;",
           ),
           'verdana' => array(
             'name' => "Verdana, Geneva",
@@ -2920,15 +2924,33 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
             'css' => "font-family: Helvetica*;",
         ),
       );
-      $fonts = apply_filters( 'BF_available_fonts_family', $fonts );
-      if ($font === null){
-        return $fonts;
-      }else{
-        foreach ($fonts as $f => $value) {
-          if ($f == $font)
-            return $value;
+      if ($this->google_fonts){
+        $gs = wp_remote_get( 'http://phat-reaction.com/googlefonts.php?format=php' );
+        if( is_wp_error( $gs ) ) {
+          $fontsSeraliazed = $gs['body'];
+          $fontArray = unserialize( $fontsSeraliazed );
+          foreach ( $fontArray as $f ){
+            $key = strtolower(str_replace(" ", "_", $f['font-name']));
+            $fonts[$key] = array(
+              'name' => $f['font-name'],
+                  'import' => '@import url(http://fonts.googleapis.com/css?family='.$f['css-name'].');',
+                  'google' => $f['css-name'],
+                  'css' => $f['font-family']
+              );
+          }
         }
       }
+      update_option('WP_EX_FONTS_LIST',$fonts);
+    }
+    $fonts = apply_filters( 'WP_EX_available_fonts_family', $fonts );
+    if ($font === null){
+      return $fonts;
+    }else{
+      foreach ($fonts as $f => $value) {
+          if ($f == $font)
+            return $value;
+      }
+    }
   }
 
   /**
@@ -2944,10 +2966,38 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $default = array(
       'normal' => 'Normal',
       'italic' => 'Italic',
-      'bold' => 'Bold',
-      'bold italic' => 'Bold Italic'
+      'oblique ' => 'Oblique'
     );
     return apply_filters( 'BF_available_fonts_style', $default );
+  }
+
+  /**
+   * Get list of font wieght
+   * 
+   * @author Ohad   Raz
+   * @since 0.9.9
+   * @access public
+   * 
+   * @return array
+   */
+  public function get_font_weight(){
+    $default = array(
+      'normal' => 'Normal',
+      'bold' => 'Bold',
+      'bolder' => 'Bolder',
+      'lighter' => 'Lighter',
+      '100' => '100',
+      '200' => '200',
+      '300' => '300',
+      '400' => '400',
+      '500' => '500',
+      '600' => '600',
+      '700' => '700',
+      '800' => '800',
+      '900' => '900',
+      'inherit' => 'Inherit'
+    );
+    return apply_filters( 'BF_available_fonts_weights', $default );
   }
 
   /**
