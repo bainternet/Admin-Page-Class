@@ -3,7 +3,7 @@
 Plugin Name: Demo Admin Page
 Plugin URI: http://en.bainternet.info
 Description: My Admin Page Class usage demo
-Version: 1.0.1
+Version: 1.0.2
 Author: Bainternet, Ohad Raz
 Author URI: http://en.bainternet.info
 */
@@ -18,14 +18,14 @@ Author URI: http://en.bainternet.info
    * configure your admin page
    */
   $config = array(    
-       'menu'=> 'settings',             //sub page to settings page
-      'page_title' => 'Demo Admin Page',       //The name of this page 
-       'capability' => 'edit_themes',         // The capability needed to view the page 
-       'option_group' => 'demo_options',       //the name of the option to create in the database
-       'id' => 'admin_page',            // meta box id, unique per page
-       'fields' => array(),            // list of fields (can be added by field arrays)
-    'local_images' => false,          // Use local or hosted images (meta box images for add/remove)
-    'use_with_theme' => false          //change path if used with theme set to true, false for a plugin or anything else for a custom path(default false).
+		'menu'=> 'settings',             //sub page to settings page
+		'page_title' => 'Demo Admin Page',       //The name of this page 
+		'capability' => 'edit_themes',         // The capability needed to view the page 
+		'option_group' => 'demo_options',       //the name of the option to create in the database
+		'id' => 'admin_page',            // meta box id, unique per page
+		'fields' => array(),            // list of fields (can be added by field arrays)
+		'local_images' => false,          // Use local or hosted images (meta box images for add/remove)
+		'use_with_theme' => false          //change path if used with theme set to true, false for a plugin or anything else for a custom path(default false).
   );  
   
   /**
@@ -88,7 +88,9 @@ Author URI: http://en.bainternet.info
    * Add fields to your admin page 2nd tab
    * 
    * Fancy options:
-   *   image uploader
+   *  typography field
+   *  image uploader
+   *  Pluploader
    *  date picker
    *  time picker
    *  color picker
@@ -99,6 +101,8 @@ Author URI: http://en.bainternet.info
   $options_panel->addTypo('typography_field_id',array('name' => "My Typography",'std' => array('size' => '14px', 'color' => '#000000', 'face' => 'arial', 'style' => 'normal')));
   //Image field
   $options_panel->addImage('image_field_id',array('name'=> 'My Image ','preview_height' => '120px', 'preview_width' => '440px'));
+  //PLupload field
+  $options_panel->addPlupload('plupload_field_ID',array('name' => 'PlUpload Field', 'multiple' => true));
   //date field
   $options_panel->addDate('date_field_id',array('name'=> 'My Date '));
   //Time field
