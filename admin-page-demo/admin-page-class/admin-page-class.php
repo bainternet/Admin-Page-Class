@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.0.3
+ * @version 1.0.4
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -447,26 +447,66 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     public function panel_script(){
       echo '<script>';
       echo '
+        /* cookie stuff */
+        function setCookie(name,value,days) {
+          if (days) {
+            var date = new Date(); 
+            date.setTime(date.getTime()+(days*24*60*60*1000));
+            var expires = "; expires="+date.toGMTString();
+          }
+          else var expires = "";
+          document.cookie = name+"="+value+expires+"; path=/";
+        } 
+         
+        function getCookie(name) {
+          var nameEQ = name + "=";
+          
+          var ca = document.cookie.split(";");
+          for(var i=0;i < ca.length;i++) {
+            var c = ca[i]; 
+            while (c.charAt(0)==\' \') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+          }
+          return null;
+        }
+
+        function eraseCookie(name) {setCookie(name,"",-1);}
+
+        var last_tab = getCookie("apc_last_tab");
+        if (last_tab) {
+           var last_tab = last_tab;
+        }else{
+           var last_tab = null;
+        } 
         jQuery(document).ready(function() {  
+          function show_tab(li){
+            if (!jQuery(li).hasClass("active_tab")){
+              //hide all
+              jQuery(".setingstab").hide("slow");
+              jQuery(".panel_menu li").removeClass("active_tab");
+              tab  = jQuery(li).find("a").attr("href");
+              jQuery(li).addClass("active_tab");
+              jQuery(tab).show("fast");
+              setCookie("apc_last_tab",tab);
+            }
+          }
           //hide all
           jQuery(".setingstab").hide();
       
-          //set first_tab as active
-          jQuery(".panel_menu li:first").addClass("active_tab");
-          var tab  = jQuery(".panel_menu li:first a").attr("href");
-          jQuery(tab).show();
+          //set first_tab as active if no cookie found
+          if (last_tab == null){
+            jQuery(".panel_menu li:first").addClass("active_tab");
+            var tab  = jQuery(".panel_menu li:first a").attr("href");
+            jQuery(tab).show();
+          }else{
+            show_tab(jQuery(\'[href="\' + last_tab + \'"]\').parent());
+          }
       
           //bind click on menu action to show the right tab.
           jQuery(".panel_menu li").bind("click", function(event){
             event.preventDefault()
-            if (!jQuery(this).hasClass("active_tab")){
-              //hide all
-              jQuery(".setingstab").hide("slow");
-              jQuery(".panel_menu li").removeClass("active_tab");
-              tab  = jQuery(this).find("a").attr("href");
-              jQuery(this).addClass("active_tab");
-              jQuery(tab).show("fast");
-            }
+            show_tab(jQuery(this));
+
           });';
       if ($this->has_Field('upload')){
         echo 'function load_images_muploader(){
@@ -518,10 +558,6 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
             
           });
           
-          //delete Image button
-          //jQuery(".apc_delete_image_button").click(function(e){
-            
-          //});
 
 
           //store old send to editor function
@@ -1081,12 +1117,16 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $field_id = isset( $_GET['field_id'] ) ? $_GET['field_id'] : 0;
     $attachment_id = isset( $_GET['attachment_id'] ) ? intval( $_GET['attachment_id'] ) : 0;
     $ok = false;
+    $remove_meta_only = apply_filters("apc_delete_image",true);
     if (strpos($field_id, '[') === false){
       check_admin_referer( "at-delete-mupload_".urldecode($field_id));
       $temp = get_option($this->args['option_group']);
       unset($temp[$field_id]);
       update_option($this->args['option_group'],$temp);
-      $ok =  wp_delete_attachment( $attachment_id );
+      if (!$remove_meta_only)
+        $ok =  wp_delete_attachment( $attachment_id );
+      else
+        $ok = true;
     }else{
       $f = explode('[',urldecode($field_id));
       $f_fiexed = array();
@@ -1099,7 +1139,10 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         unset($saved[$f[1]][$f[2]]);
         $temp[$f[0]] = $saved;
         update_option($this->args['option_group'],$temp);
-        $ok = wp_delete_attachment( $attachment_id );
+        if (!$remove_meta_only)
+          $ok =  wp_delete_attachment( $attachment_id );
+        else
+          $ok = true;
       }
     }
 

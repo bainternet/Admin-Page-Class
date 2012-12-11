@@ -4,7 +4,7 @@ Donate link:http://en.bainternet.info/donations
 Tags: admin page, option page, options panel, admin options panel
 Requires at least: 3
 Tested up to: 3.4.2
-Stable tag: 1.0.2
+Stable tag: 1.0.4
 
 The Admin Page Class is used by including it in your plugin files and using its methods to create custom Admin Pages. It is meant to be very simple and straightforward. 
  
@@ -29,6 +29,14 @@ PHP 5.2 and up.
 
 
 == Changelog ==
+= 1.0.4 = 
+Fixed issue #9 item 4 in the list.
+Added a new filter hook for deleting images `apc_delete_image`.
+Added a "remember last tab" feature.
+
+= 1.0.3 = 
+Fixed issue #10 props to @brasofilo
+
 = 1.0.2 =
 Added missing plupload files and added a plupload field to demo plugin.
 
