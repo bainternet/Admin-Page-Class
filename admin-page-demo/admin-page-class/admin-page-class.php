@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.0.2
+ * @version 1.0.3
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -2504,8 +2504,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *   @return : remember to call: $checkbox_list = get_post_meta(get_the_ID(), 'meta_name', false); 
    *   which means the last param as false to get the values in an array
    */
-  public function addCheckboxList($id,$options,$args,$repeater=false){
-    $new_field = array('type' => 'checkbox_list','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Checkbox List Field');
+  public function addCheckboxList($id,$options=array(),$args,$repeater=false){
+    $new_field = array('type' => 'checkbox_list','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Checkbox List Field','options' => $options);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
