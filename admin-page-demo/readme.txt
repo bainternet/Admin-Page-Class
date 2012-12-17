@@ -3,8 +3,8 @@ Contributors: bainternet
 Donate link:http://en.bainternet.info/donations
 Tags: admin page, option page, options panel, admin options panel
 Requires at least: 3
-Tested up to: 3.4.2
-Stable tag: 1.0.4
+Tested up to: 3.5
+Stable tag: 1.0.6
 
 The Admin Page Class is used by including it in your plugin files and using its methods to create custom Admin Pages. It is meant to be very simple and straightforward. 
  
@@ -29,6 +29,13 @@ PHP 5.2 and up.
 
 
 == Changelog ==
+
+= 1.0.6 = 
+Typo which solves issue #11
+
+= 1.0.5 =
+Fixed jQuery UI Version conflict
+
 = 1.0.4 = 
 Fixed issue #9 item 4 in the list.
 Added a new filter hook for deleting images `apc_delete_image`.
