@@ -4,7 +4,7 @@ Donate link:http://en.bainternet.info/donations
 Tags: admin page, option page, options panel, admin options panel
 Requires at least: 3
 Tested up to: 3.5
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 
 The Admin Page Class is used by including it in your plugin files and using its methods to create custom Admin Pages. It is meant to be very simple and straightforward. 
  
@@ -29,7 +29,8 @@ PHP 5.2 and up.
 
 
 == Changelog ==
-
+= 1.0.7 = 
+Fixed datepicker and time picker issue #11
 = 1.0.6 = 
 Typo which solves issue #11
 
