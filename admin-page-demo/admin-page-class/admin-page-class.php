@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.0.5
+ * @version 1.0.6
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -1210,7 +1210,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     if ( $this->has_field( 'date' ) && $this->is_edit_page() ) {
       $plugin_path = $this->SelfPath;
       // Enqueu JQuery UI, use proper version.
-      wp_enqueue_style( 'jquery-ui-css', $plugin_path.'/jquery-ui.css' );
+      wp_enqueue_style( 'jquery-ui-css', $plugin_path.'/css/jquery-ui.css' );
       wp_enqueue_script( 'jquery-ui');
     }
     
@@ -1227,7 +1227,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     if ( $this->has_field( 'time' ) && $this->is_edit_page() ) {
       $plugin_path = $this->SelfPath;
       
-      wp_enqueue_style( 'jquery-ui-css', $plugin_path.'/jquery-ui.css' );
+      wp_enqueue_style( 'jquery-ui-css', $plugin_path.'/css/jquery-ui.css' );
       wp_enqueue_script( 'jquery-ui');
       wp_enqueue_script( 'at-timepicker', $plugin_path . '/js/time-and-date/jquery-ui-timepicker-addon.js', array( 'jquery' ), null, true );
     
