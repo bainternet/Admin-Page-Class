@@ -1,0 +1,171 @@
+/**
+ * admin pages class
+ *
+ * CSS used for the admin pages class and other form items.
+ *
+ * Copyright 2011 Ohad Raz (admin@bainternet.info)
+ */
+
+/* =Common Rules for all fields.
+----------------------------------------------- */
+.form-table td.at-field{ border: 1px solid #DDD; padding: 10px 10px 20px; margin: 0px; font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue", Helvetica, Arial, sans-serif; }
+.at-label { margin: 0 !important; padding: 5px 0 0 0; 
+            font: 20px/31px "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue", Helvetica, Arial, sans-serif; 
+            text-shadow: rgba(255, 255, 255, 1) 0 1px 0; width: auto; }
+.at-radio-label{ padding-right: 10px; }        
+.at-file-upload-label{ clear: both; margin: 5px 0px 5px 1px; }  
+
+
+/* =Form Fields
+----------------------------------------------- */
+.postbox .at-field input,
+.postbox .at-field textarea { padding: 5px; line-height: 18px; } 
+.postbox .at-field input.at-radio{}
+.postbox .at-field input.at-color{ border: 0px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-right: 10px; min-width: 100px; }
+.at-field input:focus, 
+.at-field textarea:focus { background: #fffff8; }
+#wpcontent select.at-select { min-height: 30px !important; padding: 5px; display: block; min-width: 200px; }
+.at-field .desc-field { color: #AAA; font-style: italic; margin: 5px 0 0 3px !important; font-size: 13px; }
+.at-field .wp_themeSkin table.mceLayout{ border: 1px solid #DFDFDF; }
+#post-body .at-field .wp_themeSkin .mceStatusbar a.mceResize{ top: -25px; } 
+
+/* =Uploaded Images
+----------------------------------------------- */
+.at-images li { margin: 5px 10px 0px 0; float: left; width: 150px; height: 150px; text-align: center; border: 3px solid #ccc; cursor: move; position: relative; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+.at-images img { width: 150px; height: 150px; }
+.at-images a { position: absolute; top: -12px; right: -12px; color: #fff;  font-weight: bold; padding: 5px; }
+.at-images .at-delete-file img{ width: 16px; height: 16px; }
+
+/* =Upload Button
+----------------------------------------------- */
+.at-upload-button { float: left; clear: both; margin-top: 10px; }
+.at-add-file { float: left; clear: both; margin-top: 10px; }
+ 
+/* =Time Picker
+----------------------------------------------- */
+.ui-timepicker-div { font-size: 0.9em; }
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { height: 25px; }
+.ui-timepicker-div dl dd { margin: -25px 0 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+#ui-datepicker-div{display: none;}
+
+/* =Repater Block
+----------------------------------------------- */
+/* inline */
+.at-inline label{font-size: 12px !important;}
+.at-inline textarea{height: 130px;width: 200px;}
+
+/* =panel style
+----------------------------------------------- */
+.wrap{background: none repeat scroll 0 0 #EAEEF3; border: 1px solid #CCCCCC; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); margin: 17px 0 40px 10px;width: 800px;border-radius: 6px 6px 6px 6px;}
+.header_wrap{border-radius: 6px 6px 6px 6px;background: -moz-linear-gradient(center top , #FEFEFE, #E9EAEE) repeat scroll 0 0 transparent;  padding: 5px 20px 10px;}
+.footer_wrap{border-radius: 6px 6px 6px 6px;background: -moz-linear-gradient(center top , #E9EAEE,#FEFEFE) repeat scroll 0 0 transparent;  padding: 5px 20px 10px;}
+.panel_menu{float: left;width: 160px;}
+.clearboth{clear: both;}
+.f_row{border-bottom: 1px solid #F9F9F9;}
+.sections{background: none repeat scroll 0 0 #FFFFFF;float: left;margin-top: 1px;min-height: 520px;padding-bottom: 10px;width: 639px;}
+.field{padding: 10px;border-bottom: 1px solid #E9EAEE;}
+.sections textarea{background: -moz-linear-gradient(center top , #F9F9F9, #FFFFFF) repeat scroll 0 0 transparent;color: #333333;font-size: 12px;height: 175px;line-height: 1.5em;padding: 4px;    width: 390px;}
+.sections label{clear: both;display: block;font-size: 12px;font-weight: 700;margin: 0 0 10px;width: 100%;}
+.setingstab{min-height: 500px;}
+.sections input[type="text"], .sections input[type="password"], .sections input[type="file"], .sections select {background: -moz-linear-gradient(center top , #F9F9F9, #FFFFFF) repeat scroll 0 0 transparent;color: #333333;font-size: 12px;line-height: 1em;padding: 4px;}
+.nav_tab_link{ border-color: #DFDFDF #DFDFDF #FFFFFF;border-radius: 3px 3px 0 0;border-style: solid;border-width: 1px 1px 0;color: #AAAAAA;display: inline-block;font-size: 12px;line-height: 16px; margin: 0 6px -1px 0; padding: 4px 14px 6px;text-decoration: none;text-shadow: 0 1px 0 #FFFFFF;}
+.nav_tab_link{border: 0 none;border-radius: 0 0 0 0;clear: both;color: #444444;display: block;padding: 10px 20px;width: 100%;}
+.nav_tab_link:hover{background: none repeat scroll 0 0 #FFFFFF; border-right: 1px solid #FFFFFF;box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);color: #666666;font-weight: bold;}
+.description{color: #999999;display: block;float: right;font-size: 11px;margin-top: -2px;width: 200px;}
+.active_tab{background: none repeat scroll 0 0 #FFFFFF; border-right: 1px solid #FFFFFF;box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);color: #666666;font-weight: bold;}
+.editorcontainer { -webkit-border-radius:6px; border:1px solid #DEDEDE;}
+.btn {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #FAFAFA;
+    background-image: -moz-linear-gradient(center top , #FFFFFF, #FFFFFF 25%, #E6E6E6);
+    background-repeat: no-repeat;
+    border-color: #CCCCCC #CCCCCC #BBBBBB;
+    border-radius: 4px 4px 4px 4px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 13px;
+    line-height: 18px;
+    padding: 4px 10px;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+}
+
+.btn , .btn-info, .btn-info:hover , .btn-primary, .btn-primary:hover , .btn-warning, .btn-warning:hover{
+    color: #FFFFFF !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+.btn-info {
+    background-color: #49AFCD !important;
+    background-image: -moz-linear-gradient(center top , #5BC0DE, #2F96B4);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: #FFFFFF !important;
+}
+.btn-primary {
+    background-color: #006DCC !important;
+    background-image: -moz-linear-gradient(center top , #0088CC, #0044CC);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: #FFFFFF !important;
+}
+.btn-warning {
+    background-color: #FAA732;
+    background-image: -moz-linear-gradient(center top , #FBB450, #F89406);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: #FFFFFF !important;
+}
+
+/* alerts */
+
+.alert {
+    background-color: #FCF8E3;
+    border: 1px solid #FBEED5;
+    border-radius: 4px 4px 4px 4px;
+    margin-bottom: 18px;
+    padding: 8px 35px 8px 14px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.alert, .alert-heading {
+    color: #C09853;
+}
+.alert-success {
+    background-color: #DFF0D8;
+    border-color: #D6E9C6;
+}
+
+.alert-success, .alert-success .alert-heading {
+    color: #468847;
+}
+.widget-sort{
+    background-color: #F5F5F5;
+    background-image: -moz-linear-gradient(center top , #F9F9F9, #F5F5F5);
+    border: 1px solid #DFDFDF;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 1px 0 #FFFFFF inset;
+    padding: 4px;
+    text-align: center;
+    width: 65%;
+}
+.ui-state-highlight{
+    background-color: #FFFFE0;
+    border-color: #E6DB55;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 1px 0 #FFFFFF inset;
+    padding: 14px;
+    width: 60%;
+}
+.ui-sortable li{cursor: move;}
+.ui-sortable .at-repater-block{cursor: move;}
