@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Admin Page Class\n"
 "POT-Creation-Date: 2012-12-19 17:42+0200\n"
-"PO-Revision-Date: 2012-12-19 17:45+0200\n"
+"PO-Revision-Date: 2012-12-19 18:00+0200\n"
 "Last-Translator: BaInternet <admin@bainternet.info>\n"
 "Language-Team: WP-EX\n"
 "MIME-Version: 1.0\n"
@@ -17,133 +17,133 @@ msgstr ""
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:369
 msgid "Allowed Files"
-msgstr ""
+msgstr "קבצים אפשריים"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:604
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:606
 msgid "Insert into Post"
-msgstr ""
+msgstr "הכנס לפוטס"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:604
 msgid "Use this File"
-msgstr ""
+msgstr "השתמש בקובץ זה"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:606
 msgid "Use this Image"
-msgstr ""
+msgstr "השתמש בתמונה זאת"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:645
 msgid "Settings saved."
-msgstr ""
+msgstr "הגדרות נשמרו."
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:733
 msgid "Save Changes"
-msgstr ""
+msgstr "שמור שינויים"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1077
 msgid "Delete this image"
-msgstr ""
+msgstr "מחק תמונה זאת"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1077
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1755
 msgid "Delete"
-msgstr ""
+msgstr "מחק"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1153
 msgid "Cannot delete file. Something's wrong."
-msgstr ""
+msgstr "לא ניתן למחוק, שגיאה!"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1351
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1396
 msgid "Remove"
-msgstr ""
+msgstr "הסר"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1363
 msgid "Add"
-msgstr ""
+msgstr "הוסף"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1543
 msgid "Select Files"
-msgstr ""
+msgstr "בחר קבצים"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1751
 msgid "Uploaded files"
-msgstr ""
+msgstr "רבצים שהועלו"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1762
 msgid "Upload new files"
-msgstr ""
+msgstr "העלה קבצים חדשים"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1768
 msgid "Add more files"
-msgstr ""
+msgstr "הוסף קבצים"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1873
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1894
 msgid "Select a color"
-msgstr ""
+msgstr "בחר צבע"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3075
 msgid "Export"
-msgstr ""
+msgstr "יצא"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3076
 msgid ""
 "To export saved settings click the Export button bellow and you will get the "
 "export Code in the box bellow, which you can later use to import."
-msgstr ""
+msgstr "ליצא הגדרות הקלק על כפתור יצא"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3078
 msgid "Export Code"
-msgstr ""
+msgstr "קוד יצוא"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3080
 msgid "Get Export"
-msgstr ""
+msgstr "קוד יצאו"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3085
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3090
 msgid "Import"
-msgstr ""
+msgstr "יבא"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3086
 msgid ""
 "To Import saved settings paste the Export output in to the Import Code box "
 "bellow and click Import."
-msgstr ""
+msgstr "ליבא הגדרות הדבק את קוד היצוא בתיבה מתחת ולחץ על יבא."
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3088
 msgid "Import Code"
-msgstr ""
+msgstr "קוד יבוא"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3115
 msgid "error in ajax request! (1)"
-msgstr ""
+msgstr "שגיאה (1)"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3125
 msgid "error in ajax request! (2)"
-msgstr ""
+msgstr "שגיאה (2)"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3146
 msgid "error in ajax request! (3)"
-msgstr ""
+msgstr "שגיאה (3)"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3158
 msgid "Setting imported, make sure you "
-msgstr ""
+msgstr "הגדרות יובאו בהצלחה , אנא ודא"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3158
 msgid "Refresh this page"
-msgstr ""
+msgstr "לרענן עמוד זה"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3160
 msgid "Could not import settings! (4)"
-msgstr ""
+msgstr "שגיאה (4)"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3181
 msgid "You do not have sufficient permissions to edit templates for this site."
-msgstr ""
+msgstr "אין לך הרשאות לבצע פעולה זאת"
 
 #: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3184
 msgid "Error Downloading file."
-msgstr ""
+msgstr "שגיאה בהורדת הקובץ."
