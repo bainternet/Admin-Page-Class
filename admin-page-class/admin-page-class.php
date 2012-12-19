@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.0.7
+ * @version 1.0.8
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -1695,7 +1695,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       if ($checked){
         $m = (isset($meta[$f['id']])) ? $meta[$f['id']]: '';
       }
-      $m = ( $m !== '' ) ? $m : $f['std'];
+      $m = ( $m !== '' ) ? $m : (isset($f['std'])? $f['std'] : '');
       if ('image' != $f['type'] && $f['type'] != 'repeater')
         $m = is_array( $m) ? array_map( 'esc_attr', $m ) : esc_attr( $m);
         //set new id for field in array format
