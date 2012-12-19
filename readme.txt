@@ -31,6 +31,7 @@ PHP 5.2 and up.
 == Changelog ==
 = 1.0.9 =
 Added Text Domain and localization to all strings.
+fixed get_locale issue.
 
 = 1.0.8 = 
 Fixed issue #13 props to @cyberbitegroup
