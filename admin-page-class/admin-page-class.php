@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.0.8
+ * @version 1.0.9
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -179,6 +179,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       //add hooks for export download
       add_action('template_redirect',array($this, 'admin_redirect_download_files'));
       add_filter('init', array($this,'add_query_var_vars'));
+      //load translation
+      add_filter('init', array($this,'load_textdomain'));
+      
       // If we are not in admin area exit.
       if ( ! is_admin() )
         return;
@@ -366,7 +369,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
             'url' => admin_url('admin-ajax.php'),
             'flash_swf_url' => includes_url('js/plupload/plupload.flash.swf'),
             'silverlight_xap_url' => includes_url('js/plupload/plupload.silverlight.xap'),
-            'filters' => array(array('title' => __('Allowed Files'), 'extensions' => '*')),
+            'filters' => array(array('title' => __('Allowed Files','apc'), 'extensions' => '*')),
             'multipart' => true,
             'urlstream_upload' => true,
             'multi_selection' => false, // will be added per uploader
@@ -601,9 +604,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     public function edit_insert_to_post_text( $safe_text, $text ) {
       if( is_admin() && 'Insert into Post' == $safe_text){
         if (isset($_REQUEST['apc']) && 'insert_file' == $_REQUEST['apc'] )
-          return str_replace(__('Insert into Post'), __('Use this File'), $safe_text);
+          return str_replace(__('Insert into Post'), __('Use this File','apc'), $safe_text);
         else
-          return str_replace(__('Insert into Post'), __('Use this Image'), $safe_text);
+          return str_replace(__('Insert into Post'), __('Use this Image','apc'), $safe_text);
       }
       return $text;
     }
@@ -642,7 +645,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         wp_nonce_field( basename(__FILE__), 'BF_Admin_Page_Class_nonce' );
 
         if ($this->saved_flag)
-          echo '<div class="alert alert-success"><p><strong>'.__('Settings saved.').'</strong></p></div>';
+          echo '<div class="alert alert-success"><p><strong>'.__('Settings saved.','apc').'</strong></p></div>';
           
           $saved = get_option($this->option_group);
           $this->_saved = $saved;
@@ -730,7 +733,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       if($this->tab_div) echo '</div>';
       echo '</div><div style="clear:both"></div><div class="footer_wrap">
           <div style="float:right;margin:32px 0 0 0">
-            <input type="submit" style="margin-left: 25px;" name="Submit" class="'.apply_filters('admin_page_class_submit_class', 'btn-info').' btn" value="'.esc_attr(__('Save Changes')).'" />
+            <input type="submit" style="margin-left: 25px;" name="Submit" class="'.apply_filters('admin_page_class_submit_class', 'btn-info').' btn" value="'.esc_attr(__('Save Changes','apc')).'" />
             <br><br>
           </div>
           <br style="clear:both"><br>
@@ -1074,7 +1077,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $li    = "<li id='item_{$attachment_id}'>";
       $li   .= "<img src='{$attachment['url']}' alt='image_{$attachment_id}' />";
       //$li   .= "<a title='" . __( 'Delete this image' ) . "' class='at-delete-file' href='#' rel='{$nonce}|{$post_id}|{$id}|{$attachment_id}'>" . __( 'Delete' ) . "</a>";
-      $li   .= "<a title='" . __( 'Delete this image' ) . "' class='at-delete-file' href='#' rel='{$nonce}|{$post_id}|{$id}|{$attachment_id}'><img src='" . $this->SelfPath. "/images/delete-16.png' alt='" . __( 'Delete' ) . "' /></a>";
+      $li   .= "<a title='" . __( 'Delete this image','apc' ) . "' class='at-delete-file' href='#' rel='{$nonce}|{$post_id}|{$id}|{$attachment_id}'><img src='" . $this->SelfPath. "/images/delete-16.png' alt='" . __( 'Delete' ,'apc') . "' /></a>";
       $li   .= "<input type='hidden' name='{$id}[]' value='{$attachment_id}' />";
       $li   .= "</li>";
       $html .= $li;
@@ -1150,7 +1153,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       echo json_encode( array('status' => 'success' ));
       die();
     }else{
-      echo json_encode(array('message' => __( 'Cannot delete file. Something\'s wrong.')));
+      echo json_encode(array('message' => __( 'Cannot delete file. Something\'s wrong.','apc')));
       die();
     }
   }
@@ -1348,7 +1351,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         }else{
           echo 'http://i.imgur.com/g8Duj.png';
         }
-        echo '" alt="'.__('Remove').'" title="'.__('Remove').'" id="remove-'.$field['id'].'"></div>';
+        echo '" alt="'.__('Remove','apc').'" title="'.__('Remove','apc').'" id="remove-'.$field['id'].'"></div>';
         $c = $c + 1;
         
         }
@@ -1360,7 +1363,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     }else{
       echo 'http://i.imgur.com/w5Tuc.png';
     }
-    echo '" alt="'.__('Add').'" title="'.__('Add').'" id="add-'.$jsid.'"><br/></div>';
+    echo '" alt="'.__('Add','apc').'" title="'.__('Add','apc').'" id="add-'.$jsid.'"><br/></div>';
     
     //create all fields once more for js function and catch with object buffer
     ob_start();
@@ -1393,7 +1396,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       echo 'http://i.imgur.com/g8Duj.png';
     }
     
-    echo '" alt="'.__('Remove').'" title="'.__('Remove').'" id="remove-'.$jsid.'"></div>';
+    echo '" alt="'.__('Remove','apc').'" title="'.__('Remove','apc').'" id="remove-'.$jsid.'"></div>';
     $counter = 'countadd_'.$jsid;
     $js_code = ob_get_clean ();    
     $js_code = str_replace("'","\"",$js_code);
@@ -1540,7 +1543,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $html = '
         <input type="hidden" name="'.$id.'" id="'. $id.'" value="'.$meta .'" />
         <div class="plupload-upload-uic hide-if-no-js '.$m1.'" id="'.$id.'plupload-upload-ui">
-          <input id="'.$id.'plupload-browse-button" type="button" value="'.__('Select Files').'" class="button" />
+          <input id="'.$id.'plupload-browse-button" type="button" value="'.__('Select Files','apc').'" class="button" />
           <span class="ajaxnonceplu" id="ajaxnonceplu'.wp_create_nonce($id . 'pluploadan').'"></span>';
           if ($width && $height){
             $html .= '<span class="plupload-resize"></span><span class="plupload-width" id="plupload-width'.$width.'"></span>
@@ -1748,24 +1751,24 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
       if ( ! empty( $meta ) ) {
         $nonce = wp_create_nonce( 'at_ajax_delete' );
-        echo '<div style="margin-bottom: 10px"><strong>' . __('Uploaded files') . '</strong></div>';
+        echo '<div style="margin-bottom: 10px"><strong>' . __('Uploaded files','apc') . '</strong></div>';
         echo '<ol class="at-upload">';
         foreach ( $meta as $att ) {
           // if (wp_attachment_is_image($att)) continue; // what's image uploader for?
-          echo "<li>" . wp_get_attachment_link( $att, '' , false, false, ' ' ) . " (<a class='at-delete-file' href='#' rel='{$nonce}|{$post->ID}|{$field['id']}|{$att}'>" . __( 'Delete' ) . "</a>)</li>";
+          echo "<li>" . wp_get_attachment_link( $att, '' , false, false, ' ' ) . " (<a class='at-delete-file' href='#' rel='{$nonce}|{$post->ID}|{$field['id']}|{$att}'>" . __( 'Delete' ,'apc') . "</a>)</li>";
         }
         echo '</ol>';
       }
 
       // show form upload
       echo "<div class='at-file-upload-label'>";
-        echo "<strong>" . __( 'Upload new files' ) . "</strong>";
+        echo "<strong>" . __( 'Upload new files' ,'apc') . "</strong>";
       echo "</div>";
       echo "<div class='new-files'>";
         echo "<div class='file-input'>";
           echo "<input type='file' name='{$field['id']}[]' />";
         echo "</div><!-- End .file-input -->";
-        echo "<a class='at-add-file button' href='#'>" . __( 'Add more files' ) . "</a>";
+        echo "<a class='at-add-file button' href='#'>" . __( 'Add more files','apc' ) . "</a>";
       echo "</div><!-- End .new-files -->";
     echo "</td>";
   }
@@ -1870,7 +1873,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
     // Font Color
     $html .= "<input class='at-color' type='text' name='".$field['id']."[color]' id='".$field['id']."[color]' value='".$meta['color'] ."' size='6' />";
-    $html .= "<input type='button' class='at-color-select button' rel='".$field['id']."[color]' value='" . __( 'Select a color' ) . "'/>";
+    $html .= "<input type='button' class='at-color-select button' rel='".$field['id']."[color]' value='" . __( 'Select a color' ,'apc') . "'/>";
     $html .= "<div style='display:none' class='at-color-picker' rel='".$field['id']."[color]'></div>";
     echo $html;
     $this->show_field_end( $field, $meta );
@@ -1891,7 +1894,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       
     $this->show_field_begin( $field, $meta );
       echo "<input class='at-color' type='text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='8' />";
-      echo "<input type='button' class='at-color-select button' rel='{$field['id']}' value='" . __( 'Select a color' ) . "'/>";
+      echo "<input type='button' class='at-color-select button' rel='{$field['id']}' value='" . __( 'Select a color' ,'apc') . "'/>";
       echo "<div style='display:none' class='at-color-picker' rel='{$field['id']}'></div>";
     $this->show_field_end($field, $meta);
     
@@ -3072,22 +3075,22 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $this->show_field_begin(array('name' => ''),null);
     $ret ='
     <div class="apc_ie_panel field">
-      <div style="padding 10px;" class="apc_export"><h3>'.__('Export').'</h3>
-        <p>'. __('To export saved settings click the Export button bellow and you will get the export Code in the box bellow, which you can later use to import.').'</p>
+      <div style="padding 10px;" class="apc_export"><h3>'.__('Export','apc').'</h3>
+        <p>'. __('To export saved settings click the Export button bellow and you will get the export Code in the box bellow, which you can later use to import.','apc').'</p>
         <div class="export_code">
-          <label for="export_code">'. __('Export Code').'</label><br/>
+          <label for="export_code">'. __('Export Code','apc').'</label><br/>
           <textarea id="export_code"></textarea>        
-          <input class="button-primary" type="button" value="'. __('Get Export').'" id="apc_export_b" />'.$this->create_export_download_link().'
+          <input class="button-primary" type="button" value="'. __('Get Export','apc').'" id="apc_export_b" />'.$this->create_export_download_link().'
           <div class="export_status" style="display: none;"><img src="http://i.imgur.com/l4pWs.gif" alt="loading..."/></div>
           <div class="export_results alert" style="display: none;"></div>
         </div>
       </div>
-      <div style="padding 10px;" class="apc_import"><h3>'.__('Import').'</h3>
-        <p>'. __('To Import saved settings paste the Export output in to the Import Code box bellow and click Import.').'</p>
+      <div style="padding 10px;" class="apc_import"><h3>'.__('Import','apc').'</h3>
+        <p>'. __('To Import saved settings paste the Export output in to the Import Code box bellow and click Import.','apc').'</p>
         <div class="import_code">
-          <label for="import_code">'. __('Import Code').'</label><br/>
+          <label for="import_code">'. __('Import Code','apc').'</label><br/>
           <textarea id="import_code"></textarea>
-                  <input class="button-primary" type="button"  value="'. __('Import').'" id="apc_import_b" />
+                  <input class="button-primary" type="button"  value="'. __('Import','apc').'" id="apc_import_b" />
           <div class="import_status" style="display: none;"><img src="http://i.imgur.com/l4pWs.gif" alt="loading..."/></div>
           <div class="import_results alert" style="display: none;"></div>
         </div>
@@ -3155,7 +3158,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $import_code = unserialize($import_code);
     if (is_array($import_code)){
       update_option($this->option_group,$import_code);
-      $re['success']= __('Setting imported, make sure you '). '<input class="button-primary" type="button"  value="'. __('Refresh this page').'" id="apc_refresh_page_b" />';
+      $re['success']= __('Setting imported, make sure you ','apc'). '<input class="button-primary" type="button"  value="'. __('Refresh this page','apc').'" id="apc_refresh_page_b" />';
     }else{
       $re['err'] = __('Could not import settings! (4)');
     }
@@ -3178,10 +3181,10 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     header('HTTP/1.1 200 OK');
 
     if ( !current_user_can('edit_themes') )
-        wp_die('<p>'.__('You do not have sufficient permissions to edit templates for this site.').'</p>');
+        wp_die('<p>'.__('You do not have sufficient permissions to edit templates for this site.','apc').'</p>');
     
     if ($content === null || $file_name === null){
-        wp_die('<p>'.__('Error Downloading file.').'</p>');     
+        wp_die('<p>'.__('Error Downloading file.','apc').'</p>');     
     }
     $fsize = strlen($content);
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
@@ -3237,6 +3240,17 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     // send the uploaded file url in response
     echo $status['url'];
     exit;
+  }
+
+  /**
+   * load_textdomain 
+   * @author Ohad Raz
+   * @since 1.0.9
+   * @return void
+   */
+  private function load_textdomain(){
+    //In themes/plugins/mu-plugins directory
+    load_textdomain( 'apc', $this->SelfPath . '/lang/' . $get_locale() .'mo' );
   }
 
 } // End Class
