@@ -3248,9 +3248,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @since 1.0.9
    * @return void
    */
-  private function load_textdomain(){
+  public function load_textdomain(){
     //In themes/plugins/mu-plugins directory
-    load_textdomain( 'apc', $this->SelfPath . '/lang/' . $get_locale() .'mo' );
+    load_textdomain( 'apc', $this->SelfPath . '/lang/' . get_locale() .'mo' );
   }
 
 } // End Class
