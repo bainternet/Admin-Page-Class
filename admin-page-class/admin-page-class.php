@@ -179,12 +179,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       //add hooks for export download
       add_action('template_redirect',array($this, 'admin_redirect_download_files'));
       add_filter('init', array($this,'add_query_var_vars'));
-      //load translation
-      add_filter('init', array($this,'load_textdomain'));
+      
       
       // If we are not in admin area exit.
       if ( ! is_admin() )
         return;
+
+      //load translation
+      add_filter('init', array($this,'load_textdomain'));
 
       //set defualts
       $this->_div_or_row = true;
@@ -263,8 +265,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         }else{
           $this->SelfPath = $args['use_with_theme'];
         }
-      }
-      else{
+      }else{
         $this->SelfPath = plugins_url( 'admin-page-class', plugin_basename( dirname( __FILE__ ) ) );
       }
 
