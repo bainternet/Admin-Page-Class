@@ -44,8 +44,19 @@ function update_repeater_fields(){
      *
      * @since 1.0
      */
-    /*
     
+    $('.at-color').live('focus', function() {
+      load_colorPicker($(this).next());
+    });
+    $('.at-color').live('focusout', function() {
+      hide_colorPicker($(this).next());
+    });
+    $('.at-color-select').live('click', function(){
+      if ($(this).next('div').css('display') == 'none')
+        load_colorPicker($(this));
+      else
+        hide_colorPicker($(this));
+    });
       
     /**
      * Add Files.
@@ -152,6 +163,7 @@ jQuery(document).ready(function($) {
       case 'php':
         lang = 'application/x-httpd-php';
         break;
+      case 'less':
       case 'css':
         lang = 'text/css';
         break;
@@ -281,13 +293,11 @@ jQuery(document).ready(function($) {
    * which now works both when button is clicked and when field gains focus.
    */
   $('.at-color').live('focus', function() {
-    var $this = $(this);
-    $(this).siblings('.at-color-picker').farbtastic($this).toggle();
+    load_colorPicker($(this).next());
   });
 
   $('.at-color').live('focusout', function() {
-    var $this = $(this);
-    $(this).siblings('.at-color-picker').farbtastic($this).toggle();
+    hide_colorPicker($(this).next());
   });
 
   /**
@@ -296,12 +306,28 @@ jQuery(document).ready(function($) {
    * @since 1.0
    */
   $('.at-color-select').live('click', function(){
-    var $this = $(this);
-    var id = $this.attr('rel');
-    $(this).siblings('.at-color-picker').farbtastic("#" + id).toggle();
-    $(this).prev().css('background',$(this).prev().val());
-    return false;
+    if ($(this).next('div').css('display') == 'none')
+      load_colorPicker($(this));
+    else
+      hide_colorPicker($(this));
   });
+
+  function load_colorPicker(ele){
+    colorPicker = $(ele).next('div');
+    input = $(ele).prev('input');
+
+    $.farbtastic($(colorPicker), function(a) { $(input).val(a).css('background', a); });
+
+    colorPicker.show();
+    e.preventDefault();
+
+    //$(document).mousedown( function() { $(colorPicker).hide(); });
+  }
+
+  function hide_colorPicker(ele){
+    colorPicker = $(ele).next('div');
+    $(colorPicker).hide();
+  }
   
   /**
    * Add Files.
@@ -367,12 +393,12 @@ jQuery(document).ready(function($) {
    * initiate repeater sortable option
    * since 0.4
    */
-  jQuery(".repeater-sortable").sortable();
+  $(".repeater-sortable").sortable();
   /**
    * initiate sortable fields option
    * since 0.4
    */
-  jQuery(".at-sortable").sortable({
+  $(".at-sortable").sortable({
       placeholder: "ui-state-highlight"
   });
 
