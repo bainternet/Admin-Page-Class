@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.0.9
+ * @version 1.1.0
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -1307,6 +1307,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
          foreach ($meta as $me){
            //for labling toggles
            $mmm =  isset($me[$field['fields'][0]['id']])? $me[$field['fields'][0]['id']]: "";
+           $mmm = (in_array($field['fields'][0]['type'],array('image','file'))? '' : $mmm);
            echo '<div class="at-repater-block">'.$mmm.'<br/><table class="repeater-table" style="display: none;">';
            if ($field['inline']){
              echo '<tr class="at-inline" VALIGN="top">';
