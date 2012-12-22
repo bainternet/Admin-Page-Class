@@ -57,6 +57,12 @@ function update_repeater_fields(){
       else
         hide_colorPicker($(this));
     });
+    //issue #15
+    $('.at-color').each(function(){
+      var colo = $(this).val();
+      if (colo.length == 7)
+        $(this).css('background',colo);
+    });
       
     /**
      * Add Files.
@@ -319,7 +325,7 @@ jQuery(document).ready(function($) {
     $.farbtastic($(colorPicker), function(a) { $(input).val(a).css('background', a); });
 
     colorPicker.show();
-    e.preventDefault();
+    //e.preventDefault();
 
     //$(document).mousedown( function() { $(colorPicker).hide(); });
   }
@@ -328,7 +334,13 @@ jQuery(document).ready(function($) {
     colorPicker = $(ele).next('div');
     $(colorPicker).hide();
   }
-  
+  //issue #15
+  $('.at-color').each(function(){
+    var colo = $(this).val();
+    if (colo.length == 7)
+      $(this).css('background',colo);
+  });
+
   /**
    * Add Files.
    *
