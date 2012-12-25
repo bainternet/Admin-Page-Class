@@ -1140,14 +1140,26 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $temp = get_option($this->args['option_group']);
 
       /**
+       * repeater block
        * $f[0] = repeater id
        * $f[1] = repeater item number
        * $f[2] = actuall in repeater item image field id
+       *
+       * conditional block
+       * $f[0] = conditional id
+       * $f[1] = actuall in conditional block image field id 
        */
       $saved = $temp[$f[0]]; 
-
-      if (isset($saved[$f[1]][$f[2]])){
+      if (isset($f[2]) && isset($saved[$f[1]][$f[2]])){ //delete from repater block
         unset($saved[$f[1]][$f[2]]);
+        $temp[$f[0]] = $saved;
+        update_option($this->args['option_group'],$temp);
+        if (!$remove_meta_only)
+          $ok =  wp_delete_attachment( $attachment_id );
+        else
+          $ok = true;
+      }elseif(isset($saved[$f[1]]['src'])){ //delete from conditional block
+        unset($saved[$f[1]]);
         $temp[$f[0]] = $saved;
         update_option($this->args['option_group'],$temp);
         if (!$remove_meta_only)
