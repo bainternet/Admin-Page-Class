@@ -169,3 +169,6 @@
 }
 .ui-sortable li{cursor: move;}
 .ui-sortable .at-repater-block{cursor: move;}
+
+/* Typo field iris color picker */
+.wp-picker-container{height: 20px;}
