@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.1.1
+ * @version 1.1.2
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -1140,17 +1140,17 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $temp = get_option($this->args['option_group']);
 
       /**
-       * repeater block
+       * repeater  block
        * $f[0] = repeater id
        * $f[1] = repeater item number
        * $f[2] = actuall in repeater item image field id
        *
-       * conditional block
-       * $f[0] = conditional id
+       * conditional  block
+       * $f[0] = conditional  id
        * $f[1] = actuall in conditional block image field id 
        */
       $saved = $temp[$f[0]]; 
-      if (isset($f[2]) && isset($saved[$f[1]][$f[2]])){ //delete from repater block
+      if (isset($f[2]) && isset($saved[$f[1]][$f[2]])){ //delete from repeater  block
         unset($saved[$f[1]][$f[2]]);
         $temp[$f[0]] = $saved;
         update_option($this->args['option_group'],$temp);
@@ -3285,7 +3285,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function load_textdomain(){
     //In themes/plugins/mu-plugins directory
-    load_textdomain( 'apc', $this->SelfPath . '/lang/' . get_locale() .'mo' );
+    load_textdomain( 'apc', $this->SelfPath . '/lang/' . get_locale() .'.mo' );
   }
 
 } // End Class

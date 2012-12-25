@@ -4,7 +4,7 @@ Donate link:http://en.bainternet.info/donations
 Tags: admin page, option page, options panel, admin options panel
 Requires at least: 3
 Tested up to: 3.5
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 
 The Admin Page Class is used by including it in your plugin files and using its methods to create custom Admin Pages. It is meant to be very simple and straightforward. 
  
@@ -29,6 +29,17 @@ PHP 5.2 and up.
 
 
 == Changelog ==
+= 1.1.2 =
+Fixed Typo issue #17 
+Added support for WordPress 3.5 iris color picker.
+fixed Notice: undefined index 'multiple' on addRole inside repeater and conditional blocks. issue #17 
+fixed color picker height on typo field.
+added classes to posts, taxonomies, roles fields.
+Added Iphone styled checkboxes to posts, taxonomies, roles checkbox list fields.
+fixed delete image from conditional block, props to @brasofilo issue #17
+Fixed Typo in mo file. issue #16 
+Added Spanish and Portuguese translations once angain thanks to @brasofilo issue #16
+
 = 1.1.1 =
 Fixed issue #15
 

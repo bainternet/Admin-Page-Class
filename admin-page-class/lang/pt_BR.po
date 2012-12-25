@@ -1,0 +1,144 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Admin Page Class\n"
+"POT-Creation-Date: 2012-12-19 17:42+0200\n"
+"PO-Revision-Date: 2012-12-25 01:08+0100\n"
+"Last-Translator: Rodolfo Buaiz <brasofilo@gmai.com>\n"
+"Language-Team: WP-EX\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: C:\\wamp\\www\\dev\\ttt\\wp-content\\plugins\\Admin-Page-Class\\admin-page-class\n"
+"X-Poedit-SearchPath-0: C:\\wamp\\www\\dev\\ttt\\wp-content\\plugins\\Admin-Page-Class\\admin-page-class\n"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:369
+msgid "Allowed Files"
+msgstr "Arquivos permitidos"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:604
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:606
+msgid "Insert into Post"
+msgstr "Inserir no Post"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:604
+msgid "Use this File"
+msgstr "Usar este arquivo"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:606
+msgid "Use this Image"
+msgstr "Usar esta imagen"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:645
+msgid "Settings saved."
+msgstr "Configurações guardadas."
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:733
+msgid "Save Changes"
+msgstr "Salvar"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1077
+msgid "Delete this image"
+msgstr "Excluir esta imagem"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1077
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1755
+msgid "Delete"
+msgstr "Excluir"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1153
+msgid "Cannot delete file. Something's wrong."
+msgstr "Algo falhou ao excluir. "
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1351
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1396
+msgid "Remove"
+msgstr "Remover"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1363
+msgid "Add"
+msgstr "Adicionar"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1543
+msgid "Select Files"
+msgstr "Selecionar arquivos"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1751
+msgid "Uploaded files"
+msgstr "Arquivos guardados"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1762
+msgid "Upload new files"
+msgstr "Upload de novos arquivos"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1768
+msgid "Add more files"
+msgstr "Adicionar mais arquivos"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1873
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1894
+msgid "Select a color"
+msgstr "Selecione uma cor"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3075
+msgid "Export"
+msgstr "Exportar"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3076
+msgid "To export saved settings click the Export button bellow and you will get the export Code in the box bellow, which you can later use to import."
+msgstr "Para exportar as configurações guardadas, clique no botão Exportar abaixo e você terá o código de exportação na caixa de texto. Guarde e use para importar posteriormente."
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3078
+msgid "Export Code"
+msgstr "Exportar código"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3080
+msgid "Get Export"
+msgstr "Gerar código"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3085
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3090
+msgid "Import"
+msgstr "Importar"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3086
+msgid "To Import saved settings paste the Export output in to the Import Code box bellow and click Import."
+msgstr "Para importar suas configurações guardadas, cole o código na caixa de texto abaixo e clique Importar."
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3088
+msgid "Import Code"
+msgstr "Importar código"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3115
+msgid "error in ajax request! (1)"
+msgstr "Erro na solicitação de Ajax! (1)"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3125
+msgid "error in ajax request! (2)"
+msgstr "Erro na solicitação de Ajax! (2)"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3146
+msgid "error in ajax request! (3)"
+msgstr "Erro na solicitação de Ajax! (3)"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3158
+msgid "Setting imported, make sure you "
+msgstr "Configurações importadas, assegure-se de"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3158
+msgid "Refresh this page"
+msgstr "atualizar esta página"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3160
+msgid "Could not import settings! (4)"
+msgstr "Não foi possível importar as configurações! (4)"
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3181
+msgid "You do not have sufficient permissions to edit templates for this site."
+msgstr "Você não tem persmissões suficientes para editar modelos neste site."
+
+#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3184
+msgid "Error Downloading file."
+msgstr "Erro ao fazer download."
+
