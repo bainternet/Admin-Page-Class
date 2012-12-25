@@ -44,25 +44,28 @@ function update_repeater_fields(){
      *
      * @since 1.0
      */
-    
-    $('.at-color').live('focus', function() {
-      load_colorPicker($(this).next());
-    });
-    $('.at-color').live('focusout', function() {
-      hide_colorPicker($(this).next());
-    });
-    $('.at-color-select').live('click', function(){
-      if ($(this).next('div').css('display') == 'none')
-        load_colorPicker($(this));
-      else
-        hide_colorPicker($(this));
-    });
-    //issue #15
-    $('.at-color').each(function(){
-      var colo = $(this).val();
-      if (colo.length == 7)
-        $(this).css('background',colo);
-    });
+    if ($.farbtastic){//since WordPress 3.5
+      $('.at-color').live('focus', function() {
+        load_colorPicker($(this).next());
+      });
+      $('.at-color').live('focusout', function() {
+        hide_colorPicker($(this).next());
+      });
+      $('.at-color-select').live('click', function(){
+        if ($(this).next('div').css('display') == 'none')
+          load_colorPicker($(this));
+        else
+          hide_colorPicker($(this));
+      });
+      //issue #15
+      $('.at-color').each(function(){
+        var colo = $(this).val();
+        if (colo.length == 7)
+          $(this).css('background',colo);
+      });
+    }else{
+      $('.at-color-iris').wpColorPicker();
+    }
       
     /**
      * Add Files.
@@ -298,48 +301,52 @@ jQuery(document).ready(function($) {
    * better handler for color picker with repeater fields support
    * which now works both when button is clicked and when field gains focus.
    */
-  $('.at-color').live('focus', function() {
-    load_colorPicker($(this).next());
-  });
+  if ($.farbtastic){//since WordPress 3.5
+    $('.at-color').live('focus', function() {
+      load_colorPicker($(this).next());
+    });
 
-  $('.at-color').live('focusout', function() {
-    hide_colorPicker($(this).next());
-  });
+    $('.at-color').live('focusout', function() {
+      hide_colorPicker($(this).next());
+    });
 
-  /**
-   * Select Color Field.
-   *
-   * @since 1.0
-   */
-  $('.at-color-select').live('click', function(){
-    if ($(this).next('div').css('display') == 'none')
-      load_colorPicker($(this));
-    else
-      hide_colorPicker($(this));
-  });
+    /**
+     * Select Color Field.
+     *
+     * @since 1.0
+     */
+    $('.at-color-select').live('click', function(){
+      if ($(this).next('div').css('display') == 'none')
+        load_colorPicker($(this));
+      else
+        hide_colorPicker($(this));
+    });
 
-  function load_colorPicker(ele){
-    colorPicker = $(ele).next('div');
-    input = $(ele).prev('input');
+    function load_colorPicker(ele){
+      colorPicker = $(ele).next('div');
+      input = $(ele).prev('input');
 
-    $.farbtastic($(colorPicker), function(a) { $(input).val(a).css('background', a); });
+      $.farbtastic($(colorPicker), function(a) { $(input).val(a).css('background', a); });
 
-    colorPicker.show();
-    //e.preventDefault();
+      colorPicker.show();
+      //e.preventDefault();
 
-    //$(document).mousedown( function() { $(colorPicker).hide(); });
+      //$(document).mousedown( function() { $(colorPicker).hide(); });
+    }
+
+    function hide_colorPicker(ele){
+      colorPicker = $(ele).next('div');
+      $(colorPicker).hide();
+    }
+    //issue #15
+    $('.at-color').each(function(){
+      var colo = $(this).val();
+      if (colo.length == 7)
+        $(this).css('background',colo);
+    });
+  }else{
+    $('.at-color-iris').wpColorPicker();
   }
-
-  function hide_colorPicker(ele){
-    colorPicker = $(ele).next('div');
-    $(colorPicker).hide();
-  }
-  //issue #15
-  $('.at-color').each(function(){
-    var colo = $(this).val();
-    if (colo.length == 7)
-      $(this).css('background',colo);
-  });
 
   /**
    * Add Files.

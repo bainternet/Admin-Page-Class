@@ -188,7 +188,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       //load translation
       add_filter('init', array($this,'load_textdomain'));
 
-      //set defualts
+      //set defaults
       $this->_div_or_row = true;
       $this->saved = false;
       //store args
@@ -1196,9 +1196,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   public function check_field_color() {
     
     if ( ($this->has_field( 'color' ) || $this->has_field( 'typo' ))  && $this->is_edit_page() ) {
-      // Enqueu built-in script and style for color picker.
-      wp_enqueue_style( 'farbtastic' );
-      wp_enqueue_script( 'farbtastic' );
+      if( wp_style_is( 'wp-color-picker', 'registered' ) ) {
+          wp_enqueue_style( 'wp-color-picker' );
+          wp_enqueue_script( 'wp-color-picker' );
+      }else{
+        // Enqueu built-in script and style for color picker.
+        wp_enqueue_style( 'farbtastic' );
+        wp_enqueue_script( 'farbtastic' );
+      }
     }
     
   }
@@ -1895,9 +1900,13 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $meta = '#';
       
     $this->show_field_begin( $field, $meta );
+    if( wp_style_is( 'wp-color-picker', 'registered' ) ) { //iris color picker since 3.5
+      echo "<input class='at-color-iris' type='text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='8' />";  
+    }else{
       echo "<input class='at-color' type='text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='8' />";
       echo "<input type='button' class='at-color-select button' rel='{$field['id']}' value='" . __( 'Select a color' ,'apc') . "'/>";
       echo "<div style='display:none' class='at-color-picker' rel='{$field['id']}'></div>";
+    }
     $this->show_field_end($field, $meta);
     
   }
@@ -2463,7 +2472,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *   @param $repeater bool  is this a field inside a repeatr? true|false(default) 
    */
   public function addCode($id,$args,$repeater=false){
-    $new_field = array('type' => 'code','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Code Editor Field','syntax' => 'php', 'theme' => 'defualt');
+    $new_field = array('type' => 'code','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Code Editor Field','syntax' => 'php', 'theme' => 'default');
     $new_field = array_merge($new_field, (array)$args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
