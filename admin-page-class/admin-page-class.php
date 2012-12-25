@@ -1138,7 +1138,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         $f[$k] = str_replace(']','',$v);
       }
       $temp = get_option($this->args['option_group']);
-      $saved = $temp[$f[0]];
+
+      /**
+       * $f[0] = repeater id
+       * $f[1] = repeater item number
+       * $f[2] = actuall in repeater item image field id
+       */
+      $saved = $temp[$f[0]]; 
+
       if (isset($saved[$f[1]][$f[2]])){
         unset($saved[$f[1]][$f[2]]);
         $temp[$f[0]] = $saved;
@@ -1879,9 +1886,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $html .= $op. '</select>';
 
     // Font Color
-    $html .= "<input class='at-color' type='text' name='".$field['id']."[color]' id='".$field['id']."[color]' value='".$meta['color'] ."' size='6' />";
-    $html .= "<input type='button' class='at-color-select button' rel='".$field['id']."[color]' value='" . __( 'Select a color' ,'apc') . "'/>";
-    $html .= "<div style='display:none' class='at-color-picker' rel='".$field['id']."[color]'></div>";
+    if( wp_style_is( 'wp-color-picker', 'registered' ) ) { //iris color picker since 3.5
+      $html .= "<input class='at-color-iris' type='text' name='{$field['id']}[color]' id='{$field['id']}[color]' value='".$meta['color']."' size='8' />";  
+    }else{
+      $html .= "<input class='at-color' type='text' name='".$field['id']."[color]' id='".$field['id']."[color]' value='".$meta['color'] ."' size='6' />";
+      $html .= "<input type='button' class='at-color-select button' rel='".$field['id']."[color]' value='" . __( 'Select a color' ,'apc') . "'/>";
+      $html .= "<div style='display:none' class='at-color-picker' rel='".$field['id']."[color]'></div>";
+    }
+    
     echo $html;
     $this->show_field_end( $field, $meta );
   }
@@ -1929,7 +1941,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $html = array();
     
       foreach ($field['options'] as $key => $value) {
-        $html[] = "<input type='checkbox' class='at-checkbox_list' name='{$field['id']}[]' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " /> {$value}";
+        $html[] = "{$value} <input type='checkbox' class='at-checkbox_list' name='{$field['id']}[]' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " />";
       }
     
       echo implode( '<br />' , $html );
@@ -1985,12 +1997,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     // checkbox_list
     if ('checkbox_list' == $options['type']) {
       foreach ($posts as $p) {
-        echo "<input type='checkbox' name='{$field['id']}[]' value='$p->ID'" . checked(in_array($p->ID, $meta), true, false) . " /> $p->post_title<br/>";
+        echo $p->post_title . "<input type='checkbox' class='at-posts-checkbox' name='{$field['id']}[]' value='$p->ID'" . checked(in_array($p->ID, $meta), true, false) . " />";
       }
     }
     // select
     else {
-      echo "<select name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple' style='height:auto'" : "'") . ">";
+      echo "<select name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple' class='at-posts-select' style='height:auto'" : "'") . ">";
       foreach ($posts as $p) {
         echo "<option value='$p->ID'" . selected(in_array($p->ID, $meta), true, false) . ">$p->post_title</option>";
       }
@@ -2021,12 +2033,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     // checkbox_list
     if ('checkbox_list' == $options['type']) {
       foreach ($terms as $term) {
-        echo "<input type='checkbox' name='{$field['id']}[]' value='$term->slug'" . checked(in_array($term->slug, $meta), true, false) . " /> $term->name  ";
+        echo $term->name  . "<input type='checkbox' class='at-tax-checkbox' name='{$field['id']}[]' value='$term->slug'" . checked(in_array($term->slug, $meta), true, false) . " />";
       }
     }
     // select
     else {
-      echo "<select name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple' style='height:auto'" : "'") . ">";
+      echo "<select name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple' class='at-tax-select' style='height:auto'" : "'") . ">";
       foreach ($terms as $term) {
         echo "<option value='$term->slug'" . selected(in_array($term->slug, $meta), true, false) . ">$term->name</option>";
       }
@@ -2059,12 +2071,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       // checkbox_list
       if ('checkbox_list' == $options['type']) {
         foreach ($names as $n) {
-          echo "<input type='checkbox' name='{$field['id']}[]' value='$n'" . checked(in_array($n, $meta), true, false) . " /> $n<br/>";
+          echo $n . "<input type='checkbox'  class='at-role-checkbox' name='{$field['id']}[]' value='$n'" . checked(in_array($n, $meta), true, false) . " />";
         }
       }
       // select
       else {
-        echo "<select name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple' style='height:auto'" : "'") . ">";
+        echo "<select name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple' class='at-role-select' style='height:auto'" : "'") . ">";
         foreach ($names as $n) {
           echo "<option value='$n'" . selected(in_array($n, $meta), true, false) . ">$n</option>";
         }

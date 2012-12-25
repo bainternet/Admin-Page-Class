@@ -232,7 +232,20 @@ jQuery(document).ready(function($) {
   /**
    * jquery iphone style checkbox
    */
-   $('.rw-checkbox').iphoneStyle();
+  //checkbox
+  $('.rw-checkbox').iphoneStyle();
+  //checkbox list
+  $('.at-checkbox_list').iphoneStyle();
+  //post checkbox
+  $('.at-posts-checkbox').iphoneStyle();
+  //taxonomy checkbox
+  $('.at-tax-checkbox').iphoneStyle();
+  //role checkbox
+  $('.at-role-checkbox').iphoneStyle();
+  
+
+  
+   
 
   /**
    *  conditinal fields
