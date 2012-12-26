@@ -147,9 +147,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     public $google_fonts = false;
 
     /**
-     * use google fonts for typo filed?
+     * Holds used field types
      * @var boolean
-     * @since 0.9.9
+     * @since 1.1.3
      * @access public
      */
     public $field_types = array();
@@ -188,13 +188,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       add_action('template_redirect',array($this, 'admin_redirect_download_files'));
       add_filter('init', array($this,'add_query_var_vars'));
       
-      
       // If we are not in admin area exit.
       if ( ! is_admin() )
         return;
 
       //load translation
-      add_filter('init', array($this,'load_textdomain'));
+      $this->load_textdomain();
 
       //set defaults
       $this->_div_or_row = true;
@@ -647,7 +646,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
           echo '<h2>'.apply_filters('admin_page_class_h2',$this->args['page_title']).'</h2>'.((isset($this->args['page_header_text']))? $this->args['page_header_text'] : '').' 
           </div>
           <div style="float:right;margin:32px 0 0 0">
-            <input type="submit" style="margin-left: 25px;" value="Save changes" name="Submit" class="'.apply_filters('admin_page_class_submit_class', 'btn-info').' btn"><br><br>
+            <input type="submit" style="margin-left: 25px;" value="'.esc_attr(__('Save Changes','apc')).'" name="Submit" class="'.apply_filters('admin_page_class_submit_class', 'btn-info').' btn"><br><br>
           </div>
         <br style="clear:both"><br>
         </div>';
@@ -1859,12 +1858,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $html .= "<span class='mupload_img_holder' data-wi='".$width."' data-he='".$height."'><img src='".$meta['src']."' style='height: ".$height.";width: ".$width.";' /></span>";
       $html .= "<input type='hidden' name='".$field['id']."[id]' id='".$field['id']."[id]' value='".$meta['id']."' />";
       $html .= "<input type='hidden' name='".$field['id']."[src]' id='".$field['id']."[src]' value='".$meta['src']."' />";
-      $html .= "<input class='at-delete_image_button' type='button' rel='".$field['id']."' value='Delete Image' />";
+      $html .= "<input class='at-delete_image_button' type='button' rel='".$field['id']."' value='".__('Delete Image','apc')."' />";
     }else{
       $html .= "<span class='mupload_img_holder'  data-wi='".$width."' data-he='".$height."'></span>";
       $html .= "<input type='hidden' name='".$field['id']."[id]' id='".$field['id']."[id]' value='' />";
       $html .= "<input type='hidden' name='".$field['id']."[src]' id='".$field['id']."[src]' value='' />";
-      $html .= "<input class='at-upload_image_button' type='button' rel='".$field['id']."' value='Upload Image' />";
+      $html .= "<input class='at-upload_image_button' type='button' rel='".$field['id']."' value='".__('Upload Image','apc')."' />";
     }
     echo $html;
     $this->show_field_end( $field, $meta );
@@ -3215,7 +3214,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   public function export(){
     check_ajax_referer( 'apc_export', 'seq' );
     if (!isset($_GET['group'])){
-      $re['err'] = __('error in ajax request! (1)');
+      $re['err'] = __('error in ajax request! (1)','apc');
       $re['nonce'] = wp_create_nonce("apc_export");
       echo json_encode($re);
       die();
@@ -3225,7 +3224,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     if ($options !== false)
       $re['code']= "<!*!* START export Code !*!*>\n".base64_encode(serialize($options))."\n<!*!* END export Code !*!*>";
     else
-      $re['err'] = __('error in ajax request! (2)');
+      $re['err'] = __('error in ajax request! (2)','apc');
     
     //update_nonce
     $re['nonce'] = wp_create_nonce("apc_export");
@@ -3246,7 +3245,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   public function import(){
     check_ajax_referer( 'apc_import', 'seq' );
     if (!isset($_POST['imp'])){
-      $re['err'] = __('error in ajax request! (3)');
+      $re['err'] = __('error in ajax request! (3)','apc');
       $re['nonce'] = wp_create_nonce("apc_import");
       echo json_encode($re);
       die();
@@ -3260,7 +3259,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       update_option($this->option_group,$import_code);
       $re['success']= __('Setting imported, make sure you ','apc'). '<input class="button-primary" type="button"  value="'. __('Refresh this page','apc').'" id="apc_refresh_page_b" />';
     }else{
-      $re['err'] = __('Could not import settings! (4)');
+      $re['err'] = __('Could not import settings! (4)','apc');
     }
     //update_nonce
       $re['nonce'] = wp_create_nonce("apc_import");
@@ -3306,10 +3305,10 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     );
     $export_url = add_query_arg($args, $site_url);
     if ($echo === true)
-        echo '<a href="'.$export_url.'" target="_blank">Download Export</a>';
+        echo '<a href="'.$export_url.'" target="_blank">'.__('Download Export','apc').'</a>';
     elseif ($echo == 'url')
         return $export_url;
-    return '<a class="button-primary" href="'.$export_url.'" target="_blank">Download Export</a>';
+    return '<a class="button-primary" href="'.$export_url.'" target="_blank">'.__('Download Export','apc').'</a>';
   }
 
   //first  add a new query var
@@ -3350,7 +3349,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function load_textdomain(){
     //In themes/plugins/mu-plugins directory
-    load_textdomain( 'apc', $this->SelfPath . '/lang/' . get_locale() .'.mo' );
+    load_textdomain( 'apc', dirname(__FILE__) . '/lang/' . get_locale() .'.mo' );
+    //load_textdomain( 'apc', dirname(__FILE__) . '/lang/he_IL.mo' );
+    //load_plugin_textdomain('apc',null, $this->SelfPath . '/lang/' . get_locale() .'.mo' );
+    /*global $l10n;
+    var_dump($l10n['apc']->entries);
+    die();*/
   }
 
 } // End Class
