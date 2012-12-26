@@ -1,144 +1,326 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Admin Page Class\n"
-"POT-Creation-Date: 2012-12-19 17:42+0200\n"
-"PO-Revision-Date: 2012-12-25 01:28+0100\n"
-"Last-Translator: Rodolfo Buaiz <brasofilo@gmai.com>\n"
+"POT-Creation-Date: 2012-12-26 22:52+0200\n"
+"PO-Revision-Date: 2012-12-26 22:52+0200\n"
+"Last-Translator: BaInternet <admin@bainternet.info>\n"
 "Language-Team: WP-EX\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.4\n"
 "X-Poedit-KeywordsList: __;_e\n"
-"X-Poedit-Basepath: C:\\wamp\\www\\dev\\ttt\\wp-content\\plugins\\Admin-Page-Class\\admin-page-class\n"
-"X-Poedit-SearchPath-0: C:\\wamp\\www\\dev\\ttt\\wp-content\\plugins\\Admin-Page-Class\\admin-page-class\n"
+"X-Poedit-Basepath: C:\\wamp\\www\\dev\\hebtest\\wp-content\\plugins\\Admin-"
+"Page-Class\n"
+"X-Poedit-SearchPath-0: C:\\wamp\\www\\dev\\hebtest\\wp-content\\plugins"
+"\\Admin-Page-Class\n"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:369
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:22
+msgid "Demo Admin Page"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:42
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:64
+msgid "Simple Options"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:43
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:99
+msgid "Fancy Options"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:44
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:132
+msgid "Editor Options"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:45
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:159
+msgid "WordPress Options"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:46
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:183
+msgid "Advanced Options"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:47
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:232
+#, fuzzy
+msgid "Import Export"
+msgstr "Generar código"
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:66
+msgid "This is a simple paragraph"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:68
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:192
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:206
+msgid "My Text "
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:70
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:193
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:207
+msgid "My Textarea "
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:72
+msgid "My Checkbox "
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:74
+msgid "My select "
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:76
+msgid "My Radio Filed"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:101
+msgid "My Typography"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:103
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:194
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:208
+msgid "My Image "
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:105
+#, fuzzy
+msgid "PlUpload Field"
+msgstr "Archivos guardados"
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:107
+msgid "My Date "
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:109
+msgid "My Time "
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:111
+msgid "My Color "
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:134
+msgid "My wysiwyg Editor "
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:136
+msgid "Code Editor "
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:161
+msgid "My Taxonomy Select"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:163
+msgid "My Posts Select"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:165
+msgid "My Roles Select"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:167
+msgid "My Taxonomy Checkboxes"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:169
+msgid "My Posts Checkboxes"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:171
+msgid "My Roles Checkboxes"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:186
+msgid "My Sortable Field"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:200
+msgid "This is a Repeater Block"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:216
+msgid "Enable conditinal fields? "
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:217
+msgid ""
+"<small>Turn ON if you want to enable the <strong>conditinal fields</strong>."
+"</small>"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:248
+msgid "My help tab title"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:249
+msgid "This is my Help Tab content"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:253
+msgid "My 2nd help tab title"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/class-usage-demo.php:259
+msgid "This is my 2nd Help Tab content from a callback function"
+msgstr ""
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:380
 msgid "Allowed Files"
 msgstr "Archivos permitidos"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:604
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:606
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:615
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:617
 msgid "Insert into Post"
 msgstr "Insertar en la Entrada"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:604
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:615
 msgid "Use this File"
 msgstr "Usar este archivo"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:606
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:617
 msgid "Use this Image"
 msgstr "Usar esta imagen"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:645
-msgid "Settings saved."
-msgstr "Ajustes guardados."
-
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:733
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:649
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:744
 msgid "Save Changes"
 msgstr "Actualizar cambios"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1077
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:656
+msgid "Settings saved."
+msgstr "Ajustes guardados."
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:1119
 msgid "Delete this image"
 msgstr "Borrar esta imagem"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1077
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1755
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:1119
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:1822
 msgid "Delete"
 msgstr "Borrar"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1153
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:1214
 msgid "Cannot delete file. Something's wrong."
 msgstr "Algo ha fallado al borrar el archivo."
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1351
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1396
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:1418
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:1463
 msgid "Remove"
 msgstr "Eliminar"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1363
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:1430
 msgid "Add"
 msgstr "Añadir"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1543
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:1610
 msgid "Select Files"
 msgstr "Seleccionar archivos"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1751
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:1818
 msgid "Uploaded files"
 msgstr "Archivos guardados"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1762
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:1829
 msgid "Upload new files"
 msgstr "Subir nuevos archivos"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1768
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:1835
 msgid "Add more files"
 msgstr "Añadir más archivos"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1873
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:1894
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:1861
+#, fuzzy
+msgid "Delete Image"
+msgstr "Borrar esta imagem"
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:1866
+#, fuzzy
+msgid "Upload Image"
+msgstr "Archivos guardados"
+
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:1943
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:1969
 msgid "Select a color"
 msgstr "Seleccionar un color"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3075
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3177
 msgid "Export"
 msgstr "Exportar"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3076
-msgid "To export saved settings click the Export button bellow and you will get the export Code in the box bellow, which you can later use to import."
-msgstr "Para exportar los ajustes guardados, haz clic en el botón Exportar abajo y tendras el código de exportación en la caja de texto, que puedes usar más tarde para importar."
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3178
+msgid ""
+"To export saved settings click the Export button bellow and you will get the "
+"export Code in the box bellow, which you can later use to import."
+msgstr ""
+"Para exportar los ajustes guardados, haz clic en el botón Exportar abajo y "
+"tendras el código de exportación en la caja de texto, que puedes usar más "
+"tarde para importar."
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3078
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3180
 msgid "Export Code"
 msgstr "Exportar código"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3080
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3182
 msgid "Get Export"
 msgstr "Generar código"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3085
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3090
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3187
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3192
 msgid "Import"
 msgstr "Importar"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3086
-msgid "To Import saved settings paste the Export output in to the Import Code box bellow and click Import."
-msgstr "Para importar los ajustes guardados, pega el código de Exportación en la caja abajo y haz clic en Importar ."
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3188
+msgid ""
+"To Import saved settings paste the Export output in to the Import Code box "
+"bellow and click Import."
+msgstr ""
+"Para importar los ajustes guardados, pega el código de Exportación en la "
+"caja abajo y haz clic en Importar ."
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3088
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3190
 msgid "Import Code"
 msgstr "Importar código"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3115
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3217
 msgid "error in ajax request! (1)"
 msgstr "Error en la solicitud de Ajax! (1)"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3125
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3227
 msgid "error in ajax request! (2)"
 msgstr "Error en la solicitud de Ajax! (2)"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3146
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3248
 msgid "error in ajax request! (3)"
 msgstr "Error en la solicitud de Ajax! (3)"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3158
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3260
 msgid "Setting imported, make sure you "
 msgstr "Ajustes importados, asegurate"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3158
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3260
 msgid "Refresh this page"
 msgstr "de actualizar esta página"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3160
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3262
 msgid "Could not import settings! (4)"
 msgstr "No ha sido posible importar los ajustes! (4)"
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3181
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3283
 msgid "You do not have sufficient permissions to edit templates for this site."
 msgstr "No tienes suficientes permisos para editar plantillas en este sitio."
 
-#: C:\wamp\www\dev\ttt\wp-content\plugins\Admin-Page-Class\admin-page-class/admin-page-class.php:3184
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3286
 msgid "Error Downloading file."
 msgstr "Error al descargar el archivo."
 
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3308
+#: C:\wamp\www\dev\hebtest\wp-content\plugins\Admin-Page-Class/admin-page-class/admin-page-class.php:3311
+msgid "Download Export"
+msgstr ""
