@@ -4,7 +4,7 @@ Donate link:http://en.bainternet.info/donations
 Tags: admin page, option page, options panel, admin options panel
 Requires at least: 3
 Tested up to: 3.5
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 
 The Admin Page Class is used by including it in your plugin files and using its methods to create custom Admin Pages. It is meant to be very simple and straightforward. 
  
@@ -29,6 +29,16 @@ PHP 5.2 and up.
 
 
 == Changelog ==
+= 1.1.4 = 
+fixed local.mo file load.
+added textdomain to demo plugin.
+added textdomain to for missing strings.
+updated mo's and po's :) .
+Fixed and closed issue #16 .
+Fixed color picker z-index issue #17 .
+Fixed Validating function notice #17 .
+Fixed Conditional Field not loading saved data after re-enable #17 .
+
 = 1.1.3 =
 Added Select2.
 Better field check function calling.
