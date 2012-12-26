@@ -172,6 +172,8 @@
 
 /* Typo field iris color picker */
 .wp-picker-container{height: 20px;}
+/* issue #17 number 7
+div.iris-picker{z-index: 100;}
 
 /* Select 2 typo  field Fix*/
 .at-typography-size{width: 11%;}
