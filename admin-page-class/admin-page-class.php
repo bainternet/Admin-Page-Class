@@ -2167,7 +2167,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
               
 
         // Validate meta value
-        if ( class_exists( 'BF_Admin_Page_Class_Validate' ) && method_exists( 'BF_Admin_Page_Class_Validate', $field['validate_func'] ) ) {
+        if ( class_exists( 'BF_Admin_Page_Class_Validate' ) && isset($field['validate_func']) && method_exists( 'BF_Admin_Page_Class_Validate', $field['validate_func'] ) ) {
           $new = call_user_func( array( 'BF_Admin_Page_Class_Validate', $field['validate_func'] ), $new );
         }
 
