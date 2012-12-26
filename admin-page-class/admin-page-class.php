@@ -1759,9 +1759,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $id = '';
       $id = $field['id'].'['.$f['id'].']';
       $m = '';
-      if ($checked){
-        $m = (isset($meta[$f['id']])) ? $meta[$f['id']]: '';
-      }
+      $m = (isset($meta[$f['id']])) ? $meta[$f['id']]: '';
       $m = ( $m !== '' ) ? $m : (isset($f['std'])? $f['std'] : '');
       if ('image' != $f['type'] && $f['type'] != 'repeater')
         $m = is_array( $m) ? array_map( 'esc_attr', $m ) : esc_attr( $m);
