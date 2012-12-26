@@ -172,3 +172,7 @@
 
 /* Typo field iris color picker */
 .wp-picker-container{height: 20px;}
+
+/* Select 2 typo  field Fix*/
+.at-typography-size{width: 11%;}
+.at-typography-face{width: 30%;}

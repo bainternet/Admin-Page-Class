@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.1.2
+ * @version 1.1.3
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -145,6 +145,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
      * @access public
      */
     public $google_fonts = false;
+
+    /**
+     * use google fonts for typo filed?
+     * @var boolean
+     * @since 0.9.9
+     * @access public
+     */
+    public $field_types = array();
     
       /**
      * Builds a new Page 
@@ -875,41 +883,41 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $this->SetField($args);
       }
       
-      /**
-       * Adds a sub-heading to the current page
-       * 
-       * @access public
-       * @param $args (mixed|array) contains everything needed to build the field
-       * @param $repeater (boolean)
-       * @since 0.1
-       *
-       * @param string $label simply the text for your heading
-       */
-      public function Subtitle($label,$repeater = false) {
-      $args['type'] = 'subtitle';
-      $args['label'] = $label;
-      $args['id'] = 'title'.$label;
-      $args['std'] = '';
-      $this->SetField($args);
-      }
+  /**
+   * Adds a sub-heading to the current page
+   * 
+   * @access public
+   * @param $args (mixed|array) contains everything needed to build the field
+   * @param $repeater (boolean)
+   * @since 0.1
+   *
+   * @param string $label simply the text for your heading
+   */
+  public function Subtitle($label,$repeater = false) {
+    $args['type'] = 'subtitle';
+    $args['label'] = $label;
+    $args['id'] = 'title'.$label;
+    $args['std'] = '';
+    $this->SetField($args);
+  }
       
-      /**
-       * Adds a paragraph to the current page
-       * 
-       * @access public
-       * @param $args (mixed|array) contains everything needed to build the field
-       * @param $repeater (boolean)
-       * @since 0.1
-       *
-       * @param string $text the text you want to display
-       */
-      public function Paragraph($text,$repeater = false) {
-      $args['type'] = 'paragraph';
-      $args['text'] = $text;
-      $args['id'] = 'paragraph';
-      $args['std'] = '';
-      $this->SetField($args);
-      }
+  /**
+   * Adds a paragraph to the current page
+   * 
+   * @access public
+   * @param $args (mixed|array) contains everything needed to build the field
+   * @param $repeater (boolean)
+   * @since 0.1
+   *
+   * @param string $text the text you want to display
+   */
+  public function Paragraph($text,$repeater = false) {
+    $args['type'] = 'paragraph';
+    $args['text'] = $text;
+    $args['id'] = 'paragraph';
+    $args['std'] = '';
+    $this->SetField($args);
+  }
   
     
   /**
@@ -923,39 +931,37 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     // Get Plugin Path
     $plugin_path = $this->SelfPath;
     
-    $this->check_field_upload();
+    //this replaces the ugly check fields methods calls
+    foreach (array('upload','color','date','time','code','select','editor') as $type) {
+      call_user_func ( array( &$this, 'check_field_' . $type ));
+    }
+    /*$this->check_field_upload();
     $this->check_field_color();
     $this->check_field_date();
     $this->check_field_time();
     $this->check_field_code();
+    $this->check_field_select();
+    $this->check_field_editor();
+    */
+    wp_enqueue_script('common');
+    if ($this->has_Field('TABS')){
+      wp_print_scripts('jquery-ui-tabs');
+    }
 
-    // @TODO only load styles and js when needed
-      wp_enqueue_script('common');
-      if ($this->has_Field('TABS')){
-        wp_print_scripts('jquery-ui-tabs');
-      }
-      if ($this->has_Field('editor')){
-        global $wp_version;
-        if ( version_compare( $wp_version, '3.2.1' ) < 1 ) {
-          wp_print_scripts('tiny_mce');
-          wp_print_scripts('editor');
-          wp_print_scripts('editor-functions');
-        }
-      }
-      
-      wp_enqueue_script('utils');
-      // Enqueue admin page Style
-      wp_enqueue_style( 'Admin_Page_Class', $plugin_path . '/css/Admin_Page_Class.css' );
-      wp_enqueue_style('iphone_checkbox',$plugin_path. '/js/iphone-style-checkboxes/style.css');
-      
-      // Enqueue admin page Scripts
-      wp_enqueue_script( 'Admin_Page_Class', $plugin_path . '/js/Admin_Page_Class.js', array( 'jquery' ), null, true );
-      wp_enqueue_script('iphone_checkbox',$plugin_path. '/js/iphone-style-checkboxes/iphone-style-checkboxes.js',array('jquery'),null,true);
-      
-      //anyway
-      wp_enqueue_script( 'jquery-ui-sortable' );
+    // Enqueue admin page Style
+    wp_enqueue_style( 'Admin_Page_Class', $plugin_path . '/css/Admin_Page_Class.css' );
+    wp_enqueue_style('iphone_checkbox',$plugin_path. '/js/iphone-style-checkboxes/style.css');
     
+    // Enqueue admin page Scripts
+    wp_enqueue_script( 'Admin_Page_Class', $plugin_path . '/js/Admin_Page_Class.js', array( 'jquery' ), null, true );
+    wp_enqueue_script('iphone_checkbox',$plugin_path. '/js/iphone-style-checkboxes/iphone-style-checkboxes.js',array('jquery'),null,true);
+    
+    wp_enqueue_script('utils');
+    wp_enqueue_script( 'jquery-ui-sortable' );    
   }
+
+
+
   /**
    * Check Field code editor
    *
@@ -977,6 +983,39 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       wp_enqueue_script('at-code-js-clike',$plugin_path .'/js/codemirror/clike.js',array('jquery'),false,true);
       wp_enqueue_script('at-code-js-php',$plugin_path .'/js/codemirror/php.js',array('jquery'),false,true);
       
+    }
+  }
+
+  
+
+  /**
+   * Check For editor field to enqueue editor scripts
+   * @since 1.1.3
+   * @access public
+   */
+  public function check_field_editor(){
+    if ($this->has_Field('editor')){
+      global $wp_version;
+      if ( version_compare( $wp_version, '3.2.1' ) < 1 ) {
+        wp_print_scripts('tiny_mce');
+        wp_print_scripts('editor');
+        wp_print_scripts('editor-functions');
+      }
+    }
+  }  
+
+  /**
+   * Check For select field to enqueue Select2 #see http://goo.gl/3pjY8
+   * @since 1.1.3
+   * @access public
+   */
+  public function check_field_select(){
+    if ($this->has_field_any(array('select','typo')) && $this->is_edit_page()) {
+      $plugin_path = $this->SelfPath;
+      // Enqueu JQuery chosen library, use proper version.
+      wp_enqueue_style('at-multiselect-chosen-css', $plugin_path . '/js/select2/select2.css', array(), null);
+
+      wp_enqueue_script('at-multiselect-chosen-js', $plugin_path . '/js/select2/select2.js', array('jquery'), false, true);
     }
   }
 
@@ -1007,7 +1046,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   public function check_field_upload() {
     
     // Check if the field is an image or file. If not, return.
-    if ( ! $this->has_field( 'image' ) && ! $this->has_field( 'file' ) )
+    if ( ! $this->has_field_any(array('image','file')) )
       return;
     
     // Add data encoding type for file uploading.  
@@ -1214,7 +1253,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function check_field_color() {
     
-    if ( ($this->has_field( 'color' ) || $this->has_field( 'typo' ))  && $this->is_edit_page() ) {
+    if ( $this->has_field_any(array('color' ,'typo' ))  && $this->is_edit_page() ) {
       if( wp_style_is( 'wp-color-picker', 'registered' ) ) {
           wp_enqueue_style( 'wp-color-picker' );
           wp_enqueue_script( 'wp-color-picker' );
@@ -2014,7 +2053,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     }
     // select
     else {
-      echo "<select name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple' class='at-posts-select' style='height:auto'" : "'") . ">";
+      echo "<select class='at-posts-select' name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple'  style='height:auto'" : "'") . ">";
       foreach ($posts as $p) {
         echo "<option value='$p->ID'" . selected(in_array($p->ID, $meta), true, false) . ">$p->post_title</option>";
       }
@@ -2050,7 +2089,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     }
     // select
     else {
-      echo "<select name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple' class='at-tax-select' style='height:auto'" : "'") . ">";
+      echo "<select class='at-tax-select' name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple' style='height:auto'" : "'") . ">";
       foreach ($terms as $term) {
         echo "<option value='$term->slug'" . selected(in_array($term->slug, $meta), true, false) . ">$term->name</option>";
       }
@@ -2088,7 +2127,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       }
       // select
       else {
-        echo "<select name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple' class='at-role-select' style='height:auto'" : "'") . ">";
+        echo "<select  class='at-role-select' name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple' style='height:auto'" : "'") . ">";
         foreach ($names as $n) {
           echo "<option value='$n'" . selected(in_array($n, $meta), true, false) . ">$n</option>";
         }
@@ -2292,14 +2331,40 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function has_field( $type ) {
-    foreach ( $this->_fields as $field ) {
-      if ( $type == $field['type'] ) 
-        return true;
-      elseif('repeater' == $field['type']  || 'cond' == $field['type']){
+    //faster search in single array.
+    if (count($this->field_types) > 0){
+      return in_array($type, $this->field_types);
+    }
+
+    //run once over all fields and store the types in a local array
+    $temp = array();
+    foreach ($this->_fields as $field) {
+      $temp[] = $field['type'];
+      if ('repeater' == $field['type']  || 'cond' == $field['type']){
         foreach((array)$field["fields"] as $repeater_field) {
-            if($type == $repeater_field["type"]) return true;
+          $temp[] = $repeater_field["type"];  
         }
       }
+    }
+
+    //remove duplicates
+    $this->field_types = array_unique($temp);
+    //call this function one more time now that we have an array of field types
+    return $this->has_field($type);
+  }
+
+  /**
+   * Check if any of the fields types exists
+   * 
+   * @since 1.1.3
+   * @access public
+   * @param  array  $types array of field types
+   * @return boolean  
+   */
+  public function has_field_any($types){
+    foreach ((array)$types as $t) {
+      if ($this->has_field($t))
+        return true;
     }
     return false;
   }

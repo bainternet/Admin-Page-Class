@@ -149,7 +149,11 @@ function update_repeater_fields(){
       return false;
     });
   
-    
+    /**
+     * Select 2
+     * Since 1.1.3
+     */
+    $("select").select2();
   
   }
 
@@ -242,7 +246,12 @@ jQuery(document).ready(function($) {
   $('.at-tax-checkbox').iphoneStyle();
   //role checkbox
   $('.at-role-checkbox').iphoneStyle();
-  
+
+  /**
+   * Select 2
+   * Since 1.1.3
+   */
+  $("select").select2();
 
   
    
