@@ -43,92 +43,92 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   class BF_Admin_Page_Class {
   
     /**
-       * Contains all saved data for a page
-       * 
-       * @access protected
-       * @var array
-       * @since 0.1
-       */
-      protected $_saved;
+     * Contains all saved data for a page
+     * 
+     * @access protected
+     * @var array
+     * @since 0.1
+     */
+    protected $_saved;
 
     /**
-       * Contains all arguments needed to build the page itself
-       * 
-       * @access protected
-       * @var array
-       * @since 0.1
-       */
-      protected $args;
+     * Contains all arguments needed to build the page itself
+     * 
+     * @access protected
+     * @var array
+     * @since 0.1
+     */
+    protected $args;
       
     /**
-       * Contains Options group name
-       * @access protected
-       * @var array
-       * @since 0.1
-       */
-      protected $option_group;
-    
-      /**
-       * Contains all the information needed to build the form structure of the page
-       * 
-       * @access public
-       * @var array
-       * @since 0.1
-       */
-      public $_fields;
-      
-      /**
-       * True if the table is opened, false if it is not opened
-       * 
-       * @access protected
-       * @var boolean
-       * @since 0.1
-       */
-      protected $table = false;
+     * Contains Options group name
+     * @access protected
+     * @var array
+     * @since 0.1
+     */
+    protected $option_group;
     
     /**
-       * True if the tab div is opened, false if it is not opened
-       * 
-       * @access protected
-       * @var boolean
-       * @since 0.1
-       */
-      protected $tab_div = false;
+     * Contains all the information needed to build the form structure of the page
+     * 
+     * @access public
+     * @var array
+     * @since 0.1
+     */
+    public $_fields;
       
     /**
-       * Contains the menu_slug for the current TopLeve-Menu
-       * 
-       * @access public
-       * @var string
-       * @since 0.1
-       */
-      public $Top_Slug;
+     * True if the table is opened, false if it is not opened
+     * 
+     * @access protected
+     * @var boolean
+     * @since 0.1
+     */
+    protected $table = false;
     
     /**
-       * Contains the menu_slug for the current page
-       * 
-       * @access public
-       * @var string
-       * @since 0.1
-       */
-      public $_Slug;
+     * True if the tab div is opened, false if it is not opened
+     * 
+     * @access protected
+     * @var boolean
+     * @since 0.1
+     */
+    protected $tab_div = false;
+      
+    /**
+     * Contains the menu_slug for the current TopLeve-Menu
+     * 
+     * @access public
+     * @var string
+     * @since 0.1
+     */
+    public $Top_Slug;
     
     /**
-       * Contains all the information needed to build the Help tabs
-       * 
-       * @access public
-       * @var array
-       * @since 0.1
-       */
+     * Contains the menu_slug for the current page
+     * 
+     * @access public
+     * @var string
+     * @since 0.1
+     */
+    public $_Slug;
+    
+    /**
+     * Contains all the information needed to build the Help tabs
+     * 
+     * @access public
+     * @var array
+     * @since 0.1
+     */
     public $_help_tabs;
     
     /**
-       * Use html table row or div for each field, true for row, false for div
-       * 
-       * @access public
-       * @var boolean
-       * @since 0.1
-       */
+     * Use html table row or div for each field, true for row, false for div
+     * 
+     * @access public
+     * @var boolean
+     * @since 0.1
+     */
     public $_div_or_row;
 
     /**
@@ -154,7 +154,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
      */
     public $field_types = array();
     
-      /**
+    /**
      * Builds a new Page 
      * @param $args (string|mixed array) - 
      *
@@ -172,7 +172,6 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
      *
      *
      */
-     
     public function __construct($args) {
       if(is_array($args)) {
         if (isset($args['option_group'])){
@@ -358,10 +357,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       //add mising scripts
       add_action('admin_enqueue_scripts',array($this,'Finish'));
       if(isset($_POST['action']) && $_POST['action'] == 'save') {
-            $this->save();
-            $this->saved_flag = true;
-          }
-
+        $this->save();
+        $this->saved_flag = true;
+      }
     }
 
     public function plupload_head_js(){
@@ -934,14 +932,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     foreach (array('upload','color','date','time','code','select','editor') as $type) {
       call_user_func ( array( &$this, 'check_field_' . $type ));
     }
-    /*$this->check_field_upload();
-    $this->check_field_color();
-    $this->check_field_date();
-    $this->check_field_time();
-    $this->check_field_code();
-    $this->check_field_select();
-    $this->check_field_editor();
-    */
+    
     wp_enqueue_script('common');
     if ($this->has_Field('TABS')){
       wp_print_scripts('jquery-ui-tabs');
@@ -1583,7 +1574,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function show_field_text( $field, $meta) {  
     $this->show_field_begin( $field, $meta );
-    echo "<input type='text' class='at-text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='30' />";
+    echo "<input type='text' class='at-text".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='30' />";
     $this->show_field_end( $field, $meta );
   }
 
@@ -1633,7 +1624,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function show_field_code( $field, $meta) {
     $this->show_field_begin( $field, $meta );
-    echo "<textarea class='code_text' name='{$field['id']}' id='{$field['id']}' data-lang='{$field['syntax']}' data-theme='{$field['theme']}'>".stripslashes($meta)."</textarea>";
+    echo "<textarea class='code_text".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' data-lang='{$field['syntax']}' data-theme='{$field['theme']}'>".stripslashes($meta)."</textarea>";
     $this->show_field_end( $field, $meta );
   }
 
@@ -1647,7 +1638,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function show_field_hidden( $field, $meta) {  
-    echo "<input type='hidden' class='at-text' name='{$field['id']}' id='{$field['id']}' value='{$meta}'/>";
+    echo "<input type='hidden' class='at-hidden".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' value='{$meta}'/>";
   }
   
   /**
@@ -1671,7 +1662,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function show_field_textarea( $field, $meta ) {
     $this->show_field_begin( $field, $meta );
-      echo "<textarea class='at-textarea large-text' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>{$meta}</textarea>";
+      echo "<textarea class='at-textarea large-text".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>{$meta}</textarea>";
     $this->show_field_end( $field, $meta );
   }
   
@@ -1689,7 +1680,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $meta = (array) $meta;
 
     $this->show_field_begin( $field, $meta );
-      echo "<select class='at-select' name='{$field['id']}" . ((isset($field['multiple']) && $field['multiple']) ? "[]' id='{$field['id']}' multiple='multiple'" : "'" ) . ">";
+      echo "<select class='at-select".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}" . ((isset($field['multiple']) && $field['multiple']) ? "[]' id='{$field['id']}' multiple='multiple'" : "'" ) . ">";
       foreach ( $field['options'] as $key => $value ) {
         echo "<option value='{$key}'" . selected( in_array( $key, $meta ), true, false ) . ">{$value}</option>";
       }
@@ -1712,7 +1703,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       
     $this->show_field_begin( $field, $meta );
       foreach ( $field['options'] as $key => $value ) {
-        echo "<input type='radio' class='at-radio' name='{$field['id']}' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " /> <span class='at-radio-label'>{$value}</span>";
+        echo "<input type='radio' class='at-radio".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " /> <span class='at-radio-label'>{$value}</span>";
       }
     $this->show_field_end( $field, $meta );
   }
@@ -1728,7 +1719,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   public function show_field_checkbox( $field, $meta ) {
   
     $this->show_field_begin($field, $meta);
-    echo "<input type='checkbox' class='rw-checkbox' name='{$field['id']}' id='{$field['id']}'" . checked($meta, true, false) . " />";
+    echo "<input type='checkbox' class='rw-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}'" . checked($meta, true, false) . " />";
     $this->show_field_end( $field, $meta );
   }
 
@@ -1785,10 +1776,10 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     global $wp_version;
 
     if ( version_compare( $wp_version, '3.2.1' ) < 1 ) {
-      echo "<textarea class='at-wysiwyg theEditor large-text' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>{$meta}</textarea>";
+      echo "<textarea class='at-wysiwyg theEditor large-text".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>{$meta}</textarea>";
     }else{
       // Use new wp_editor() since WP 3.3
-      wp_editor( stripslashes(stripslashes(html_entity_decode($meta))), $field['id'], array( 'editor_class' => 'at-wysiwyg' ) );
+      wp_editor( stripslashes(stripslashes(html_entity_decode($meta))), $field['id'], array( 'editor_class' => 'at-wysiwyg'.(isset($field['class'])? " {$field['class']}": "")) );
     }
     $this->show_field_end( $field, $meta );
   }
@@ -1961,9 +1952,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       
     $this->show_field_begin( $field, $meta );
     if( wp_style_is( 'wp-color-picker', 'registered' ) ) { //iris color picker since 3.5
-      echo "<input class='at-color-iris' type='text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='8' />";  
+      echo "<input class='at-color-iris".(isset($field['class'])? " {$field['class']}": "")."' type='text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='8' />";  
     }else{
-      echo "<input class='at-color' type='text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='8' />";
+      echo "<input class='at-color".(isset($field['class'])? " {$field['class']}": "")."' type='text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='8' />";
       echo "<input type='button' class='at-color-select button' rel='{$field['id']}' value='" . __( 'Select a color' ,'apc') . "'/>";
       echo "<div style='display:none' class='at-color-picker' rel='{$field['id']}'></div>";
     }
@@ -1989,7 +1980,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $html = array();
     
       foreach ($field['options'] as $key => $value) {
-        $html[] = "{$value} <input type='checkbox' class='at-checkbox_list' name='{$field['id']}[]' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " />";
+        $html[] = "<label><input type='checkbox' class='at-checkbox_list".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " />{$value}</label>";
       }
     
       echo implode( '<br />' , $html );
@@ -2008,7 +1999,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function show_field_date( $field, $meta ) {
     $this->show_field_begin( $field, $meta );
-      echo "<input type='text' class='at-date' name='{$field['id']}' id='{$field['id']}' rel='{$field['format']}' value='{$meta}' size='30' />";
+      echo "<input type='text' class='at-date".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' rel='{$field['format']}' value='{$meta}' size='30' />";
     $this->show_field_end( $field, $meta );
   }
   
@@ -2022,7 +2013,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function show_field_time( $field, $meta ) {
     $this->show_field_begin( $field, $meta );
-      echo "<input type='text' class='at-time' name='{$field['id']}' id='{$field['id']}' rel='{$field['format']}' value='{$meta}' size='30' />";
+      echo "<input type='text' class='at-time".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' rel='{$field['format']}' value='{$meta}' size='30' />";
     $this->show_field_end( $field, $meta );
   }
   
@@ -2045,12 +2036,15 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     // checkbox_list
     if ('checkbox_list' == $options['type']) {
       foreach ($posts as $p) {
-        echo $p->post_title . "<input type='checkbox' class='at-posts-checkbox' name='{$field['id']}[]' value='$p->ID'" . checked(in_array($p->ID, $meta), true, false) . " />";
+        if (isset($field['class']) && $field['class']== 'no-toggle')
+          echo "<label><input type='checkbox' class='at-posts-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$p->ID'" . checked(in_array($p->ID, $meta), true, false) . " /> {$p->post_title}</label>";
+        else
+          echo "{$p->post_title}<input type='checkbox' class='at-posts-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$p->ID'" . checked(in_array($p->ID, $meta), true, false) . " />";
       }
     }
     // select
     else {
-      echo "<select class='at-posts-select' name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple'  style='height:auto'" : "'") . ">";
+      echo "<select class='at-posts-select".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple'  style='height:auto'" : "'") . ">";
       foreach ($posts as $p) {
         echo "<option value='$p->ID'" . selected(in_array($p->ID, $meta), true, false) . ">$p->post_title</option>";
       }
@@ -2081,12 +2075,15 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     // checkbox_list
     if ('checkbox_list' == $options['type']) {
       foreach ($terms as $term) {
-        echo $term->name  . "<input type='checkbox' class='at-tax-checkbox' name='{$field['id']}[]' value='$term->slug'" . checked(in_array($term->slug, $meta), true, false) . " />";
-      }
+        if (isset($field['class']) && $field['class'] == 'no-toggle')
+          echo "<label><input type='checkbox' class='at-tax-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$term->slug'" . checked(in_array($term->slug, $meta), true, false) . " /> {$term->name}</label>";
+        else
+          echo "{$term->name} <input type='checkbox' class='at-tax-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$term->slug'" . checked(in_array($term->slug, $meta), true, false) . " />";
+      }   
     }
     // select
     else {
-      echo "<select class='at-tax-select' name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple' style='height:auto'" : "'") . ">";
+      echo "<select class='at-tax-select".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple' style='height:auto'" : "'") . ">";
       foreach ($terms as $term) {
         echo "<option value='$term->slug'" . selected(in_array($term->slug, $meta), true, false) . ">$term->name</option>";
       }
@@ -2119,12 +2116,15 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       // checkbox_list
       if ('checkbox_list' == $options['type']) {
         foreach ($names as $n) {
-          echo $n . "<input type='checkbox'  class='at-role-checkbox' name='{$field['id']}[]' value='$n'" . checked(in_array($n, $meta), true, false) . " />";
+          if (isset($field['class']) && $field['class'] == 'no-toggle')
+            echo "<label><input type='checkbox'  class='at-role-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$n'" . checked(in_array($n, $meta), true, false) . " /> ".$n."</label>";
+          else
+            echo "{$n} <input type='checkbox'  class='at-role-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$n'" . checked(in_array($n, $meta), true, false) . " />";
         }
       }
       // select
       else {
-        echo "<select  class='at-role-select' name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple' style='height:auto'" : "'") . ">";
+        echo "<select  class='at-role-select".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}" . ($field['multiple'] ? "[]' multiple='multiple' style='height:auto'" : "'") . ">";
         foreach ($names as $n) {
           echo "<option value='$n'" . selected(in_array($n, $meta), true, false) . ">$n</option>";
         }
@@ -2650,7 +2650,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *   which means the last param as false to get the values in an array
    */
   public function addCheckboxList($id,$options=array(),$args,$repeater=false){
-    $new_field = array('type' => 'checkbox_list','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Checkbox List Field','options' => $options);
+    $new_field = array('type' => 'checkbox_list','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Checkbox List Field','options' => $options, 'class' => '');
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -3348,11 +3348,6 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   public function load_textdomain(){
     //In themes/plugins/mu-plugins directory
     load_textdomain( 'apc', dirname(__FILE__) . '/lang/' . get_locale() .'.mo' );
-    //load_textdomain( 'apc', dirname(__FILE__) . '/lang/he_IL.mo' );
-    //load_plugin_textdomain('apc',null, $this->SelfPath . '/lang/' . get_locale() .'.mo' );
-    /*global $l10n;
-    var_dump($l10n['apc']->entries);
-    die();*/
   }
 
 } // End Class

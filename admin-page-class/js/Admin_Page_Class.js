@@ -153,7 +153,8 @@ function update_repeater_fields(){
      * Select 2
      * Since 1.1.3
      */
-    $("select").select2();
+    fancyCheckbox();
+    fancySelect();
   
   }
 
@@ -233,26 +234,10 @@ jQuery(document).ready(function($) {
     });
   });
 
-  /**
-   * jquery iphone style checkbox
-   */
-  //checkbox
-  $('.rw-checkbox').iphoneStyle();
-  //checkbox list
-  $('.at-checkbox_list').iphoneStyle();
-  //post checkbox
-  $('.at-posts-checkbox').iphoneStyle();
-  //taxonomy checkbox
-  $('.at-tax-checkbox').iphoneStyle();
-  //role checkbox
-  $('.at-role-checkbox').iphoneStyle();
-
-  /**
-   * Select 2
-   * Since 1.1.3
-   */
-  $("select").select2();
-
+  //ipone checkboxs
+  fancyCheckbox();
+  //select 2
+  fancySelect();
   
    
 
@@ -738,3 +723,25 @@ jQuery(document).ready(function($) {
     location.reload();
   }
 });
+
+  /**
+   * jQuery iphone style checkbox enable function
+   * @since 1.1.5
+   */
+  //checkbox
+  function fancyCheckbox(){
+    $(':checkbox').each(function (){
+      if(! $(this).hasClass('no-toggle'))
+        $(this).iphoneStyle();
+    });
+  }
+  /**
+   * Select 2 enable function
+   * @since 1.1.5
+   */
+  function fancySelect(){
+    $("select").each(function (){
+      if(! $(this).hasClass('no-fancy'))
+        $(this).select2();
+    });
+  }

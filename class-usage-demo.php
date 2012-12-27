@@ -168,7 +168,7 @@ Author URI: http://en.bainternet.info
   //posts checkbox field
   $options_panel->addPosts('posts2_field_id',array('post_type' => 'post','type' => 'checkbox_list'),array('name'=> __('My Posts Checkboxes','apc')));
   //Roles checkbox field
-  $options_panel->addRoles('roles2_field_id',array('type' => 'checkbox_list'),array('name'=> __('My Roles Checkboxes','apc')));
+  $options_panel->addRoles('roles2_field_id',array('type' => 'checkbox_list' ),array('name'=> __('My Roles Checkboxes','apc'),'class' => 'no-toggle'));
 
 
   /**
