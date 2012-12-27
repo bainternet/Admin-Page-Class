@@ -4,7 +4,7 @@ Donate link:http://en.bainternet.info/donations
 Tags: admin page, option page, options panel, admin options panel
 Requires at least: 3
 Tested up to: 3.5
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 
 The Admin Page Class is used by including it in your plugin files and using its methods to create custom Admin Pages. It is meant to be very simple and straightforward. 
  
@@ -29,6 +29,13 @@ PHP 5.2 and up.
 
 
 == Changelog ==
+= 1.1.5 =
+Added class to most field
+Added open to disable fancy checkbox and select2 by class
+Wrapped checkboxes in label when iphone style is turned off.
+When in checkbox field you can how add `.no-toggle` to disable iphone style.
+When in select field you can how add `.no-fancy` to disable select2.
+
 = 1.1.4 = 
 fixed local.mo file load.
 added textdomain to demo plugin.

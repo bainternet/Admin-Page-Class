@@ -3,7 +3,7 @@
 Plugin Name: Demo Admin Page
 Plugin URI: http://en.bainternet.info
 Description: My Admin Page Class usage demo
-Version: 1.1.4
+Version: 1.1.5
 Author: Bainternet, Ohad Raz
 Author URI: http://en.bainternet.info
 */
@@ -158,7 +158,7 @@ Author URI: http://en.bainternet.info
   //title
   $options_panel->Title(__("WordPress Options","apc"));
   //taxonomy select field
-  $options_panel->addTaxonomy('taxonomy_field_id',array('taxonomy' => 'category'),array('name'=> __('My Taxonomy Select','apc')));
+  $options_panel->addTaxonomy('taxonomy_field_id',array('taxonomy' => 'category'),array('name'=> __('My Taxonomy Select','apc'),'class' => 'no-fancy','desc' => __('This field has a <pre>.no-fancy</pre> class which disables the fancy select2 functions','apc') ));
   //posts select field
   $options_panel->addPosts('posts_field_id',array('post_type' => 'post'),array('name'=> __('My Posts Select','apc')));
   //Roles select field
@@ -166,9 +166,9 @@ Author URI: http://en.bainternet.info
   //taxonomy checkbox field
   $options_panel->addTaxonomy('taxonomy2_field_id',array('taxonomy' => 'category','type' => 'checkbox_list'),array('name'=> __('My Taxonomy Checkboxes','apc')));
   //posts checkbox field
-  $options_panel->addPosts('posts2_field_id',array('post_type' => 'post','type' => 'checkbox_list'),array('name'=> __('My Posts Checkboxes','apc')));
+  $options_panel->addPosts('posts2_field_id',array('post_type' => 'post','type' => 'checkbox_list'),array('name'=> __('My Posts Checkboxes','apc'), 'class' => 'no-toggle','desc' => __('This field has a <pre>.no-toggle</pre> class which disables the fancy Iphone like toggle','apc')));
   //Roles checkbox field
-  $options_panel->addRoles('roles2_field_id',array('type' => 'checkbox_list' ),array('name'=> __('My Roles Checkboxes','apc'),'class' => 'no-toggle'));
+  $options_panel->addRoles('roles2_field_id',array('type' => 'checkbox_list' ),array('name'=> __('My Roles Checkboxes','apc')));
 
 
   /**
