@@ -10,8 +10,7 @@
 var $ =jQuery.noConflict();
 function update_repeater_fields(){
     
-      
-    /**
+   /**
      * Datepicker Field.
      *
      * @since 1.0
@@ -245,7 +244,6 @@ jQuery(document).ready(function($) {
    *  conditinal fields
    *  @since 0.5
    */
-  $('.conditinal_control').iphoneStyle();
   $(".conditinal_control").change(function(){
     if($(this).is(':checked')){
       $(this).parent().next().show('fast');    
@@ -724,24 +722,24 @@ jQuery(document).ready(function($) {
   }
 });
 
-  /**
-   * jQuery iphone style checkbox enable function
-   * @since 1.1.5
-   */
-  //checkbox
-  function fancyCheckbox(){
-    $(':checkbox').each(function (){
-      if(! $(this).hasClass('no-toggle'))
-        $(this).iphoneStyle();
-    });
-  }
-  /**
-   * Select 2 enable function
-   * @since 1.1.5
-   */
-  function fancySelect(){
-    $("select").each(function (){
-      if(! $(this).hasClass('no-fancy'))
-        $(this).select2();
-    });
-  }
+/**
+ * jQuery iphone style checkbox enable function
+ * @since 1.1.5
+ */
+//checkbox
+function fancyCheckbox(){
+  $(':checkbox').each(function (){
+    if(! $(this).hasClass('no-toggle'))
+      $(this).iphoneStyle();
+  });
+}
+/**
+ * Select 2 enable function
+ * @since 1.1.5
+ */
+function fancySelect(){
+  $("select").each(function (){
+    if(! $(this).hasClass('no-fancy'))
+      $(this).select2();
+  });
+}
