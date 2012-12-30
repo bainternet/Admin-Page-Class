@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.1.5
+ * @version 1.1.6
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -2923,10 +2923,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addRoles($id,$options,$args,$repeater=false){
-    $type = 'select';
-    $temp = array('type'=>$type);
-    $options = array_merge($temp,$options);
-    $new_field = array('type' => 'WProle','id'=> $id,'desc' => '','name' => 'WP Roles Field','options'=> $options);
+    $options = array_merge(array('type'=>'select'),$options);
+    $new_field = array('type' => 'WProle','id'=> $id,'desc' => '','name' => 'WP Roles Field','options'=> $options, 'multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
