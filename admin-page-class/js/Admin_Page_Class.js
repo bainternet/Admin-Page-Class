@@ -243,14 +243,15 @@ jQuery(document).ready(function($) {
   /**
    *  conditinal fields
    *  @since 0.5
+   *  @deprecated 1.1.7
    */
-  $(".conditinal_control").change(function(){
+  /*$(".conditinal_control").click(function(){
     if($(this).is(':checked')){
       $(this).parent().next().show('fast');    
     }else{
       $(this).parent().next().hide('fast');    
     }
-  });
+  });*/
   
   /**
    * repater Field
@@ -729,8 +730,18 @@ jQuery(document).ready(function($) {
 //checkbox
 function fancyCheckbox(){
   $(':checkbox').each(function (){
-    if(! $(this).hasClass('no-toggle'))
-      $(this).iphoneStyle();
+    if(! $(this).hasClass('no-toggle')){
+      if (! $(this).hasClass("conditinal_control"))
+        $(this).iphoneStyle();
+      else
+        $(this).iphoneStyle({onChange: function(elem, value) { 
+          if($(elem).is(':checked'))
+            $(elem).parent().next().show('fast');    
+          else
+            $(elem).parent().next().hide('fast');    
+          }
+        });
+    }
   });
 }
 /**
