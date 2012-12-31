@@ -4,7 +4,7 @@ Donate link:http://en.bainternet.info/donations
 Tags: admin page, option page, options panel, admin options panel
 Requires at least: 3
 Tested up to: 3.5
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 
 The Admin Page Class is used by including it in your plugin files and using its methods to create custom Admin Pages. It is meant to be very simple and straightforward. 
  
@@ -13,6 +13,17 @@ The Admin Page Class is used by including it in your plugin files and using its 
 
 The Admin Page Class is used by including it in your plugin files and using its methods to create custom Admin Pages. It is meant to be very simple and straightforward. 
 for usage Take a look at the `class-usage-demo.php` file which can also be tested as a WordPress Plugin. Other options are available for each field which can be see in the 'admin-page-class.php' file,
+
+== ScreenShots ==
+
+[![Simple Options](http://i.imgur.com/oKoUqs.png "Simple Options")](http://i.imgur.com/oKoUq.png)
+[![Fancy Options](http://i.imgur.com/6bqE4s.png "Fancy Options")](http://i.imgur.com/6bqE4.png)
+[![Editor Options](http://i.imgur.com/geBbGs.png "Editor Options")](http://i.imgur.com/geBbG.png)
+[![Advanced Options](http://i.imgur.com/uOpQzs.png "Advanced Options")](http://i.imgur.com/uOpQz.png)
+[![Import Export](http://i.imgur.com/NSJ3Rs.png "Import Export")](http://i.imgur.com/NSJ3R.png)
+
+
+
 
 
 == Installation ==
@@ -29,8 +40,16 @@ PHP 5.2 and up.
 
 
 == Changelog ==
-= 1.1.16 =
+= 1.1.7 =
+Fixed issue #19
+Fixed issue #20
+Updated demo plugin with checkboxes in repater and conditional blocks.
+Replaced iphone-style-checkboxes with my own [FancyCheckbox] (https://github.com/bainternet/FancyCheckbox) script.
+
+
+= 1.1.6 =
 Fixed #17 #21
+
 = 1.1.5 =
 Added class to most field
 Added open to disable fancy checkbox and select2 by class

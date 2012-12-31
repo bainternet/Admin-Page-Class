@@ -3,7 +3,7 @@
 Plugin Name: Demo Admin Page
 Plugin URI: http://en.bainternet.info
 Description: My Admin Page Class usage demo
-Version: 1.1.6
+Version: 1.1.7
 Author: Bainternet, Ohad Raz
 Author URI: http://en.bainternet.info
 */
@@ -192,6 +192,7 @@ Author URI: http://en.bainternet.info
   $repeater_fields[] = $options_panel->addText('re_text_field_id',array('name'=> __('My Text ','apc')),true);
   $repeater_fields[] = $options_panel->addTextarea('re_textarea_field_id',array('name'=> __('My Textarea ','apc')),true);
   $repeater_fields[] = $options_panel->addImage('image_field_id',array('name'=> __('My Image ','apc')),true);
+  $repeater_fields[] = $options_panel->addCheckbox('checkbox_field_id',array('name'=> __('My Checkbox  ','apc')),true);
   
   /*
    * Then just add the fields to the repeater block
@@ -206,6 +207,7 @@ Author URI: http://en.bainternet.info
   $Conditinal_fields[] = $options_panel->addText('con_text_field_id',array('name'=> __('My Text ','apc')),true);
   $Conditinal_fields[] = $options_panel->addTextarea('con_textarea_field_id',array('name'=> __('My Textarea ','apc')),true);
   $Conditinal_fields[] = $options_panel->addImage('con_image_field_id',array('name'=> __('My Image ','apc')),true);
+  $Conditinal_fields[] = $options_panel->addCheckbox('con_checkbox_field_id',array('name'=> __('My Checkbox  ','apc')),true);
   
   /**
    * Then just add the fields to the repeater block

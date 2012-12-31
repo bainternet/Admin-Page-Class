@@ -1719,6 +1719,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   public function show_field_checkbox( $field, $meta ) {
   
     $this->show_field_begin($field, $meta);
+    $meta = ($meta == 'on')? true: $meta;
     echo "<input type='checkbox' class='rw-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}'" . checked($meta, true, false) . " />";
     $this->show_field_end( $field, $meta );
   }
@@ -1740,10 +1741,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     }
     echo "<input type='checkbox' class='conditinal_control' name='{$field['id']}[enabled]' id='{$field['id']}'" . checked($checked, true, false) . " />";
     //start showing the fields
-    $display = ' style="display: none;"';
-    if ($checked){
-      $display = '';
-    }
+    $display = ($checked)? '' :  ' style="display: none;"';
+    
     echo '<div class="conditinal_container"'.$display.'>';
     foreach ((array)$field['fields'] as $f){
       //reset var $id for cond
