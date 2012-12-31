@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.1.6
+ * @version 1.1.7
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -940,14 +940,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
     // Enqueue admin page Style
     wp_enqueue_style( 'Admin_Page_Class', $plugin_path . '/css/Admin_Page_Class.css' );
-    wp_enqueue_style('iphone_checkbox',$plugin_path. '/js/iphone-style-checkboxes/style.css');
+    wp_enqueue_style('iphone_checkbox',$plugin_path. '/js/FancyCheckbox/FancyCheckbox.css');
     
     // Enqueue admin page Scripts
     wp_enqueue_script( 'Admin_Page_Class', $plugin_path . '/js/Admin_Page_Class.js', array( 'jquery' ), null, true );
-    wp_enqueue_script('iphone_checkbox',$plugin_path. '/js/iphone-style-checkboxes/iphone-style-checkboxes.js',array('jquery'),null,true);
+    wp_enqueue_script('iphone_checkbox',$plugin_path. '/js/FancyCheckbox/FancyCheckbox.js',array('jquery'),null,true);
     
     wp_enqueue_script('utils');
-    wp_enqueue_script( 'jquery-ui-sortable' );    
+    wp_enqueue_script( 'jquery-ui-sortable' );
   }
 
 
