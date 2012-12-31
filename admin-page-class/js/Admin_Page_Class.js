@@ -730,17 +730,28 @@ jQuery(document).ready(function($) {
 //checkbox
 function fancyCheckbox(){
   $(':checkbox').each(function (){
-    if(! $(this).hasClass('no-toggle')){
-      if (! $(this).hasClass("conditinal_control"))
-        $(this).iphoneStyle();
-      else
-        $(this).iphoneStyle({onChange: function(elem, value) { 
-          if($(elem).is(':checked'))
-            $(elem).parent().next().show('fast');    
+    var $el = $(this);
+    if(! $el.hasClass('no-toggle')){
+      $el.FancyCheckbox();
+      if ($el.hasClass("conditinal_control")){
+        $el.live('change', function() {
+          var $el = $(this);
+          if($el.is(':checked'))
+            $el.next().next().show('fast');    
           else
-            $(elem).parent().next().hide('fast');    
-          }
+            $el.next().next().hide('fast');
         });
+      }
+    }else{
+      if ($el.hasClass("conditinal_control")){
+      $el.live('change', function() { 
+        var $el = $(this);
+        if($el.is(':checked'))
+          $el.next().show('fast');    
+        else
+          $el.next().hide('fast');
+        });
+      }
     }
   });
 }
