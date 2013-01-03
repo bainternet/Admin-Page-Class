@@ -1,20 +1,20 @@
-<?php 
+<?php
 /**
  * Admin Page Class
  *
- * The Admin Page Class is used by including it in your plugin files and using its methods to 
- * create custom Admin Pages. It is meant to be very simple and 
- * straightforward. 
+ * The Admin Page Class is used by including it in your plugin files and using its methods to
+ * create custom Admin Pages. It is meant to be very simple and
+ * straightforward.
  *
- * This class is derived from My-Meta-Box (https://github.com/bainternet/My-Meta-Box script) which is 
- * a class for creating custom meta boxes for WordPress. 
- * 
- *  
+ * This class is derived from My-Meta-Box (https://github.com/bainternet/My-Meta-Box script) which is
+ * a class for creating custom meta boxes for WordPress.
+ *
+ *
  * @version 1.1.7
- * @copyright 2012 
+ * @copyright 2012
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
- * 
+ *
  * @license GNU General Public LIcense v3.0 - license.txt
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,8 +25,8 @@
  * THE SOFTWARE.
  *
  * @package Admin Page Class
- * 
- * @Last Revised 
+ *
+ * @Last Revised
  */
 
 if ( ! class_exists( 'BF_Admin_Page_Class') ) :
@@ -41,10 +41,10 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
  */
 
   class BF_Admin_Page_Class {
-  
+
     /**
      * Contains all saved data for a page
-     * 
+     *
      * @access protected
      * @var array
      * @since 0.1
@@ -53,13 +53,13 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
     /**
      * Contains all arguments needed to build the page itself
-     * 
+     *
      * @access protected
      * @var array
      * @since 0.1
      */
     protected $args;
-      
+
     /**
      * Contains Options group name
      * @access protected
@@ -67,64 +67,64 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
      * @since 0.1
      */
     protected $option_group;
-    
+
     /**
      * Contains all the information needed to build the form structure of the page
-     * 
+     *
      * @access public
      * @var array
      * @since 0.1
      */
     public $_fields;
-      
+
     /**
      * True if the table is opened, false if it is not opened
-     * 
+     *
      * @access protected
      * @var boolean
      * @since 0.1
      */
     protected $table = false;
-    
+
     /**
      * True if the tab div is opened, false if it is not opened
-     * 
+     *
      * @access protected
      * @var boolean
      * @since 0.1
      */
     protected $tab_div = false;
-      
+
     /**
      * Contains the menu_slug for the current TopLeve-Menu
-     * 
+     *
      * @access public
      * @var string
      * @since 0.1
      */
     public $Top_Slug;
-    
+
     /**
      * Contains the menu_slug for the current page
-     * 
+     *
      * @access public
      * @var string
      * @since 0.1
      */
     public $_Slug;
-    
+
     /**
      * Contains all the information needed to build the Help tabs
-     * 
+     *
      * @access public
      * @var array
      * @since 0.1
      */
     public $_help_tabs;
-    
+
     /**
      * Use html table row or div for each field, true for row, false for div
-     * 
+     *
      * @access public
      * @var boolean
      * @since 0.1
@@ -137,7 +137,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
      * @since 0.6
      */
     public $saved_flag = false;
-    
+
     /**
      * use google fonts for typo filed?
      * @var boolean
@@ -153,13 +153,13 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
      * @access public
      */
     public $field_types = array();
-    
+
     /**
-     * Builds a new Page 
-     * @param $args (string|mixed array) - 
+     * Builds a new Page
+     * @param $args (string|mixed array) -
      *
      * Possible keys within $args:
-     *  > menu (array|string) - (string) -> this the name of the parent Top-Level-Menu or a TopPage object to create 
+     *  > menu (array|string) - (string) -> this the name of the parent Top-Level-Menu or a TopPage object to create
      *                      this page as a sub menu to.
      *              (array)  -> top - Slug for the New Top level Menu page to create.
      *  > page_title (string) - The name of this page (good for Top level and sub menu pages)
@@ -186,7 +186,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       //add hooks for export download
       add_action('template_redirect',array($this, 'admin_redirect_download_files'));
       add_filter('init', array($this,'add_query_var_vars'));
-      
+
       // If we are not in admin area exit.
       if ( ! is_admin() )
         return;
@@ -240,7 +240,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
               break;
             case 'settings':
               $this->Top_Slug = 'options-general.php';
-              break;        
+              break;
             default:
               if(post_type_exists($args['menu'])) {
                 $this->Top_Slug = 'edit.php?post_type='.$args['menu'];
@@ -255,7 +255,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         $this->Top_Slug = $args['menu']['top'];
         add_action('admin_menu', array($this, 'AddMenuTopPage'));
       }
-      
+
 
       // Assign page values to local variables and add it's missed values.
       $this->_Page_Config = $args;
@@ -277,8 +277,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
       // Load common js, css files
       // Must enqueue for all pages as we need js for the media upload, too.
-      
-      
+
+
       //add_action('admin_head', array($this, 'loadScripts'));
       add_filter('attribute_escape',array($this,'edit_insert_to_post_text'),10,2);
 
@@ -296,7 +296,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
     /**
      * Does all the complicated stuff to build the menu and its first page
-     * 
+     *
      * @since 0.1
      * @access public
      */
@@ -318,10 +318,10 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
          add_action('load-'.$page, array($this,'Load_page_hooker'));
       }
     }
-    
+
     /**
      * Does all the complicated stuff to build the page
-     * 
+     *
      * @since 0.1
      * @access public
      */
@@ -339,7 +339,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
     /**
      * loads scripts and styles for the page
-     * 
+     *
      * @author ohad raz
      * @since 0.1
      * @access public
@@ -390,10 +390,10 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
           echo json_encode($plupload_init)."\n".'</script>';
       }
     }
-    
+
     /**
      * Creates an unique slug out of the page_title and the current menu_slug
-     * 
+     *
      * @since 0.1
      * @access private
      */
@@ -405,43 +405,43 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     }
 
     /** add Help Tab
-     * 
+     *
      * @since 0.1
      * @access public
      * @param $args (mixed|array) contains everything needed to build the field
        *
        * Possible keys within $args:
        *  > id (string) (required)- Tab ID. Must be HTML-safe and should be unique for this menu
-       *  > title (string) (required)- Title for the tab. 
-       *  > content (string) (required)- Help tab content in plain text or HTML. 
-       *         
-       
+       *  > title (string) (required)- Title for the tab.
+       *  > content (string) (required)- Help tab content in plain text or HTML.
+       *
+
      *
      * Will only work on wordpres version 3.3 and up
      */
     public function HelpTab($args){
       $this->_help_tabs[] = $args;
     }
-    
+
     /* print Help Tabs for current screen
-     * 
+     *
      * @access public
        * @since 0.1
        * @author Ohad
      *
      * Will only work on wordpres version 3.3 and up
-     */    
+     */
     public function admin_add_help_tab(){
       $screen = get_current_screen();
       /*
        * Check if current screen is My Admin Page
        * Don't add help tab if it's not
        */
-      
+
       if ( $screen->id != $this->_Slug )
         return;
-      // Add help_tabs for current screen 
-      
+      // Add help_tabs for current screen
+
       foreach((array)$this->_help_tabs as $tab){
 
         $screen->add_help_tab($tab);
@@ -449,7 +449,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     }
 
     /* print out panel Script
-     * 
+     *
      * @access public
        * @since 0.1
      */
@@ -459,20 +459,20 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         /* cookie stuff */
         function setCookie(name,value,days) {
           if (days) {
-            var date = new Date(); 
+            var date = new Date();
             date.setTime(date.getTime()+(days*24*60*60*1000));
             var expires = "; expires="+date.toGMTString();
           }
           else var expires = "";
           document.cookie = name+"="+value+expires+"; path=/";
-        } 
-         
+        }
+
         function getCookie(name) {
           var nameEQ = name + "=";
-          
+
           var ca = document.cookie.split(";");
           for(var i=0;i < ca.length;i++) {
-            var c = ca[i]; 
+            var c = ca[i];
             while (c.charAt(0)==\' \') c = c.substring(1,c.length);
             if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
           }
@@ -486,8 +486,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
            var last_tab = last_tab;
         }else{
            var last_tab = null;
-        } 
-        jQuery(document).ready(function() {  
+        }
+        jQuery(document).ready(function() {
           function show_tab(li){
             if (!jQuery(li).hasClass("active_tab")){
               //hide all
@@ -501,7 +501,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
           }
           //hide all
           jQuery(".setingstab").hide();
-      
+
           //set first_tab as active if no cookie found
           if (last_tab == null){
             jQuery(".panel_menu li:first").addClass("active_tab");
@@ -510,7 +510,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
           }else{
             show_tab(jQuery(\'[href="\' + last_tab + \'"]\').parent());
           }
-      
+
           //bind click on menu action to show the right tab.
           jQuery(".panel_menu li").bind("click", function(event){
             event.preventDefault()
@@ -564,9 +564,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
               return false;
             }
-            
+
           });
-          
+
 
 
           //store old send to editor function
@@ -595,13 +595,13 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         });
         </script>';
     }
-    
-    
-    
+
+
+
     //rename insert to post button
     /**
-     * edit_insert_to_post_text 
-     * 
+     * edit_insert_to_post_text
+     *
      * @author  ohad raz
      * @since 0.1
      * @param  string $input insert to post text
@@ -618,7 +618,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     }
 
     /* print out panel Style (deprecated)
-     * 
+     *
      * @access public
        * @since 0.1
      */
@@ -628,7 +628,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
     /**
        * Outputs all the HTML needed for the new page
-       * 
+       *
        * @access public
        * @param $args (mixed|array) contains everything needed to build the field
        * @param $repeater (boolean)
@@ -641,7 +641,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
           <div class="header_wrap">
           <div style="float:left">';
           echo apply_filters('admin_page_class_before_title','');
-          echo '<h2>'.apply_filters('admin_page_class_h2',$this->args['page_title']).'</h2>'.((isset($this->args['page_header_text']))? $this->args['page_header_text'] : '').' 
+          echo '<h2>'.apply_filters('admin_page_class_h2',$this->args['page_title']).'</h2>'.((isset($this->args['page_header_text']))? $this->args['page_header_text'] : '').'
           </div>
           <div style="float:right;margin:32px 0 0 0">
             <input type="submit" style="margin-left: 25px;" value="'.esc_attr(__('Save Changes','apc')).'" name="Submit" class="'.apply_filters('admin_page_class_submit_class', 'btn-info').' btn"><br><br>
@@ -652,7 +652,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
         if ($this->saved_flag)
           echo '<div class="alert alert-success"><p><strong>'.__('Settings saved.','apc').'</strong></p></div>';
-          
+
           $saved = get_option($this->option_group);
           $this->_saved = $saved;
           $skip = array('title','paragraph','subtitle','TABS','CloseDiv','TABS_Listing','OpenTab','custom','import_export');
@@ -751,7 +751,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
     /**
       * Adds tabs current page
-      * 
+      *
       * @access public
       * @param $args (mixed|array) contains everything needed to build the field
       * @since 0.1
@@ -766,7 +766,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       }
       /**
       * Close open Div
-      * 
+      *
       * @access public
        * @param $args (mixed|array) contains everything needed to build the field
        * @param $repeater (boolean)
@@ -780,7 +780,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       }
       /**
       * Adds tabs listing in ul li
-      * 
+      *
       * @access public
        * @param $args (mixed|array) contains everything needed to build the field
        * @param $repeater (boolean)
@@ -794,7 +794,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       }
       /**
       * Opens a Div
-      * 
+      *
       * @access public
       * @param $args (mixed|array) contains everything needed to build the field
       * @param $repeater (boolean)
@@ -806,10 +806,10 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         $args['std'] = '';
         $this->SetField($args);
       }
-    
+
     /**
       * close a Div
-      * 
+      *
       * @access public
       * @since 0.1
       */
@@ -822,11 +822,11 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
       /**
        * Does the repetive tasks of adding a field
-       * 
+       *
        * @param $args (mixed|array) contains everything needed to build the field
        * @param $repeater (boolean)
        * @since 0.1
-       * 
+       *
        * @access private
        */
       private function SetField($args) {
@@ -841,7 +841,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
       /**
        * Builds all the options with their std values
-       * 
+       *
        * @access public
        * @param $args (mixed|array) contains everything needed to build the field
        * @since 0.1
@@ -869,7 +869,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
        * @param $args (mixed|array) contains everything needed to build the field
        * @param $repeater (boolean)
        * @since 0.1
-       * 
+       *
        * @param string $label simply the text for your heading
        */
       public function Title($label,$repeater = false) {
@@ -879,10 +879,10 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $args['id'] = 'title'.$label;
       $this->SetField($args);
       }
-      
+
   /**
    * Adds a sub-heading to the current page
-   * 
+   *
    * @access public
    * @param $args (mixed|array) contains everything needed to build the field
    * @param $repeater (boolean)
@@ -897,10 +897,10 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $args['std'] = '';
     $this->SetField($args);
   }
-      
+
   /**
    * Adds a paragraph to the current page
-   * 
+   *
    * @access public
    * @param $args (mixed|array) contains everything needed to build the field
    * @param $repeater (boolean)
@@ -915,8 +915,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $args['std'] = '';
     $this->SetField($args);
   }
-  
-    
+
+
   /**
    * Load all Javascript and CSS
    *
@@ -924,15 +924,15 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function load_scripts_styles() {
-    
+
     // Get Plugin Path
     $plugin_path = $this->SelfPath;
-    
+
     //this replaces the ugly check fields methods calls
     foreach (array('upload','color','date','time','code','select','editor') as $type) {
       call_user_func ( array( &$this, 'check_field_' . $type ));
     }
-    
+
     wp_enqueue_script('common');
     if ($this->has_Field('TABS')){
       wp_print_scripts('jquery-ui-tabs');
@@ -941,11 +941,11 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     // Enqueue admin page Style
     wp_enqueue_style( 'Admin_Page_Class', $plugin_path . '/css/Admin_Page_Class.css' );
     wp_enqueue_style('iphone_checkbox',$plugin_path. '/js/FancyCheckbox/FancyCheckbox.css');
-    
+
     // Enqueue admin page Scripts
     wp_enqueue_script( 'Admin_Page_Class', $plugin_path . '/js/Admin_Page_Class.js', array( 'jquery' ), null, true );
     wp_enqueue_script('iphone_checkbox',$plugin_path. '/js/FancyCheckbox/FancyCheckbox.js',array('jquery'),null,true);
-    
+
     wp_enqueue_script('utils');
     wp_enqueue_script( 'jquery-ui-sortable' );
   }
@@ -959,7 +959,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function check_field_code() {
-    
+
     if ( $this->has_field( 'code' ) && $this->is_edit_page() ) {
       $plugin_path = $this->SelfPath;
       // Enqueu codemirror js and css
@@ -972,11 +972,11 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       wp_enqueue_script('at-code-js-css',$plugin_path .'/js/codemirror/css.js',array('jquery'),false,true);
       wp_enqueue_script('at-code-js-clike',$plugin_path .'/js/codemirror/clike.js',array('jquery'),false,true);
       wp_enqueue_script('at-code-js-php',$plugin_path .'/js/codemirror/php.js',array('jquery'),false,true);
-      
+
     }
   }
 
-  
+
 
   /**
    * Check For editor field to enqueue editor scripts
@@ -992,7 +992,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         wp_print_scripts('editor-functions');
       }
     }
-  }  
+  }
 
   /**
    * Check For select field to enqueue Select2 #see http://goo.gl/3pjY8
@@ -1034,32 +1034,32 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function check_field_upload() {
-    
+
     // Check if the field is an image or file. If not, return.
     if ( ! $this->has_field_any(array('image','file')) )
       return;
-    
-    // Add data encoding type for file uploading.  
+
+    // Add data encoding type for file uploading.
     add_action( 'post_edit_form_tag', array( &$this, 'add_enctype' ) );
-    
+
     // Make upload feature work event when custom post type doesn't support 'editor'
     wp_enqueue_script( 'media-upload' );
     add_thickbox();
     wp_enqueue_script( 'jquery-ui-core' );
     wp_enqueue_script( 'jquery-ui-sortable' );
-    
+
     // Add filters for media upload.
     add_filter( 'media_upload_gallery', array( &$this, 'insert_images' ) );
     add_filter( 'media_upload_library', array( &$this, 'insert_images' ) );
     add_filter( 'media_upload_image',   array( &$this, 'insert_images' ) );
-    
+
     // Delete all attachments when delete custom post type.
     add_action( 'wp_ajax_at_delete_file',     array( &$this, 'delete_file' ) );
     add_action( 'wp_ajax_at_reorder_images',   array( &$this, 'reorder_images' ) );
     // Delete file via Ajax
     add_action( 'wp_ajax_at_delete_mupload', array( $this, 'wp_ajax_delete_image' ) );
   }
-  
+
   /**
    * Add data encoding type for file uploading
    *
@@ -1069,7 +1069,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   public function add_enctype () {
     echo ' enctype="multipart/form-data"';
   }
-  
+
   /**
    * Process images added to meta field.
    *
@@ -1079,31 +1079,31 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @author Cory Crowley
    */
   public function insert_images() {
-    
+
     // If post variables are empty, return.
     if ( ! isset( $_POST['at-insert'] ) || empty( $_POST['attachments'] ) )
       return;
-    
+
     // Security Check
     check_admin_referer( 'media-form' );
-    
+
     // Create Security Nonce
     $nonce = wp_create_nonce( 'at_ajax_delete' );
-    
+
     // Get Post Id and Field Id
     $id = $_POST['field_id'];
-    
+
     // Modify the insertion string
     $html = '';
     foreach( $_POST['attachments'] as $attachment_id => $attachment ) {
-      
+
       // Strip Slashes
       $attachment = stripslashes_deep( $attachment );
-      
+
       // If not selected or url is empty, continue in loop.
       if ( empty( $attachment['selected'] ) || empty( $attachment['url'] ) )
         continue;
-        
+
       $li    = "<li id='item_{$attachment_id}'>";
       $li   .= "<img src='{$attachment['url']}' alt='image_{$attachment_id}' />";
       //$li   .= "<a title='" . __( 'Delete this image' ) . "' class='at-delete-file' href='#' rel='{$nonce}|{$post_id}|{$id}|{$attachment_id}'>" . __( 'Delete' ) . "</a>";
@@ -1111,13 +1111,13 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $li   .= "<input type='hidden' name='{$id}[]' value='{$attachment_id}' />";
       $li   .= "</li>";
       $html .= $li;
-      
+
     } // End For Each
-    
+
     return media_send_to_editor( $html );
-    
+
   }
-  
+
   /**
    * Delete attachments associated with the post.
    *
@@ -1126,20 +1126,20 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *
    */
   public function delete_attachments( $post_id ) {
-    
+
     // Get Attachments
     $attachments = get_posts( array( 'numberposts' => -1, 'post_type' => 'attachment', 'post_parent' => $post_id ) );
-    
+
     // Loop through attachments, if not empty, delete it.
     if ( ! empty( $attachments ) ) {
       foreach ( $attachments as $att ) {
         wp_delete_attachment( $att->ID );
       }
     }
-    
+
   }
-  
-  
+
+
   /**
   * Ajax callback for deleting files.
   * Modified from a function used by "Verve Meta Boxes" plugin (http://goo.gl/LzYSq)
@@ -1176,9 +1176,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
        *
        * conditional  block
        * $f[0] = conditional  id
-       * $f[1] = actuall in conditional block image field id 
+       * $f[1] = actuall in conditional block image field id
        */
-      $saved = $temp[$f[0]]; 
+      $saved = $temp[$f[0]];
       if (isset($f[2]) && isset($saved[$f[1]][$f[2]])){ //delete from repeater  block
         unset($saved[$f[1]][$f[2]]);
         $temp[$f[0]] = $saved;
@@ -1206,7 +1206,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       die();
     }
   }
-  
+
   /**
    * Ajax callback for reordering Images.
    *
@@ -1214,15 +1214,15 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function reorder_images() {
-    
+
     if ( ! isset( $_POST['data'] ) )
       die();
-      
+
     list( $order, $post_id, $key, $nonce ) = explode( '|', $_POST['data'] );
-    
+
     if ( ! wp_verify_nonce( $nonce, 'at_ajax_reorder' ) )
       die( '1' );
-      
+
     parse_str( $order, $items );
     $items = $items['item'];
     $order = 1;
@@ -1230,11 +1230,11 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       wp_update_post( array( 'ID' => $item, 'post_parent' => $post_id, 'menu_order' => $order ) );
       $order++;
     }
-    
+
     die( '0' );
-  
+
   }
-  
+
   /**
    * Check Field Color
    *
@@ -1242,7 +1242,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function check_field_color() {
-    
+
     if ( $this->has_field_any(array('color' ,'typo' ))  && $this->is_edit_page() ) {
       if( wp_style_is( 'wp-color-picker', 'registered' ) ) {
           wp_enqueue_style( 'wp-color-picker' );
@@ -1253,17 +1253,17 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         wp_enqueue_script( 'farbtastic' );
       }
     }
-    
+
   }
-  
+
   /**
    * Check Field Date
    *
    * @since 0.1
-   * @access public 
+   * @access public
    */
   public function check_field_date() {
-    
+
     if ( $this->has_field( 'date' ) && $this->is_edit_page() ) {
       $plugin_path = $this->SelfPath;
       // Enqueu JQuery UI, use proper version.
@@ -1271,9 +1271,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       wp_enqueue_script( 'jquery-ui');
 	  wp_enqueue_script( 'jquery-ui-datepicker');
     }
-    
+
   }
-  
+
   /**
    * Check Field Time
    *
@@ -1281,18 +1281,18 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function check_field_time() {
-    
+
     if ( $this->has_field( 'time' ) && $this->is_edit_page() ) {
       $plugin_path = $this->SelfPath;
-      
+
       wp_enqueue_style( 'jquery-ui-css', $plugin_path.'/css/jquery-ui.css' );
       wp_enqueue_script( 'jquery-ui');
       wp_enqueue_script( 'at-timepicker', $plugin_path . '/js/time-and-date/jquery-ui-timepicker-addon.js', array( 'jquery-ui-slider','jquery-ui-datepicker' ), null, true );
-    
+
     }
-    
+
   }
-  
+
   /**
    * Add Meta Box for multiple post types.
    *
@@ -1300,22 +1300,22 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function add() {
-    
+
     // Loop through array
     foreach ( $this->_meta_box['pages'] as $page ) {
       add_meta_box( $this->_meta_box['id'], $this->_meta_box['title'], array( &$this, 'show' ), $page, $this->_meta_box['context'], $this->_meta_box['priority'] );
     }
-    
+
   }
-  
+
   /**
    * Callback function to show fields in Page.
    *
    * @since 0.1
-   * @access public 
+   * @access public
    */
   public function show() {
-    
+
     global $post;
     wp_nonce_field( basename(__FILE__), 'BF_Admin_Page_Class_nonce' );
     echo '<table class="form-table">';
@@ -1325,19 +1325,19 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       if ('image' != $field['type'] && $field['type'] != 'repeater')
         $meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
       echo '<tr>';
-    
+
       // Call Separated methods for displaying each type of field.
       call_user_func ( array( &$this, 'show_field_' . $field['type'] ), $field, $meta );
       echo '</tr>';
     }
     echo '</table>';
   }
-  
+
   /**
    * Show Repeater Fields.
    *
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
    * @modified at 0.4 added sortable option
    * @access public
@@ -1351,11 +1351,11 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $class = " repeater-sortable";
     $jsid = ltrim(strtolower(str_replace(' ','',$field['id'])), '0123456789');
     echo "<div class='at-repeat".$class."' id='{$jsid}'>";
-    
+
     $c = 0;
 
     $meta = isset($this->_saved[$field['id']])? $this->_saved[$field['id']]: '';
-    
+
       if (count($meta) > 0 && is_array($meta) ){
          foreach ($meta as $me){
            //for labling toggles
@@ -1383,13 +1383,13 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
             $f['id'] = $id;
             if (!$field['inline']){
               echo '<tr>';
-            } 
+            }
             call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, $m);
             if (!$field['inline']){
               echo '</tr>';
-            } 
+            }
           }
-        if ($field['inline']){  
+        if ($field['inline']){
           echo '</tr>';
         }
         echo '</table>
@@ -1399,7 +1399,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
            }else{
              echo 'http://i.imgur.com/ka0E2.png';
            }
-           echo '" alt="Edit" title="Edit"/></span> 
+           echo '" alt="Edit" title="Edit"/></span>
         <img src="';
         if ($this->_Local_images){
           echo $plugin_path.'/images/remove.png';
@@ -1408,7 +1408,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         }
         echo '" alt="'.__('Remove','apc').'" title="'.__('Remove','apc').'" id="remove-'.$field['id'].'"></div>';
         $c = $c + 1;
-        
+
         }
       }
 
@@ -1419,19 +1419,19 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       echo 'http://i.imgur.com/w5Tuc.png';
     }
     echo '" alt="'.__('Add','apc').'" title="'.__('Add','apc').'" id="add-'.$jsid.'"><br/></div>';
-    
+
     //create all fields once more for js function and catch with object buffer
     ob_start();
     echo '<div class="at-repater-block"><table class="repeater-table">';
     if ($field['inline']){
       echo '<tr class="at-inline" VALIGN="top">';
-    } 
+    }
     foreach ($field['fields'] as $f){
       //reset var $id for repeater
       $id = '';
 
       $id = $field['id'].'[CurrentCounter]['.$f['id'].']';
-      $f['id'] = $id; 
+      $f['id'] = $id;
       if (!$field['inline']){
         echo '<tr>';
       }
@@ -1439,21 +1439,21 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, $m);
       if (!$field['inline']){
         echo '</tr>';
-      }  
+      }
     }
     if ($field['inline']){
       echo '</tr>';
-    } 
+    }
     echo '</table><img src="';
     if ($this->_Local_images){
       echo $plugin_path.'/images/remove.png';
     }else{
       echo 'http://i.imgur.com/g8Duj.png';
     }
-    
+
     echo '" alt="'.__('Remove','apc').'" title="'.__('Remove','apc').'" id="remove-'.$jsid.'"></div>';
     $counter = 'countadd_'.$jsid;
-    $js_code = ob_get_clean ();    
+    $js_code = ob_get_clean ();
     $js_code = str_replace("'","\"",$js_code);
     $js_code = str_replace("CurrentCounter","' + ".$counter." + '",$js_code);
     echo '<script>
@@ -1461,14 +1461,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
           var '.$counter.' = '.$c.';
           jQuery("#add-'.$jsid.'").live(\'click\', function() {
             '.$counter.' = '.$counter.' + 1;
-            jQuery(this).before(\''.$js_code.'\');            
+            jQuery(this).before(\''.$js_code.'\');
             update_repeater_fields();
           });
               jQuery("#remove-'.$jsid.'").live(\'click\', function() {
                   jQuery(this).parent().remove();
               });
           });
-        </script>';            
+        </script>';
     echo '<br/><style>
 .at-inline{line-height: 1 !important;}
 .at-inline .at-field{border: 0px !important;}
@@ -1479,12 +1479,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 </style>';
     $this->show_field_end($field, $meta);
   }
-  
+
   /**
    * Begin Field.
    *
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
    * @access public
    */
@@ -1502,14 +1502,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       echo "</div>";
     }
   }
-  
+
   /**
    * End Field.
    *
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
-   * @access public 
+   * @access public
    */
   public function show_field_end( $field, $meta=NULL ,$group = false) {
     if (isset($field['group'])){
@@ -1521,11 +1521,11 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         }
       }else {
         if ( $field['desc'] != '' ) {
-          echo "<div class='desc-field'>{$field['desc']}</div><br/>";  
+          echo "<div class='desc-field'>{$field['desc']}</div><br/>";
         }else{
           echo '<br/>';
-        }  
-      }    
+        }
+      }
     }else{
       if ( $field['desc'] != '' ) {
         echo "<div class='desc-field'>{$field['desc']}</div></td>";
@@ -1540,12 +1540,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @author Ohad   Raz
    * @since 0.4
    * @access public
-   * @param  (array) $field 
-   * @param  (array) $meta 
+   * @param  (array) $field
+   * @param  (array) $meta
    * @return void
    */
   public function show_field_sortable( $field, $meta ) {
-      
+
     $this->show_field_begin( $field, $meta );
     $re = '<div class="at-sortable-con"><ul class="at-sortable">';
     $i = 0;
@@ -1563,16 +1563,16 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     echo $re;
     $this->show_field_end( $field, $meta );
   }
-  
+
   /**
    * Show Field Text.
    *
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
    * @access public
    */
-  public function show_field_text( $field, $meta) {  
+  public function show_field_text( $field, $meta) {
     $this->show_field_begin( $field, $meta );
     echo "<input type='text' class='at-text".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='30' />";
     $this->show_field_end( $field, $meta );
@@ -1581,12 +1581,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   /**
    * Show Field Plupload.
    *
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.9.7
    * @access public
    */
-  public function show_field_plupload( $field, $meta) {  
+  public function show_field_plupload( $field, $meta) {
 
     $this->show_field_begin($field,$meta);
     $id = $field['id']; // this will be the name of form field. Image url(s) will be submitted in $_POST using this key. So if $id == “img1” then $_POST[“img1”] will have all the image urls
@@ -1612,13 +1612,13 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       echo $html;
       $this->show_field_end($field,$meta);
   }
-  
+
   /**
    * Show Field code editor.
    *
-   * @param string $field 
+   * @param string $field
    * @author Ohad Raz
-   * @param string $meta 
+   * @param string $meta
    * @since 0.1
    * @access public
    */
@@ -1632,31 +1632,31 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   /**
    * Show Field hidden.
    *
-   * @param string $field 
-   * @param string|mixed $meta 
+   * @param string $field
+   * @param string|mixed $meta
    * @since 0.1
    * @access public
    */
-  public function show_field_hidden( $field, $meta) {  
+  public function show_field_hidden( $field, $meta) {
     echo "<input type='hidden' class='at-hidden".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' value='{$meta}'/>";
   }
-  
+
   /**
    * Show Field Paragraph.
    *
-   * @param string $field 
+   * @param string $field
    * @since 0.1
    * @access public
    */
-  public function show_field_paragraph( $field) {  
+  public function show_field_paragraph( $field) {
     echo '<p>'.$field['value'].'</p>';
   }
-    
+
   /**
    * Show Field Textarea.
    *
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
    * @access public
    */
@@ -1665,18 +1665,18 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       echo "<textarea class='at-textarea large-text".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>{$meta}</textarea>";
     $this->show_field_end( $field, $meta );
   }
-  
+
   /**
    * Show Field Select.
    *
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
    * @access public
    */
   public function show_field_select( $field, $meta ) {
-    
-    if ( ! is_array( $meta ) ) 
+
+    if ( ! is_array( $meta ) )
       $meta = (array) $meta;
 
     $this->show_field_begin( $field, $meta );
@@ -1687,37 +1687,37 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       echo "</select>";
     $this->show_field_end( $field, $meta );
   }
-  
+
   /**
    * Show Radio Field.
    *
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
-   * @access public 
+   * @access public
    */
   public function show_field_radio( $field, $meta ) {
-    
+
     if ( ! is_array( $meta ) )
       $meta = (array) $meta;
-      
+
     $this->show_field_begin( $field, $meta );
       foreach ( $field['options'] as $key => $value ) {
         echo "<input type='radio' class='at-radio".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " /> <span class='at-radio-label'>{$value}</span>";
       }
     $this->show_field_end( $field, $meta );
   }
-  
+
   /**
    * Show Checkbox Field.
    *
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
    * @access public
    */
   public function show_field_checkbox( $field, $meta ) {
-  
+
     $this->show_field_begin($field, $meta);
     $meta = ($meta == 'on')? true: $meta;
     echo "<input type='checkbox' class='rw-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}'" . checked($meta, true, false) . " />";
@@ -1727,13 +1727,13 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   /**
    * Show conditinal Checkbox Field.
    *
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.5
    * @access public
    */
   public function show_field_cond( $field, $meta ) {
-  
+
     $this->show_field_begin($field, $meta);
     $checked = false;
     if (is_array($meta) && isset($meta['enabled']) && $meta['enabled'] == 'on'){
@@ -1742,7 +1742,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     echo "<input type='checkbox' class='conditinal_control' name='{$field['id']}[enabled]' id='{$field['id']}'" . checked($checked, true, false) . " />";
     //start showing the fields
     $display = ($checked)? '' :  ' style="display: none;"';
-    
+
     echo '<div class="conditinal_container"'.$display.'>';
     foreach ((array)$field['fields'] as $f){
       //reset var $id for cond
@@ -1760,12 +1760,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     echo '</div>';
     $this->show_field_end( $field, $meta );
   }
-  
+
   /**
    * Show Wysiwig Field.
    *
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
    * @access public
    */
@@ -1782,17 +1782,17 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     }
     $this->show_field_end( $field, $meta );
   }
-  
+
   /**
    * Show File Field.
    *
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
    * @access public
    */
   public function show_field_file( $field, $meta ) {
-    
+
     global $post;
 
     if ( ! is_array( $meta ) )
@@ -1824,12 +1824,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       echo "</div><!-- End .new-files -->";
     echo "</td>";
   }
-  
+
   /**
    * Show Image Field.
    *
-   * @param array $field 
-   * @param array $meta 
+   * @param array $field
+   * @param array $meta
    * @since 0.1
    * @access public
    */
@@ -1861,11 +1861,11 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * Show Typography Field.
    *
    * @author Ohad Raz
-   * @param array $field 
-   * @param array $meta 
+   * @param array $field
+   * @param array $meta
    * @since 0.3
    * @access public
-   * 
+   *
    * @last modified 0.4 - faster better selected handeling
    */
   public function show_field_typo( $field, $meta ) {
@@ -1912,7 +1912,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $op = str_replace('value="'.$meta['weight'].'"', 'value="'.$meta['weight'].'" selected="selected"', $op);
     $html .= $op. '</select>';
 
-    /* Font Style */    
+    /* Font Style */
     $html .= '<select class="at-typography at-typography-style" name="'.$field['id'].'[style]" id="'. $field['id'].'_style">';
     $styles = $this->get_font_style();
     $op = '';
@@ -1925,74 +1925,74 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
     // Font Color
     if( wp_style_is( 'wp-color-picker', 'registered' ) ) { //iris color picker since 3.5
-      $html .= "<input class='at-color-iris' type='text' name='{$field['id']}[color]' id='{$field['id']}[color]' value='".$meta['color']."' size='8' />";  
+      $html .= "<input class='at-color-iris' type='text' name='{$field['id']}[color]' id='{$field['id']}[color]' value='".$meta['color']."' size='8' />";
     }else{
       $html .= "<input class='at-color' type='text' name='".$field['id']."[color]' id='".$field['id']."[color]' value='".$meta['color'] ."' size='6' />";
       $html .= "<input type='button' class='at-color-select button' rel='".$field['id']."[color]' value='" . __( 'Select a color' ,'apc') . "'/>";
       $html .= "<div style='display:none' class='at-color-picker' rel='".$field['id']."[color]'></div>";
     }
-    
+
     echo $html;
     $this->show_field_end( $field, $meta );
   }
-  
+
   /**
    * Show Color Field.
    *
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
    * @access public
    */
   public function show_field_color( $field, $meta ) {
-    
-    if ( empty( $meta ) ) 
+
+    if ( empty( $meta ) )
       $meta = '#';
-      
+
     $this->show_field_begin( $field, $meta );
     if( wp_style_is( 'wp-color-picker', 'registered' ) ) { //iris color picker since 3.5
-      echo "<input class='at-color-iris".(isset($field['class'])? " {$field['class']}": "")."' type='text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='8' />";  
+      echo "<input class='at-color-iris".(isset($field['class'])? " {$field['class']}": "")."' type='text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='8' />";
     }else{
       echo "<input class='at-color".(isset($field['class'])? " {$field['class']}": "")."' type='text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='8' />";
       echo "<input type='button' class='at-color-select button' rel='{$field['id']}' value='" . __( 'Select a color' ,'apc') . "'/>";
       echo "<div style='display:none' class='at-color-picker' rel='{$field['id']}'></div>";
     }
     $this->show_field_end($field, $meta);
-    
+
   }
 
   /**
    * Show Checkbox List Field
    *
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
    * @access public
    */
   public function show_field_checkbox_list( $field, $meta ) {
-    
-    if ( ! is_array( $meta ) ) 
+
+    if ( ! is_array( $meta ) )
       $meta = (array) $meta;
-      
+
     $this->show_field_begin($field, $meta);
-    
+
       $html = array();
-    
+
       foreach ($field['options'] as $key => $value) {
         $html[] = "<label><input type='checkbox' class='at-checkbox_list".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " />{$value}</label>";
       }
-    
+
       echo implode( '<br />' , $html );
-      
+
     $this->show_field_end($field, $meta);
-    
+
   }
-  
+
   /**
    * Show Date Field.
    *
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
    * @access public
    */
@@ -2001,37 +2001,37 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       echo "<input type='text' class='at-date".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' rel='{$field['format']}' value='{$meta}' size='30' />";
     $this->show_field_end( $field, $meta );
   }
-  
+
   /**
    * Show time field.
    *
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
-   * @access public 
+   * @access public
    */
   public function show_field_time( $field, $meta ) {
     $this->show_field_begin( $field, $meta );
       echo "<input type='text' class='at-time".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' rel='{$field['format']}' value='{$meta}' size='30' />";
     $this->show_field_end( $field, $meta );
   }
-  
+
    /**
    * Show Posts field.
    * used creating a posts/pages/custom types checkboxlist or a select dropdown
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
-   * @access public 
+   * @access public
    */
   public function show_field_posts($field, $meta) {
     global $post;
-    
+
     if (!is_array($meta)) $meta = (array) $meta;
     $this->show_field_begin($field, $meta);
     $options = $field['options'];
     $posts = get_posts($options['args']);
-    
+
     // checkbox_list
     if ('checkbox_list' == $options['type']) {
       foreach ($posts as $p) {
@@ -2049,28 +2049,28 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       }
       echo "</select>";
     }
-    
+
     $this->show_field_end($field, $meta);
   }
-  
+
   /**
    * Show Taxonomy field.
    * used creating a category/tags/custom taxonomy checkboxlist or a select dropdown
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
-   * @access public 
-   * 
+   * @access public
+   *
    * @uses get_terms()
    */
   public function show_field_taxonomy($field, $meta) {
     global $post;
-    
+
     if (!is_array($meta)) $meta = (array) $meta;
     $this->show_field_begin($field, $meta);
     $options = $field['options'];
     $terms = get_terms($options['taxonomy'], $options['args']);
-    
+
     // checkbox_list
     if ('checkbox_list' == $options['type']) {
       foreach ($terms as $term) {
@@ -2078,7 +2078,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
           echo "<label><input type='checkbox' class='at-tax-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$term->slug'" . checked(in_array($term->slug, $meta), true, false) . " /> {$term->name}</label>";
         else
           echo "{$term->name} <input type='checkbox' class='at-tax-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$term->slug'" . checked(in_array($term->slug, $meta), true, false) . " />";
-      }   
+      }
     }
     // select
     else {
@@ -2088,18 +2088,18 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       }
       echo "</select>";
     }
-    
+
     $this->show_field_end($field, $meta);
   }
 
   /**
    * Show Role field.
    * used creating a Wordpress roles list checkboxlist or a select dropdown
-   * @param string $field 
-   * @param string $meta 
+   * @param string $field
+   * @param string $meta
    * @since 0.1
-   * @access public 
-   * 
+   * @access public
+   *
    * @uses global $wp_roles;
    * @uses checked();
    */
@@ -2132,36 +2132,36 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     }
     $this->show_field_end($field, $meta);
   }
-  
+
   /**
    * Save Data from page
    *
    * @param string $repeater (false )
    * @since 0.1
-   * @access public 
+   * @access public
    */
   public function save($repeater = false) {
     $saved  = get_option($this->option_group);
     $this->_saved = $saved;
 
     $post_data = isset($_POST)? $_POST : NULL;
-    
+
     If ($post_data == NULL) return;
 
     $skip = array('title','paragraph','subtitle','TABS','CloseDiv','TABS_Listing','OpenTab','import_export');
-    
+
     //check nonce
     if ( ! check_admin_referer( basename( __FILE__ ), 'BF_Admin_Page_Class_nonce') )
       return;
-    
+
     foreach ( $this->_fields as $field ) {
       if(!in_array($field['type'],$skip)){
-      
+
         $name = $field['id'];
         $type = $field['type'];
         $old = isset($saved[$name])? $saved[$name]: NULL;
         $new = ( isset( $_POST[$name] ) ) ? $_POST[$name] : ( ( isset($field['multiple']) && $field['multiple']) ? array() : '' );
-              
+
 
         // Validate meta value
         if ( class_exists( 'BF_Admin_Page_Class_Validate' ) && isset($field['validate_func']) && method_exists( 'BF_Admin_Page_Class_Validate', $field['validate_func'] ) ) {
@@ -2175,25 +2175,25 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         } else {
           $this->save_field( $field, $old, $new );
         }
-      
+
       }//END Skip
     } // End foreach
     update_option($this->args['option_group'],$this->_saved);
   }
-  
+
   /**
    * Common function for saving fields.
    *
-   * @param string $field 
-   * @param string $old 
-   * @param string|mixed $new 
+   * @param string $field
+   * @param string $old
+   * @param string|mixed $new
    * @since 0.1
    * @access public
    */
   public function save_field( $field, $old, $new ) {
     $name = $field['id'];
     unset($this->_saved[$name]);
-    if ( $new === '' || $new === array() ) 
+    if ( $new === '' || $new === array() )
       return;
     if ( isset($field['multiple'] ) && $field['multiple'] && $field['type'] != 'plupload') {
       foreach ( $new as $add_new ) {
@@ -2204,62 +2204,62 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $this->_saved[$name] = $new;
     }
   }
-  
+
   /**
    * function for saving image field.
    *
-   * @param string $field 
-   * @param string $old 
-   * @param string|mixed $new 
+   * @param string $field
+   * @param string $old
+   * @param string|mixed $new
    * @since 0.1
    * @access public
    */
   public function save_field_image(  $field, $old, $new ) {
     $name = $field['id'];
     unset($this->_saved[$name]);
-    if ( $new === '' || $new === array() || $new['id'] == '' || $new['src'] == '') 
+    if ( $new === '' || $new === array() || $new['id'] == '' || $new['src'] == '')
       return;
-    
+
     $this->_saved[$name] = $new;
   }
-  
+
   /*
    * Save Wysiwyg Field.
    *
-   * @param string $field 
-   * @param string $old 
-   * @param string $new 
+   * @param string $field
+   * @param string $old
+   * @param string $new
    * @since 0.1
-   * @access public 
+   * @access public
    */
   public function save_field_wysiwyg(  $field, $old, $new ) {
     $this->save_field(  $field, $old, htmlentities($new) );
   }
-  
+
   /*
    * Save checkbox Field.
    *
-   * @param string $field 
-   * @param string $old 
-   * @param string $new 
+   * @param string $field
+   * @param string $old
+   * @param string $new
    * @since 0.9
-   * @access public 
+   * @access public
    */
   public function save_field_checkbox(  $field, $old, $new ) {
     if ( $new === '' )
       $this->save_field(  $field, $old, false );
     else
       $this->save_field(  $field, $old, true );
-  }  
-    
+  }
+
   /**
    * Save repeater Fields.
    *
-   * @param string $field 
-   * @param string|mixed $old 
-   * @param string|mixed $new 
+   * @param string $field
+   * @param string|mixed $old
+   * @param string|mixed $new
    * @since 0.1
-   * @access public 
+   * @access public
    */
   public function save_field_repeater( $field, $old, $new ) {
     if (is_array($new) && count($new) > 0){
@@ -2268,7 +2268,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
           $type = $f['type'];
           switch($type) {
             case 'wysiwyg':
-                $n[$f['id']] = wpautop( $n[$f['id']] ); 
+                $n[$f['id']] = wpautop( $n[$f['id']] );
                 break;
               case 'file':
                 $n[$f['id']] = $this->save_field_file_repeater($f,'',$n[$f['id']]);
@@ -2292,9 +2292,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         unset($this->_saved[$field['id']]);
     }
   }
-  
-    
-    
+
+
+
   /**
    * Add missed values for Page.
    *
@@ -2302,27 +2302,27 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function add_missed_values() {
-    
-    // Default values for admin 
+
+    // Default values for admin
     //$this->_meta_box = array_merge( array( 'context' => 'normal', 'priority' => 'high', 'pages' => array( 'post' ) ), $this->_meta_box );
 
     // Default values for fields
     foreach ( $this->_fields as &$field ) {
-      
+
       $multiple = in_array( $field['type'], array( 'checkbox_list', 'file', 'image' ) );
       $std = $multiple ? array() : '';
       $format = 'date' == $field['type'] ? 'yy-mm-dd' : ( 'time' == $field['type'] ? 'hh:mm' : '' );
 
       $field = array_merge( array( 'multiple' => $multiple, 'std' => $std, 'desc' => '', 'format' => $format, 'validate_func' => '' ), $field );
-    
+
     } // End foreach
-    
+
   }
 
   /**
    * Check if field with $type exists.
    *
-   * @param string $type 
+   * @param string $type
    * @since 0.1
    * @access public
    */
@@ -2338,7 +2338,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $temp[] = $field['type'];
       if ('repeater' == $field['type']  || 'cond' == $field['type']){
         foreach((array)$field["fields"] as $repeater_field) {
-          $temp[] = $repeater_field["type"];  
+          $temp[] = $repeater_field["type"];
         }
       }
     }
@@ -2351,11 +2351,11 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
   /**
    * Check if any of the fields types exists
-   * 
+   *
    * @since 1.1.3
    * @access public
    * @param  array  $types array of field types
-   * @return boolean  
+   * @return boolean
    */
   public function has_field_any($types){
     foreach ((array)$types as $t) {
@@ -2376,32 +2376,32 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     return true;
     //return in_array( $pagenow, array( 'post.php', 'post-new.php' ) );
   }
-  
+
   /**
    * Fixes the odd indexing of multiple file uploads.
    *
-   * Goes from the format: 
+   * Goes from the format:
    * $_FILES['field']['key']['index']
    * to
    * The More standard and appropriate:
    * $_FILES['field']['index']['key']
    *
-   * @param string $files 
+   * @param string $files
    * @since 0.1
    * @access public
    */
   public function fix_file_array( &$files ) {
-    
+
     $output = array();
-    
+
     foreach ( $files as $key => $list ) {
       foreach ( $list as $index => $value ) {
         $output[$index][$key] = $value;
       }
     }
-    
+
     return $files = $output;
-  
+
   }
 
   /**
@@ -2413,17 +2413,17 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function get_jqueryui_ver() {
-    
+
     global $wp_version;
-    
+
     if ( version_compare( $wp_version, '3.1', '>=') ) {
       return '1.8.10';
     }
-    
+
     return '1.7.3';
-  
+
   }
-  
+
   /**
    *  Add Field to page (generic function)
    *  @author Ohad Raz
@@ -2439,25 +2439,25 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   }
 
   /**
-   * Add typography Field 
-   * 
+   * Add typography Field
+   *
    * @author Ohad    Raz
    * @since 0.3
-   * 
+   *
    * @access public
-   * 
+   *
    * @param  $id string  id of the field
    * @param  $args mixed|array
-   * @param  boolean $repeater=false 
+   * @param  boolean $repeater=false
    */
   public function addTypo($id,$args,$repeater=false){
     $new_field = array(
-      'type' => 'typo', 
+      'type' => 'typo',
       'id'=> $id,
       'std' => array(
-        'size' => '12px', 
+        'size' => '12px',
         'color' => '#000000',
-        'face' => 'arial', 
+        'face' => 'arial',
         'style' => 'normal',
         'weight' => 'normal'
       ),
@@ -2468,7 +2468,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $new_field = array_merge($new_field, $args);
     $this->_fields[] = $new_field;
   }
-  
+
   /**
    *  Add Text Field to Page
    *  @author Ohad Raz
@@ -2481,7 +2481,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'style' =>   // custom style for field, string optional
    *    'validate_func' => // validate function, string optional
-   *   @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *   @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addText($id,$args,$repeater=false){
     $new_field = array('type' => 'text','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Text Field');
@@ -2505,7 +2505,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'style' =>   // custom style for field, string optional
    *    'validate_func' => // validate function, string optional
-   *   @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *   @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addPlupload($id,$args,$repeater=false){
     $new_field = array('type' => 'plupload','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'PlUpload Field','width' => null, 'height' => null,'multiple' => false);
@@ -2529,7 +2529,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'style' =>   // custom style for field, string optional
    *    'validate_func' => // validate function, string optional
-   *   @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *   @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addHidden($id,$args,$repeater=false){
     $new_field = array('type' => 'hidden','id'=> $id,'std' => '','desc' => '','style' =>'','name' => '');
@@ -2554,7 +2554,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'style' =>   // custom style for field, string optional
    *    'syntax' =>   // syntax language to use in editor (php,javascript,css,html)
    *    'validate_func' => // validate function, string optional
-   *   @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *   @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addCode($id,$args,$repeater=false){
     $new_field = array('type' => 'code','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Code Editor Field','syntax' => 'php', 'theme' => 'default');
@@ -2565,15 +2565,15 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       return $new_field;
     }
   }
-  
+
   /**
    *  Add Paragraph to Page
    *  @author Ohad Raz
    *  @since 0.1
    *  @access public
-   *  
+   *
    *  @param $p  paragraph html
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addParagraph($p,$repeater=false){
     $new_field = array('type' => 'paragraph','id'=> '','value' => $p);
@@ -2583,7 +2583,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       return $new_field;
     }
   }
-    
+
   /**
    *  Add Checkbox Field to Page
    *  @author Ohad Raz
@@ -2595,7 +2595,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'desc' => // field description, string optional
    *    'std' => // default value, string optional
    *    'validate_func' => // validate function, string optional
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addCheckbox($id,$args,$repeater=false){
     $new_field = array('type' => 'checkbox','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Checkbox Field');
@@ -2619,7 +2619,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'validate_func' => // validate function, string optional
    *    'fields' => list of fields to show conditionally.
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addCondition($id,$args,$repeater=false){
     $new_field = array('type' => 'cond','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Conditional Field','fields' => array());
@@ -2644,8 +2644,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'validate_func' => // validate function, string optional
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
-   *  
-   *   @return : remember to call: $checkbox_list = get_post_meta(get_the_ID(), 'meta_name', false); 
+   *
+   *   @return : remember to call: $checkbox_list = get_post_meta(get_the_ID(), 'meta_name', false);
    *   which means the last param as false to get the values in an array
    */
   public function addCheckboxList($id,$options=array(),$args,$repeater=false){
@@ -2657,7 +2657,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       return $new_field;
     }
   }
-  
+
   /**
    *  Add Textarea Field to Page
    *  @author Ohad Raz
@@ -2670,7 +2670,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'style' =>   // custom style for field, string optional
    *    'validate_func' => // validate function, string optional
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addTextarea($id,$args,$repeater=false){
     $new_field = array('type' => 'textarea','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Textarea Field');
@@ -2681,21 +2681,21 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       return $new_field;
     }
   }
-  
+
   /**
    *  Add Select Field to Page
    *  @author Ohad Raz
    *  @since 0.1
    *  @access public
    *  @param $id string field id, i.e. the meta key
-   *  @param $options (array)  array of key => value pairs for select options  
+   *  @param $options (array)  array of key => value pairs for select options
    *  @param $args mixed|array
    *    'name' => // field name/label string optional
    *    'desc' => // field description, string optional
    *    'std' => // default value, (array) optional
    *    'multiple' => // select multiple values, optional. Default is false.
    *    'validate_func' => // validate function, string optional
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addSelect($id,$options,$args,$repeater=false){
     $new_field = array('type' => 'select','id'=> $id,'std' => array(),'desc' => '','style' =>'','name' => 'Select Field','multiple' => false,'options' => $options);
@@ -2719,7 +2719,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'desc' => // field description, string optional
    *    'std' => // default value, (array) optional
    *    'validate_func' => // validate function, string optional
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addSortable($id,$options,$args,$repeater=false){
     $new_field = array('type' => 'sortable','id'=> $id,'std' => array(),'desc' => '','style' =>'','name' => 'Select Field','multiple' => false,'options' => $options);
@@ -2730,8 +2730,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       return $new_field;
     }
   }
-  
-  
+
+
   /**
    *  Add Radio Field to Page
    *  @author Ohad Raz
@@ -2743,7 +2743,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'name' => // field name/label string optional
    *    'desc' => // field description, string optional
    *    'std' => // default value, string optional
-   *    'validate_func' => // validate function, string optional 
+   *    'validate_func' => // validate function, string optional
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addRadio($id,$options,$args,$repeater=false){
@@ -2768,7 +2768,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'validate_func' => // validate function, string optional
    *    'format' => // date format, default yy-mm-dd. Optional. Default "'d MM, yy'"  See more formats here: http://goo.gl/Wcwxn
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addDate($id,$args,$repeater=false){
     $new_field = array('type' => 'date','id'=> $id,'std' => '','desc' => '','format'=>'d MM, yy','name' => 'Date Field');
@@ -2792,7 +2792,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'validate_func' => // validate function, string optional
    *    'format' => // time format, default hh:mm. Optional. See more formats here: http://goo.gl/83woX
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addTime($id,$args,$repeater=false){
     $new_field = array('type' => 'time','id'=> $id,'std' => '','desc' => '','format'=>'hh:mm','name' => 'Time Field');
@@ -2803,7 +2803,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       return $new_field;
     }
   }
-  
+
   /**
    *  Add Color Field to Page
    *  @author Ohad Raz
@@ -2815,7 +2815,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'desc' => // field description, string optional
    *    'std' => // default value, string optional
    *    'validate_func' => // validate function, string optional
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addColor($id,$args,$repeater=false){
     $new_field = array('type' => 'color','id'=> $id,'std' => '','desc' => '','name' => 'ColorPicker Field');
@@ -2826,7 +2826,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       return $new_field;
     }
   }
-  
+
   /**
    *  Add Image Field to Page
    *  @author Ohad Raz
@@ -2837,7 +2837,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'name' => // field name/label string optional
    *    'desc' => // field description, string optional
    *    'validate_func' => // validate function, string optional
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addImage($id,$args,$repeater=false){
     $new_field = array('type' => 'image','id'=> $id,'desc' => '','name' => 'Image Field');
@@ -2848,7 +2848,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       return $new_field;
     }
   }
-  
+
 
   /**
    *  Add WYSIWYG Field to Page
@@ -2861,7 +2861,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'desc' => // field description, string optional
    *    'std' => // default value, string optional
    *    'style' =>   // custom style for field, string optional Default 'width: 300px; height: 400px'
-   *    'validate_func' => // validate function, string optional 
+   *    'validate_func' => // validate function, string optional
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addWysiwyg($id,$args,$repeater=false){
@@ -2873,7 +2873,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       return $new_field;
     }
   }
-  
+
   /**
    *  Add Taxonomy Field to Page
    *  @author Ohad Raz
@@ -2883,12 +2883,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *  @param $options mixed|array options of taxonomy field
    *    'taxonomy' =>    // taxonomy name can be category,post_tag or any custom taxonomy default is category
    *    'type' =>  // how to show taxonomy? 'select' (default) or 'checkbox_list'
-   *    'args' =>  // arguments to query taxonomy, see http://goo.gl/uAANN default ('hide_empty' => false)  
+   *    'args' =>  // arguments to query taxonomy, see http://goo.gl/uAANN default ('hide_empty' => false)
    *  @param $args mixed|array
    *    'name' => // field name/label string optional
    *    'desc' => // field description, string optional
    *    'std' => // default value, string optional
-   *    'validate_func' => // validate function, string optional 
+   *    'validate_func' => // validate function, string optional
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addTaxonomy($id,$options,$args,$repeater=false){
@@ -2918,7 +2918,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'name' => // field name/label string optional
    *    'desc' => // field description, string optional
    *    'std' => // default value, string optional
-   *    'validate_func' => // validate function, string optional 
+   *    'validate_func' => // validate function, string optional
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addRoles($id,$options,$args,$repeater=false){
@@ -2941,17 +2941,19 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *  @param $options mixed|array options of taxonomy field
    *    'post_type' =>    // post type name, 'post' (default) 'page' or any custom post type
    *    type' =>  // how to show posts? 'select' (default) or 'checkbox_list'
-   *    args' =>  // arguments to query posts, see http://goo.gl/is0yK default ('posts_per_page' => -1)  
+   *    args' =>  // arguments to query posts, see http://goo.gl/is0yK default ('posts_per_page' => -1)
    *  @param $args mixed|array
    *    'name' => // field name/label string optional
    *    'desc' => // field description, string optional
    *    'std' => // default value, string optional
-   *    'validate_func' => // validate function, string optional 
+   *    'validate_func' => // validate function, string optional
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addPosts($id,$options,$args,$repeater=false){
-    $q = array('posts_per_page' => -1);
-    $temp = array('post_type' =>'post','type'=>'select','args'=>$q);
+    $post_type = isset($options['post_type'])? $options['post_type']: (isset($args['post_type']) ? $args['post_type']: 'post');
+    $q = array('posts_per_page' => -1, 'post_type' => $post_type);
+    // print_r($post_type);
+    $temp = array('post_type' =>$post_type,'type'=>'select','args'=>$q);
     $options = array_merge($temp,$options);
     $new_field = array('type' => 'posts','id'=> $id,'desc' => '','name' => 'Posts Field','options'=> $options);
     $new_field = array_merge($new_field, $args);
@@ -2961,7 +2963,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       return $new_field;
     }
   }
-  
+
   /**
    *  Add repeater Field Block to Page
    *  @author Ohad Raz
@@ -2974,7 +2976,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'style' =>   // custom style for field, string optional
    *    'validate_func' => // validate function, string optional
-   *    'fields' => //fields to repeater  
+   *    'fields' => //fields to repeater
    *  @modified 0.4 added sortable option
    */
   public function addRepeaterBlock($id,$args){
@@ -2982,8 +2984,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $new_field = array_merge($new_field, $args);
     $this->_fields[] = $new_field;
   }
-  
-  
+
+
   /**
    * Finish Declaration of Page
    * @author Ohad Raz
@@ -2999,7 +3001,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $this->check_field_time();
     $this->check_field_code();
   }
-  
+
   /**
    * Helper function to check for empty arrays
    * @author Ohad Raz
@@ -3010,7 +3012,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   public function is_array_empty($array){
     if (!is_array($array))
       return true;
-    
+
     foreach ($array as $a){
       if (is_array($a)){
         foreach ($a as $sub_a){
@@ -3027,11 +3029,11 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
   /**
    * Get the list of avialable Fonts
-   * 
+   *
    * @author Ohad   Raz
    * @since 0.3
    * @access public
-   * 
+   *
    * @return mixed|array
    */
   public function get_fonts_family($font = null) {
@@ -3102,11 +3104,11 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
   /**
    * Get list of font faces
-   * 
+   *
    * @author Ohad   Raz
    * @since 0.3
    * @access public
-   * 
+   *
    * @return array
    */
   public function get_font_style(){
@@ -3120,11 +3122,11 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
   /**
    * Get list of font wieght
-   * 
+   *
    * @author Ohad   Raz
    * @since 0.9.9
    * @access public
-   * 
+   *
    * @return array
    */
   public function get_font_weight(){
@@ -3156,7 +3158,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *  @author Ohad Raz
    *  @since 0.8
    *  @access public
-   *  
+   *
    *  @return void
    */
   public function addImportExport(){
@@ -3173,7 +3175,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         <p>'. __('To export saved settings click the Export button bellow and you will get the export Code in the box bellow, which you can later use to import.','apc').'</p>
         <div class="export_code">
           <label for="export_code">'. __('Export Code','apc').'</label><br/>
-          <textarea id="export_code"></textarea>        
+          <textarea id="export_code"></textarea>
           <input class="button-primary" type="button" value="'. __('Get Export','apc').'" id="apc_export_b" />'.$this->create_export_download_link().'
           <div class="export_status" style="display: none;"><img src="http://i.imgur.com/l4pWs.gif" alt="loading..."/></div>
           <div class="export_results alert" style="display: none;"></div>
@@ -3198,12 +3200,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   }
 
   /**
-   * Ajax export 
-   * 
+   * Ajax export
+   *
    * @author Ohad   Raz
    * @since 0.8
    * @access public
-   * 
+   *
    * @return json object
    */
   public function export(){
@@ -3220,7 +3222,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $re['code']= "<!*!* START export Code !*!*>\n".base64_encode(serialize($options))."\n<!*!* END export Code !*!*>";
     else
       $re['err'] = __('error in ajax request! (2)','apc');
-    
+
     //update_nonce
     $re['nonce'] = wp_create_nonce("apc_export");
     echo json_encode($re);
@@ -3229,12 +3231,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   }
 
   /**
-   * Ajax import 
-   * 
+   * Ajax import
+   *
    * @author Ohad   Raz
    * @since 0.8
    * @access public
-   * 
+   *
    * @return json object
    */
   public function import(){
@@ -3265,8 +3267,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
   //then define the function that will take care of the actual download
   public function download_file($content = null, $file_name = null){
-    if (! wp_verify_nonce($_REQUEST['nonce'], 'theme_export_options') ) 
-        wp_die('Security check'); 
+    if (! wp_verify_nonce($_REQUEST['nonce'], 'theme_export_options') )
+        wp_die('Security check');
 
     //here you get the options to export and set it as content, ex:
     $options= get_option($_REQUEST['option_group']);
@@ -3276,9 +3278,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
     if ( !current_user_can('edit_themes') )
         wp_die('<p>'.__('You do not have sufficient permissions to edit templates for this site.','apc').'</p>');
-    
+
     if ($content === null || $file_name === null){
-        wp_die('<p>'.__('Error Downloading file.','apc').'</p>');     
+        wp_die('<p>'.__('Error Downloading file.','apc').'</p>');
     }
     $fsize = strlen($content);
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
@@ -3327,17 +3329,17 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     // check ajax noonce
     $imgid = $_POST["imgid"];
     check_ajax_referer($imgid . 'pluploadan');
- 
+
     // handle file upload
     $status = wp_handle_upload($_FILES[$imgid . 'async-upload'], array('test_form' => true, 'action' => 'plupload_action'));
- 
+
     // send the uploaded file url in response
     echo $status['url'];
     exit;
   }
 
   /**
-   * load_textdomain 
+   * load_textdomain
    * @author Ohad Raz
    * @since 1.0.9
    * @return void
