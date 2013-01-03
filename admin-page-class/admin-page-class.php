@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.1.7
+ * @version 1.1.8
  * @copyright 2012 
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -355,7 +355,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       //panel script
       add_action('admin_footer-' . $page, array($this,'panel_script'));
       //add mising scripts
-      add_action('admin_enqueue_scripts',array($this,'Finish'));
+      //add_action('admin_enqueue_scripts',array($this,'Finish'));
+      
       if(isset($_POST['action']) && $_POST['action'] == 'save') {
         $this->save();
         $this->saved_flag = true;
@@ -929,7 +930,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $plugin_path = $this->SelfPath;
     
     //this replaces the ugly check fields methods calls
-    foreach (array('upload','color','date','time','code','select','editor') as $type) {
+    foreach (array('upload','color','date','time','code','select','editor','plupload') as $type) {
       call_user_func ( array( &$this, 'check_field_' . $type ));
     }
     
@@ -1015,7 +1016,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @since 0.9.7
    * @access public
    */
-  public function check_filed_plupload(){
+  public function check_field_plupload(){
     if ( $this->has_field( 'plupload' )  && $this->is_edit_page() ) {
       $plugin_path = $this->SelfPath;
       wp_enqueue_script('plupload-all');
@@ -1489,18 +1490,13 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function show_field_begin( $field, $meta) {
-    if (isset($field['group'])){
-      if ($field['group'] == "start"){
-        echo "<td class='at-field'>";
-      }
-    }else{
-      echo "<td class='at-field'>";
-    }
+    echo "<td class='at-field'>";
     if ( $field['name'] != '' || $field['name'] != FALSE ) {
-      echo "<div class='at-label'>";
+        echo "<div class='at-label'>";
         echo "<label for='{$field['id']}'>{$field['name']}</label>";
-      echo "</div>";
+        echo "</div>";
     }
+
   }
   
   /**
@@ -1512,27 +1508,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public 
    */
   public function show_field_end( $field, $meta=NULL ,$group = false) {
-    if (isset($field['group'])){
-      if ($group == 'end'){
-        if ( $field['desc'] != '' ) {
-          echo "<div class='desc-field'>{$field['desc']}</div></td>";
-        } else {
-          echo "</td>";
-        }
-      }else {
-        if ( $field['desc'] != '' ) {
-          echo "<div class='desc-field'>{$field['desc']}</div><br/>";  
-        }else{
-          echo '<br/>';
-        }  
-      }    
-    }else{
-      if ( $field['desc'] != '' ) {
-        echo "<div class='desc-field'>{$field['desc']}</div></td>";
-      } else {
-        echo "</td>";
-      }
+    if ( isset($field['desc']) && $field['desc'] != '' ) {
+      echo "<div class='desc-field'>{$field['desc']}</div></td>";
+    } else {
+      echo "</td>";
     }
+    
   }
 
   /**
@@ -2892,12 +2873,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addTaxonomy($id,$options,$args,$repeater=false){
-    $q = array('hide_empty' => 0);
-    $tax = 'category';
-    $type = 'select';
-    $temp = array('taxonomy'=> $tax,'type'=>$type,'args'=>$q);
+    $temp = array('taxonomy'=> 'category','type' => 'select','args'=> array('hide_empty' => 0));
     $options = array_merge($temp,$options);
-    $new_field = array('type' => 'taxonomy','id'=> $id,'desc' => '','name' => 'Taxonomy Field','options'=> $options);
+    $new_field = array('type' => 'taxonomy','id'=> $id,'desc' => '','name' => 'Taxonomy Field','options'=> $options, 'multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -2950,10 +2928,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
    */
   public function addPosts($id,$options,$args,$repeater=false){
-    $q = array('posts_per_page' => -1);
-    $temp = array('post_type' =>'post','type'=>'select','args'=>$q);
+    $temp = array('type'=>'select','args'=>array('posts_per_page' => -1,'post_type' =>'post'));
     $options = array_merge($temp,$options);
-    $new_field = array('type' => 'posts','id'=> $id,'desc' => '','name' => 'Posts Field','options'=> $options);
+    $new_field = array('type' => 'posts','id'=> $id,'desc' => '','name' => 'Posts Field','options'=> $options, 'multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){
       $this->_fields[] = $new_field;
@@ -2989,15 +2966,16 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @author Ohad Raz
    * @since 0.1
    * @access public
+   * @deprecated 1.1.8
    */
   public function Finish() {
-    $this->add_missed_values();
+    /*$this->add_missed_values();
     $this->check_field_upload();
-    $this->check_filed_plupload();
+    $this->check_field_plupload();
     $this->check_field_color();
     $this->check_field_date();
     $this->check_field_time();
-    $this->check_field_code();
+    $this->check_field_code();*/
   }
   
   /**

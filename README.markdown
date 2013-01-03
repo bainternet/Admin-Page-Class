@@ -1,7 +1,7 @@
 #Wordpress Admin Page Class
 
 The Admin Page Class is used by including it in your plugin files and using its methods to create custom Admin Pages. It is meant to be very simple and straightforward. 
-###Stable tag: 1.1.7 
+###Stable tag: 1.1.8 
 ###Tested up to Wordpress: 3.5
 
 ##Description
@@ -38,6 +38,13 @@ Ohad Raz http://en.bainternet.info [Donate](http://en.bainternet.info/donations)
 Copyright © 2012 Ohad Raz, <admin@bainternet.info>  , Licensed under the [GPL](http://www.gnu.org/licenses/gpl.html).
 
 ##Changelog
+
+###1.1.8
+   * Fixed issue #22 
+   * Fixed plupload field not working. function renamed!
+   * cleaned up some junk code. (`addTax` `addPosts`)
+   * `finish` method is now in soft deprecation.
+
 
 ###1.1.7
    * Fixed issue #19 
