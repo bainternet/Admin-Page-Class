@@ -10,8 +10,8 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.1.8
- * @copyright 2012 
+ * @version 1.2.0
+ * @copyright 2012 - 2013
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
  * 
@@ -162,6 +162,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
      */
     public $errors = array();
     
+    /**
+     * Holds Errors flag
+     * @var boolean
+     * @since 1.1.9
+     * @access public
+     */
+    public $errors_flag = false;
+
     /**
      * Builds a new Page 
      * @param $args (string|mixed array) - 
@@ -660,11 +668,15 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       wp_nonce_field( basename(__FILE__), 'BF_Admin_Page_Class_nonce' );
 
       if ($this->saved_flag){
-        echo '<div class="alert alert-success"><p><strong>'.__('Settings saved.','apc').'</strong></p></div>';
+        echo '<div class="update-status">';
         $this->errors = apply_filters('admin_page_class_errors', $this->errors,$this);
-        if (is_array($this->errors) && count($this->errors) > 0){
+        if (is_array($this->errors) && count($this->errors) > 0 ){
+          $this->errors_flag = true;
           $this->displayErrors();
+        }else{
+          echo '<div class="alert alert-success"><button data-dismiss="alert" class="close" type="button">×</button><strong>'.__('Settings saved.','apc').'</strong></div>';
         }
+        echo '</div>';
       }
         
         
@@ -1364,7 +1376,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     echo "<div class='at-repeat".$class."' id='{$jsid}'>";
     
     $c = 0;
-
+    $temp_div_row = $this->_div_or_row;
+    $this->_div_or_row = true;
     $meta = isset($this->_saved[$field['id']])? $this->_saved[$field['id']]: '';
     
       if (count($meta) > 0 && is_array($meta) ){
@@ -1394,7 +1407,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
             $f['id'] = $id;
             if (!$field['inline']){
               echo '<tr>';
-            } 
+            }
             call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, $m);
             if (!$field['inline']){
               echo '</tr>';
@@ -1488,6 +1501,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 .at-inline .at-textarea{width: 100px; height: 75px;}
 .at-repater-block{background-color: #FFFFFF;border: 1px solid;margin: 2px;}
 </style>';
+  
+    $this->_div_or_row = $temp_div_row;
     $this->show_field_end($field, $meta);
   }
   
@@ -1500,13 +1515,22 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function show_field_begin( $field, $meta) {
-    echo "<td class='at-field'>";
-    if ( $field['name'] != '' || $field['name'] != FALSE ) {
-        echo "<div class='at-label'>";
-        echo "<label for='{$field['id']}'>{$field['name']}</label>";
-        echo "</div>";
+    if ($this->_div_or_row){
+      echo "<td class='at-field'>";
     }
-
+    
+    //check for errors
+    if ($this->saved_flag && $this->errors_flag && isset($field['validate']) && isset($field['id']) && $this->has_error($field['id'])){
+      echo '<div class="alert alert-error field-validation-error"><button data-dismiss="alert" class="close" type="button">×</button>';
+      $ers = $this->getFieldErrors($field['id']);
+      foreach ((array)$ers['m'] as $m) {
+        echo "{$m}</br />";
+      }
+      echo '</div>';
+    }
+      
+    if ( $field['name'] != '' || $field['name'] != FALSE )
+        echo "<div class='at-label'><label for='{$field['id']}'>{$field['name']}</label></div>";
   }
   
   /**
@@ -1518,11 +1542,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public 
    */
   public function show_field_end( $field, $meta=NULL ,$group = false) {
-    if ( isset($field['desc']) && $field['desc'] != '' ) {
-      echo "<div class='desc-field'>{$field['desc']}</div></td>";
-    } else {
+    if ( isset($field['desc']) && $field['desc'] != '' ) 
+      echo "<div class='desc-field'>{$field['desc']}</div>";
+    
+    if ($this->_div_or_row)
       echo "</td>";
-    }
+
     
   }
 
@@ -2154,10 +2179,17 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         $new = ( isset( $_POST[$name] ) ) ? $_POST[$name] : ( ( isset($field['multiple']) && $field['multiple']) ? array() : '' );
               
 
-        // Validate meta value
+        //Validate and senitize meta value
         if ( class_exists( 'BF_Admin_Page_Class_Validate' ) && isset($field['validate_func']) && method_exists( 'BF_Admin_Page_Class_Validate', $field['validate_func'] ) ) {
-          $new = call_user_func( array( 'BF_Admin_Page_Class_Validate', $field['validate_func'] ), $new );
+          $new = call_user_func( array( apply_filters('apc_validattion_class_name', 'BF_Admin_Page_Class_Validate'), $field['validate_func'] ), $new ,&$this);
         }
+
+        //native validation
+        if (isset($field['validate'])){
+          if (!$this->validate_field($field,$new))
+            $new = $old;
+        }
+
 
         // Call defined method to save meta value, if there's no methods, call common one.
         $save_func = 'save_field_' . $type;
@@ -3311,7 +3343,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       }
   }
 
-  function Handle_plupload_action(){
+  public function Handle_plupload_action(){
     // check ajax noonce
     $imgid = $_POST["imgid"];
     check_ajax_referer($imgid . 'pluploadan');
@@ -3336,12 +3368,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   }
 
   /**
-   * Validation functions
-   * 
+   * Validation functions 
    */
   
   /**
    * validate field 
+   * @access public
+   * @author Ohad Raz <admin@bainternet.info>
+   * @since 1.1.9
    * @param  array $field field data
    * @param  mixed $meta  value to validate
    * @return boolean
@@ -3353,7 +3387,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $ret = true;
     foreach ($field['validate'] as $type => $args) {
       if (method_exists($this,'is_' . $type)){  
-        if (call_user_func ( array( $this, 'is_' . $type ), $data ,$args['param']) === false){
+        if (call_user_func ( array( $this, 'is_' . $type ), $meta ,$args['param']) === false){
+          $this->errors_flag = true;
           $this->errors[$field['id']]['name'] = $field['name'];
           $this->errors[$field['id']]['m'][] = (isset($args['message'])? $args['message'] : __('Not Valid ','apc') . $type);
           $ret = false;
@@ -3365,37 +3400,65 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
   /**
    * displayErrors function to print out validation errors.
+   * @access public
+   * @author Ohad Raz <admin@bainternet.info>
+   * @since 1.1.9
    * @return void
    */
   public function displayErrors(){
-    if (count($this->errors) > 0){
-      echo '<div class="alert">';
+    if ($this->errors_flag){
+      echo '<div class="alert alert-error"><button data-dismiss="alert" class="close" type="button">×</button>';
+      echo '<h4>'.__('Errors in saving changes', 'apc').'</h4>';
       foreach ($this->errors as $id => $arr) {
-        echo "<p><strong>{$arr['name']}</strong>:";
+        echo "<strong>{$arr['name']}</strong>: ";
         foreach ($arr['m'] as $m) {
-          echo "<br />{$m}";
+          echo "<br />&nbsp;&nbsp;&nbsp;&nbsp;{$m}";
         }
-        echo '</p>';
+        echo '<br />';
       }
       echo '</div>';
     }
   }
 
   /**
+   * getFieldErrors return field errors
+   * @access public
+   * @author Ohad Raz <admin@bainternet.info>
+   * @since 1.1.9
+   * @param  string $field_id 
+   * @return array
+   */
+  public function getFieldErrors($field_id){
+    if ($this->errors_flag){
+      if (isset($this->errors[$field_id]))
+        return $this->errors[$field_id];
+    }
+    return __('Unkown Error','apc');
+  }
+
+  /**
    * has_error check if a field has errors
+   * @access public
+   * @author Ohad Raz <admin@bainternet.info>
+   * @since 1.1.9
    * @param  string  $field_id field ID
    * @return boolean
    */
   public function has_error($field_id){
     //exit if not saved or no validation errors
-    if (!$saved_flag || count($this->errors) <= 0)
+    if (!$this->saved_flag || !$this->errors_flag)
       return false;
     //check if this field has validation errors
-    return in_array($field_id, $this->errors);
+    if (isset($this->errors[$field_id]))
+      return true;
+    return false;
   }
 
   /**
    * valid email
+   * @access public
+   * @author Ohad Raz <admin@bainternet.info>
+   * @since 1.1.9
    * @param   string
    * @return  boolean 
    */
@@ -3405,33 +3468,45 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
   /**
    * check a number optional -,+,. values
+   * @access public
+   * @author Ohad Raz <admin@bainternet.info>
+   * @since 1.1.9
    * @param   string
    * @return  boolean
    */
   public function is_numeric($val){
-    return (bool)preg_match('/^[-+]?[0-9]*.?[0-9]+$/', $val);
+    return (bool)preg_match('/^[-+]?[0-9]*.?[0-9]+$/', (int)$val);
   }
 
   /**
    * check given number below value
+   * @access public
+   * @author Ohad Raz <admin@bainternet.info>
+   * @since 1.1.9
    * @param   string
    * @return  boolean
    */
-  public function is_minvalue($number){
-    return ($number < $max);
+  public function is_minvalue($number,$max){
+    return (bool)((int)$number > (int)$max);
   }
 
   /**
    * check given number exceeds max values
+   * @access public
+   * @author Ohad Raz <admin@bainternet.info>
+   * @since 1.1.9
    * @param   string
    * @return  boolean
    */
   public function is_maxvalue($number,$max){
-    return ($number >$max);
+    return ((int)$number < (int)$max);
   }
 
   /**
-   *Check the string length has minimum length
+   * Check the string length has minimum length
+   * @access public
+   * @author Ohad Raz <admin@bainternet.info>
+   * @since 1.1.9
    * @param   string
    * @return  boolean
    */
@@ -3441,6 +3516,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
   /**
    * check string length exceeds maximum length
+   * @access public
+   * @author Ohad Raz <admin@bainternet.info>
+   * @since 1.1.9
    * @param   string
    * @return  boolean
    */
@@ -3450,6 +3528,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
   /**
    * check for exactly length of string
+   * @access public
+   * @author Ohad Raz <admin@bainternet.info>
+   * @since 1.1.9
    * @param   string
    * @return  boolean
    */
@@ -3459,15 +3540,21 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
   /**
    * Valid URL or web address
+   * @access public
+   * @author Ohad Raz <admin@bainternet.info>
+   * @since 1.1.9
    * @param   string
    * @return  boolean
    */
   public function is_url($val){
-    return (bool)preg_match("^((((https?|ftps?|gopher|telnet|nntp)://)|(mailto:|news:))(%[0-9A-Fa-f]{2}|[-()_.!~*';/?:@&=+$,A-Za-z0-9])+)([).!';/?:,][[:blank:]])?$",$val);
+    return  (bool)preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $val);
   }
 
   /**
    * Matches alpha and numbers only
+   * @access public
+   * @author Ohad Raz <admin@bainternet.info>
+   * @since 1.1.9
    * @param   string
    * @return  boolean
    */

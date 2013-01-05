@@ -721,6 +721,8 @@ jQuery(document).ready(function($) {
   function refresh_page(){
     location.reload();
   }
+
+  $('[data-dismiss="alert"]').live("click",function(){$(this).parent().remove()});
 });
 
 /**

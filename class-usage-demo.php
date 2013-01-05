@@ -44,7 +44,8 @@ Author URI: http://en.bainternet.info
     'options_3' => __('Editor Options','apc'),
     'options_4' => __('WordPress Options','apc'),
     'options_5' =>  __('Advanced Options','apc'),
-    'options_6' =>  __('Import Export','apc'),
+    'options_6' =>  __('Field Validation','apc'),
+    'options_7' =>  __('Import Export','apc'),
     )
   ));
   
@@ -65,15 +66,15 @@ Author URI: http://en.bainternet.info
   //An optionl descrption paragraph
   $options_panel->addParagraph(__("This is a simple paragraph","apc"));
   //text field
-  $options_panel->addText('text_field_id',array('name'=> __('My Text ','apc'), 'std'=> 'std TEXT'));
+  $options_panel->addText('text_field_id', array('name'=> __('My Text ','apc'), 'std'=> 'text', 'desc' => __('Simple text field description','apc')));
   //textarea field
-  $options_panel->addTextarea('textarea_field_id',array('name'=> __('My Textarea ','apc'), 'std'=> 'std TEXTarea'));
+  $options_panel->addTextarea('textarea_field_id',array('name'=> __('My Textarea ','apc'), 'std'=> 'textarea', 'desc' => __('Simple textarea field description','apc')));
   //checkbox field
-  $options_panel->addCheckbox('checkbox_field_id',array('name'=> __('My Checkbox ','apc'), 'std' => true));
+  $options_panel->addCheckbox('checkbox_field_id',array('name'=> __('My Checkbox ','apc'), 'std' => true, 'desc' => __('Simple checkbox field description','apc')));
   //select field
-  $options_panel->addSelect('select_field_id',array('selectkey1'=>'Select Value1','selectkey2'=>'Select Value2'),array('name'=> __('My select ','apc'), 'std'=> array('selectkey2')));
+  $options_panel->addSelect('select_field_id',array('selectkey1'=>'Select Value1','selectkey2'=>'Select Value2'),array('name'=> __('My select ','apc'), 'std'=> array('selectkey2'), 'desc' => __('Simple select field description','apc')));
   //radio field
-  $options_panel->addRadio('radio_field_id',array('radiokey1'=>'Radio Value1','radiokey2'=>'Radio Value2'),array('name'=> __('My Radio Filed','apc'), 'std'=> array('radiokey2')));
+  $options_panel->addRadio('radio_field_id',array('radiokey1'=>'Radio Value1','radiokey2'=>'Radio Value2'),array('name'=> __('My Radio Filed','apc'), 'std'=> array('radiokey2'), 'desc' => __('Simple radio field description','apc')));
   /**
    * Close first tab
    */   
@@ -98,17 +99,17 @@ Author URI: http://en.bainternet.info
   //title
   $options_panel->Title(__('Fancy Options','apc'));
   //Typography field
-  $options_panel->addTypo('typography_field_id',array('name' => __("My Typography","apc"),'std' => array('size' => '14px', 'color' => '#000000', 'face' => 'arial', 'style' => 'normal')));
+  $options_panel->addTypo('typography_field_id',array('name' => __("My Typography","apc"),'std' => array('size' => '14px', 'color' => '#000000', 'face' => 'arial', 'style' => 'normal'), 'desc' => __('Typography field description','apc')));
   //Image field
-  $options_panel->addImage('image_field_id',array('name'=> __('My Image ','apc'),'preview_height' => '120px', 'preview_width' => '440px'));
+  $options_panel->addImage('image_field_id',array('name'=> __('My Image ','apc'),'preview_height' => '120px', 'preview_width' => '440px', 'desc' => __('Simple image field description','apc')));
   //PLupload field
-  $options_panel->addPlupload('plupload_field_ID',array('name' => __('PlUpload Field','apc'), 'multiple' => true));
+  $options_panel->addPlupload('plupload_field_ID',array('name' => __('PlUpload Field','apc'), 'multiple' => true, 'desc' => __('Simple multiple image field description','apc')));
   //date field
-  $options_panel->addDate('date_field_id',array('name'=> __('My Date ','apc')));
+  $options_panel->addDate('date_field_id',array('name'=> __('My Date ','apc'), 'desc' => __('Simple date picker field description','apc')));
   //Time field
-  $options_panel->addTime('time_field_id',array('name'=> __('My Time ','apc')));
+  $options_panel->addTime('time_field_id',array('name'=> __('My Time ','apc'), 'desc' => __('Simple time picker field description','apc')));
   //Color field
-  $options_panel->addColor('color_field_id',array('name'=> __('My Color ','apc')));
+  $options_panel->addColor('color_field_id',array('name'=> __('My Color ','apc'), 'desc' => __('Simple color picker field description','apc')));
   
   /**
    * Close second tab
@@ -131,9 +132,9 @@ Author URI: http://en.bainternet.info
   //title
   $options_panel->Title(__("Editor Options","apc"));
   //wysiwyg field
-  $options_panel->addWysiwyg('wysiwyg_field_id',array('name'=> __('My wysiwyg Editor ','apc')));
+  $options_panel->addWysiwyg('wysiwyg_field_id',array('name'=> __('My wysiwyg Editor ','apc'), 'desc' => __('wysiwyg field description','apc')));
   //code editor field
-  $options_panel->addCode('code_field_id',array('name'=> __('Code Editor ','apc'),'syntax' => 'php'));
+  $options_panel->addCode('code_field_id',array('name'=> __('Code Editor ','apc'),'syntax' => 'php', 'desc' => __('code editor field description','apc')));
   /**
    * Close 3rd tab
    */ 
@@ -160,15 +161,15 @@ Author URI: http://en.bainternet.info
   //taxonomy select field
   $options_panel->addTaxonomy('taxonomy_field_id',array('taxonomy' => 'category'),array('name'=> __('My Taxonomy Select','apc'),'class' => 'no-fancy','desc' => __('This field has a <pre>.no-fancy</pre> class which disables the fancy select2 functions','apc') ));
   //posts select field
-  $options_panel->addPosts('posts_field_id',array('post_type' => 'post'),array('name'=> __('My Posts Select','apc')));
+  $options_panel->addPosts('posts_field_id',array('post_type' => 'post'),array('name'=> __('My Posts Select','apc'), 'desc' => __('posts select field description','apc')));
   //Roles select field
-  $options_panel->addRoles('roles_field_id',array(),array('name'=> __('My Roles Select','apc')));
+  $options_panel->addRoles('roles_field_id',array(),array('name'=> __('My Roles Select','apc'), 'desc' => __('roles select field description','apc')));
   //taxonomy checkbox field
-  $options_panel->addTaxonomy('taxonomy2_field_id',array('taxonomy' => 'category','type' => 'checkbox_list'),array('name'=> __('My Taxonomy Checkboxes','apc')));
+  $options_panel->addTaxonomy('taxonomy2_field_id',array('taxonomy' => 'category','type' => 'checkbox_list'),array('name'=> __('My Taxonomy Checkboxes','apc'), 'desc' => __('taxonomy checkboxes field description','apc')));
   //posts checkbox field
   $options_panel->addPosts('posts2_field_id',array('post_type' => 'post','type' => 'checkbox_list'),array('name'=> __('My Posts Checkboxes','apc'), 'class' => 'no-toggle','desc' => __('This field has a <pre>.no-toggle</pre> class which disables the fancy Iphone like toggle','apc')));
   //Roles checkbox field
-  $options_panel->addRoles('roles2_field_id',array('type' => 'checkbox_list' ),array('name'=> __('My Roles Checkboxes','apc')));
+  $options_panel->addRoles('roles2_field_id',array('type' => 'checkbox_list' ),array('name'=> __('My Roles Checkboxes','apc'), 'desc' => __('roles checboxes field description','apc')));
 
 
   /**
@@ -183,7 +184,7 @@ Author URI: http://en.bainternet.info
   $options_panel->Title(__("Advanced Options","apc"));
 
   //sortable field
-   $options_panel->addSortable('sortable_field_id',array('1' => 'One','2'=> 'Two', '3' => 'three', '4'=> 'four'),array('name' => __('My Sortable Field','apc')));
+   $options_panel->addSortable('sortable_field_id',array('1' => 'One','2'=> 'Two', '3' => 'three', '4'=> 'four'),array('name' => __('My Sortable Field','apc'), 'desc' => __('Sortable field description','apc')));
 
   /*
    * To Create a reapeater Block first create an array of fields
@@ -198,7 +199,7 @@ Author URI: http://en.bainternet.info
    * Then just add the fields to the repeater block
    */
   //repeater block
-  $options_panel->addRepeaterBlock('re_',array('sortable' => true, 'inline' => true, 'name' => __('This is a Repeater Block','apc'),'fields' => $repeater_fields));
+  $options_panel->addRepeaterBlock('re_',array('sortable' => true, 'inline' => true, 'name' => __('This is a Repeater Block','apc'),'fields' => $repeater_fields, 'desc' => __('Repeater field description','apc')));
   
   /**
    * To Create a Conditional Block first create an array of fields (just like a repeater block
@@ -224,11 +225,142 @@ Author URI: http://en.bainternet.info
    * Close 5th tab
    */
   $options_panel->CloseTab();
-   
+  
+
   /**
    * Open admin page 6th tab
+   * field validation 
+   * `email`            => validate email
+   * `alphanumeric`     => validate alphanumeric
+   * `url`              => validate url
+   * `length`           => check for string length
+   * `maxlength`        => check for max string length
+   * `minlength`        => check for min string length
+   * `maxvalue`         => check for max numeric value
+   * `minvalue`         => check for min numeric value
+   * `numeric`          => check for numeric value
    */
   $options_panel->OpenTab('options_6');
+  //email validation
+  $options_panel->addText('email_text_field_id',
+    array(
+      'name'=> __('My Email validation ','apc'),
+      'std' => 'test@domain.com',
+      'desc' => __("Field with email validation","apc"),
+      'validate' => array(
+          'email' => array('param' => '','message' => __("must be a valid email address","apc"))
+      )
+    )
+  );
+
+  //alphanumeric validation
+  $options_panel->addText('an_text_field_id',
+    array(
+      'name'=> __('My alpha numeric validation ','apc'),
+      'std' => 'abcd1234',
+      'desc' => __("Field with alpa numeric validation, try entring something like #$","apc"),
+      'validate' => array(
+          'alphanumeric' => array('param' => '','message' => __("must be a valid alpha numeric chars only","apc"))
+      )
+    )
+  );
+
+
+  // string length exceeds maximum length validation
+  $options_panel->addText('max_text_field_id',
+    array(
+      'name'=> __('My Max length of string validation ','apc'),
+      'std' => 'abcdefghi',
+      'desc' => __("Field with max string lenght validation,So try entering a longer string","apc"),
+      'validate' => array(
+          'maxlength' => array('param' => 10,'message' => __("must be not exceed 10 chars long","apc"))
+      )
+    )
+  );
+
+  // string length exceeds maximum length validation
+  $options_panel->addText('min_text_field_id',
+    array(
+      'name'=> __('My Min length of string validation ','apc'),
+      'std' => 'abcdefghi',
+      'desc' => __("Field with min string lenght validation, So try entering a shorter string","apc"),
+      'validate' => array(
+          'minlength' => array('param' => 8,'message' => __("must be a minimum length of 8 chars long","apc"))
+      )
+    )
+  );
+
+
+
+  // check for exactly length of string validation
+  $options_panel->addText('exact_text_field_id',
+    array(
+      'name'=> __('My exactly length of string validation ','apc'),
+      'std' => 'abcdefghij',
+      'desc' => __("Field with exact string lenght validation, So try entering a shorter or longer string","apc"),
+      'validate' => array(
+          'length' => array('param' => 10,'message' => __("must be exactly 10 chars long","apc"))
+      )
+    )
+  );
+
+  //is_numeric
+  $options_panel->addText('n_text_field_id',
+    array(
+      'name'=> __('My numeric validation ','apc'),
+      'std' => 1,
+      'desc' => __("Field with numeric value validation","apc"),
+      'validate' => array(
+          'numeric' => array('param' => '','message' => __("must be numeric value","apc"))
+      )
+    )
+  );
+
+  //min numeric value
+  $options_panel->addText('nmin_text_field_id',
+    array(
+      'name'=> __('My Min numeric validation ','apc'),
+      'std' => 9,
+      'desc' => __("Field with min numeric value validation","apc"),
+      'validate' => array(
+          'minvalue' => array('param' => 8,'message' => __("must be numeric with a min value of 8","apc"))
+      )
+    )
+  );
+
+  //max numeric value
+  $options_panel->addText('nmax_text_field_id',
+    array(
+      'name'=> __('My Max numeric validation ','apc'),
+      'std' => 9,
+      'desc' => __("Field with max numeric value validation","apc"),
+      'validate' => array(
+          'maxvalue' => array('param' => 10,'message' => __("must be numeric with a Max value of 10","apc"))
+      )
+    )
+  );
+
+  //is_url validation
+  $options_panel->addText('url_text_field_id',
+    array(
+      'name'=> __('My URL validation ','apc'),
+      'std' => 'http://en.bainternet.info',
+      'desc' => __("Field with url value validation","apc"),
+      'validate' => array(
+          'url' => array('param' => '','message' => __("must be a valid URL","apc"))
+      )
+    )
+  );
+
+  /**
+   * Close 6th tab
+   */
+  $options_panel->CloseTab();
+
+  /**
+   * Open admin page 7th tab
+   */
+  $options_panel->OpenTab('options_7');
   
   //title
   $options_panel->Title(__("Import Export","apc"));
@@ -239,7 +371,7 @@ Author URI: http://en.bainternet.info
   $options_panel->addImportExport();
 
   /**
-   * Close 6th tab
+   * Close 7th tab
    */
   $options_panel->CloseTab();
   $options_panel->CloseTab();

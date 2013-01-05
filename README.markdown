@@ -1,7 +1,7 @@
 #Wordpress Admin Page Class
 
 The Admin Page Class is used by including it in your plugin files and using its methods to create custom Admin Pages. It is meant to be very simple and straightforward. 
-###Stable tag: 1.1.8 
+###Stable tag: 1.2.0
 ###Tested up to Wordpress: 3.5
 
 ##Description
@@ -16,6 +16,8 @@ for usage Take a look at the `class-usage-demo.php` file which can also be teste
 [![Editor Options](http://i.imgur.com/geBbGs.png "Editor Options")](http://i.imgur.com/geBbG.png)
 [![Advanced Options](http://i.imgur.com/uOpQzs.png "Advanced Options")](http://i.imgur.com/uOpQz.png)
 [![Import Export](http://i.imgur.com/NSJ3Rs.png "Import Export")](http://i.imgur.com/NSJ3R.png)
+[![Feild validation](http://i.imgur.com/qZxoos.png "Validation")](http://i.imgur.com/qZxoo.png)
+
 
 ##Installation
 Simple steps:  
@@ -38,6 +40,16 @@ Ohad Raz http://en.bainternet.info [Donate](http://en.bainternet.info/donations)
 Copyright © 2012 Ohad Raz, <admin@bainternet.info>  , Licensed under the [GPL](http://www.gnu.org/licenses/gpl.html).
 
 ##Changelog
+
+##1.2.0
+   * Added field description to demo plugin.
+   * Fixed validation function.
+
+###1.1.9
+   * Added native field validation with error display.
+   * Added validation methods (`is_email`,`is_alphanumeric`,`is_url`,`is_length`,`is_maxlength`,`is_minlength`,`is_maxvalue`,`is_minvalue`,`is_numeric`).
+   * Added new filter hooks as requested in :#25 (`apc_form_name` ,`apc_form_class` ,`apc_form_id`).
+
 
 ###1.1.8
    * Fixed issue #22 
