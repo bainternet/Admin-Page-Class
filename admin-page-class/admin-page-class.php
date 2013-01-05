@@ -155,6 +155,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     public $field_types = array();
     
     /**
+     * Holds validation Errors
+     * @var boolean
+     * @since 1.1.9
+     * @access public
+     */
+    public $errors = array();
+    
+    /**
      * Builds a new Page 
      * @param $args (string|mixed array) - 
      *
@@ -628,39 +636,45 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     }
 
     /**
-       * Outputs all the HTML needed for the new page
-       * 
-       * @access public
-       * @param $args (mixed|array) contains everything needed to build the field
-       * @param $repeater (boolean)
-       * @since 0.1
-       */
-      public function DisplayPage() {
-        do_action('admin_page_class_before_page');
-        echo '<div class="wrap">';
-        echo '<form method="post" action="" enctype="multipart/form-data">
-          <div class="header_wrap">
-          <div style="float:left">';
-          echo apply_filters('admin_page_class_before_title','');
-          echo '<h2>'.apply_filters('admin_page_class_h2',$this->args['page_title']).'</h2>'.((isset($this->args['page_header_text']))? $this->args['page_header_text'] : '').' 
-          </div>
-          <div style="float:right;margin:32px 0 0 0">
-            <input type="submit" style="margin-left: 25px;" value="'.esc_attr(__('Save Changes','apc')).'" name="Submit" class="'.apply_filters('admin_page_class_submit_class', 'btn-info').' btn"><br><br>
-          </div>
-        <br style="clear:both"><br>
-        </div>';
-        wp_nonce_field( basename(__FILE__), 'BF_Admin_Page_Class_nonce' );
+     * Outputs all the HTML needed for the new page
+     * 
+     * @access public
+     * @param $args (mixed|array) contains everything needed to build the field
+     * @param $repeater (boolean)
+     * @since 0.1
+     */
+    public function DisplayPage() {
+      do_action('admin_page_class_before_page');
+      echo '<div class="wrap">';
+      echo '<form method="post" name="'.apply_filters('apc_form_name', 'admin_page_class',$this).'" class="'.apply_filters('apc_form_class', 'admin_page_class',$this).'" id="'.apply_filters('apc_form_id', 'admin_page_class',$this).'" action="" enctype="multipart/form-data">
+        <div class="header_wrap">
+        <div style="float:left">';
+        echo apply_filters('admin_page_class_before_title','');
+        echo '<h2>'.apply_filters('admin_page_class_h2',$this->args['page_title']).'</h2>'.((isset($this->args['page_header_text']))? $this->args['page_header_text'] : '').' 
+        </div>
+        <div style="float:right;margin:32px 0 0 0">
+          <input type="submit" style="margin-left: 25px;" value="'.esc_attr(__('Save Changes','apc')).'" name="Submit" class="'.apply_filters('admin_page_class_submit_class', 'btn-info').' btn"><br><br>
+        </div>
+      <br style="clear:both"><br>
+      </div>';
+      wp_nonce_field( basename(__FILE__), 'BF_Admin_Page_Class_nonce' );
 
-        if ($this->saved_flag)
-          echo '<div class="alert alert-success"><p><strong>'.__('Settings saved.','apc').'</strong></p></div>';
-          
-          $saved = get_option($this->option_group);
-          $this->_saved = $saved;
-          $skip = array('title','paragraph','subtitle','TABS','CloseDiv','TABS_Listing','OpenTab','custom','import_export');
+      if ($this->saved_flag){
+        echo '<div class="alert alert-success"><p><strong>'.__('Settings saved.','apc').'</strong></p></div>';
+        $this->errors = apply_filters('admin_page_class_errors', $this->errors,$this);
+        if (is_array($this->errors) && count($this->errors) > 0){
+          $this->displayErrors();
+        }
+      }
+        
+        
+      $saved = get_option($this->option_group);
+      $this->_saved = $saved;
+      $skip = array('title','paragraph','subtitle','TABS','CloseDiv','TABS_Listing','OpenTab','custom','import_export');
 
-          foreach($this->_fields as $field) {
-            if (!in_array($field['type'],$skip)){
-              if(!$this->table) {
+      foreach($this->_fields as $field) {
+        if (!in_array($field['type'],$skip)){
+          if(!$this->table) {
             if ($this->_div_or_row){
               echo '<table class="form-table">';
               $this->table = true;
@@ -668,254 +682,250 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
               echo '<div class="form-table">';
               $this->table = true;
             }
-                }
-          if ($this->_div_or_row){
-            //echo '<tr valign="top">';
-            //echo '<td width="25%"><label for="'.$field['id'].'">'.$field['name'].':</label></td>';
-          }else{
-            //echo '<div class="f_row">';
-            //echo '<label for="'.$field['id'].'">'.$field['name'].':</label></div>';
           }
-            }else{
-                if($this->table) {
+        }else{
+          if($this->table) {
             if ($this->_div_or_row){echo '</table>';}else{echo '</div>';}
-                  $this->table = false;
-                }
-            }
-            $data = '';
-          if (isset($saved[$field['id']]))
-              $data = $saved[$field['id']];
-          if (isset($field['std']) && $data === '')
-              $data = $field['std'];
+            $this->table = false;
+          }
+        }
+        $data = '';
+        if (isset($saved[$field['id']]))
+            $data = $saved[$field['id']];
+        if (isset($field['std']) && $data === '')
+            $data = $field['std'];
 
-            if (method_exists($this,'show_field_' . $field['type'])){
-              if ($this->_div_or_row){echo '<td>';}else{echo apply_filters('admin_page_class_field_container_open','<div class="field">',$field);}
-              call_user_func ( array( $this, 'show_field_' . $field['type'] ), $field, $data );
-              if ($this->_div_or_row){echo '</td>';}else{echo apply_filters('admin_page_class_field_container_close','</div>',$field);}
-            }else{
-              switch($field['type']) {
-                case 'TABS':
-                  echo '<div id="tabs">';
-                  break;
-                case 'CloseDiv':
-                  $this->tab_div = false;
-                  echo '</div>';
-                  break;
-                case 'TABS_Listing':
-                  echo '<div class="panel_menu"><ul>';
-                  foreach($field['links'] as $id => $name){
-                    $extra_classes = strtolower(str_replace(' ','-',$name)).' '.strtolower(str_replace(' ','-',$id));
-                    echo '<li class="'.apply_filters('APC_tab_li_extra_class',$extra_classes).'"><a class="nav_tab_link" href="#'.$id.'">'.$name.'</a></li>';
-                  }
-                  echo '</ul></div><div class="sections">';
-                  break;
-                case 'OpenTab':
-                  $this->tab_div = true;
-                  echo '<div class="setingstab" id="'.$field['id'].'">';
-                  do_action('admin_page_class_after_tab_open');
-                  break;
-                case 'title':
-                  echo '<h2>'.$field['label'].'</h2>';
-                  break;
-                case 'subtitle':
-                  echo '<h3>'.$field['label'].'</h3>';
-                  break;
-                case 'paragraph':
-                  echo '<p>'.$field['text'].'</p>';
-                  break;
-                case 'repeater':
-                  do_action('admin_page_class_before_repeater');
-                  $this->output_repeater_fields($field,$data);
-                  do_action('admin_page_class_after_repeater');
-                  break;
-                case 'import_export':
-                  $this->show_import_export();
-                  do_action('admin_page_class_import_export_tab');
-                  break;
+        if (method_exists($this,'show_field_' . $field['type'])){
+          if ($this->_div_or_row){echo '<td>';}else{echo apply_filters('admin_page_class_field_container_open','<div class="field">',$field);}
+          call_user_func ( array( $this, 'show_field_' . $field['type'] ), $field, $data );
+          if ($this->_div_or_row){echo '</td>';}else{echo apply_filters('admin_page_class_field_container_close','</div>',$field);}
+        }else{
+          switch($field['type']) {
+            case 'TABS':
+              echo '<div id="tabs">';
+              break;
+            case 'CloseDiv':
+              $this->tab_div = false;
+              echo '</div>';
+              break;
+            case 'TABS_Listing':
+              echo '<div class="panel_menu"><ul>';
+              foreach($field['links'] as $id => $name){
+                $extra_classes = strtolower(str_replace(' ','-',$name)).' '.strtolower(str_replace(' ','-',$id));
+                echo '<li class="'.apply_filters('APC_tab_li_extra_class',$extra_classes).'"><a class="nav_tab_link" href="#'.$id.'">'.$name.'</a></li>';
               }
-            }
-            if (!in_array($field['type'],$skip)){ echo '</tr>';}
-         }
-      if($this->table) echo '</table>';
-      if($this->tab_div) echo '</div>';
-      echo '</div><div style="clear:both"></div><div class="footer_wrap">
-          <div style="float:right;margin:32px 0 0 0">
-            <input type="submit" style="margin-left: 25px;" name="Submit" class="'.apply_filters('admin_page_class_submit_class', 'btn-info').' btn" value="'.esc_attr(__('Save Changes','apc')).'" />
-            <br><br>
-          </div>
-          <br style="clear:both"><br>
-        </div>';
-      echo '<input type="hidden" name="action" value="save" />';
-      echo '</form></div></div>';
-      do_action('admin_page_class_after_page');
-      }
+              echo '</ul></div><div class="sections">';
+              break;
+            case 'OpenTab':
+              $this->tab_div = true;
+              echo '<div class="setingstab" id="'.$field['id'].'">';
+              do_action('admin_page_class_after_tab_open');
+              break;
+            case 'title':
+              echo '<h2>'.$field['label'].'</h2>';
+              break;
+            case 'subtitle':
+              echo '<h3>'.$field['label'].'</h3>';
+              break;
+            case 'paragraph':
+              echo '<p>'.$field['text'].'</p>';
+              break;
+            case 'repeater':
+              do_action('admin_page_class_before_repeater');
+              $this->output_repeater_fields($field,$data);
+              do_action('admin_page_class_after_repeater');
+              break;
+            case 'import_export':
+              $this->show_import_export();
+              do_action('admin_page_class_import_export_tab');
+              break;
+          }
+        }
+        if (!in_array($field['type'],$skip)){ echo '</tr>';}
+     }
+    if($this->table) echo '</table>';
+    if($this->tab_div) echo '</div>';
+    echo '</div><div style="clear:both"></div><div class="footer_wrap">
+        <div style="float:right;margin:32px 0 0 0">
+          <input type="submit" style="margin-left: 25px;" name="Submit" class="'.apply_filters('admin_page_class_submit_class', 'btn-info').' btn" value="'.esc_attr(__('Save Changes','apc')).'" />
+          <br><br>
+        </div>
+        <br style="clear:both"><br>
+      </div>';
+    echo '<input type="hidden" name="action" value="save" />';
+    echo '</form></div></div>';
+    do_action('admin_page_class_after_page');
+    }
 
     /**
-      * Adds tabs current page
-      * 
-      * @access public
-      * @param $args (mixed|array) contains everything needed to build the field
-      * @since 0.1
-      */
-      public function OpenTabs_container($text= null) {
+     * Adds tabs current page
+     * 
+     * @access public
+     * @param $args (mixed|array) contains everything needed to build the field
+     * @since 0.1
+     */
+    public function OpenTabs_container($text= null) {
       $args['type'] = 'TABS';
       $text = (null == $text)? '': $text;
       $args['text'] = $text;
       $args['id'] = 'TABS';
       $args['std'] = '';
       $this->SetField($args);
-      }
-      /**
-      * Close open Div
-      * 
-      * @access public
-       * @param $args (mixed|array) contains everything needed to build the field
-       * @param $repeater (boolean)
-       * @since 0.1
-      */
-      public function CloseDiv_Container() {
+    }
+
+    /**
+     * Close open Div
+     * 
+     * @access public
+     * @param $args (mixed|array) contains everything needed to build the field
+     * @param $repeater (boolean)
+     * @since 0.1
+    */
+    public function CloseDiv_Container() {
       $args['type'] = 'CloseDiv';
       $args['id'] = 'CloseDiv';
       $args['std'] = '';
       $this->SetField($args);
-      }
-      /**
-      * Adds tabs listing in ul li
-      * 
-      * @access public
-       * @param $args (mixed|array) contains everything needed to build the field
-       * @param $repeater (boolean)
-       * @since 0.1
-      */
-      public function TabsListing($args) {
-        $args['type'] = 'TABS_Listing';
-        $args['id'] = 'TABS_Listing';
-        $args['std'] = '';
-        $this->SetField($args);
-      }
-      /**
-      * Opens a Div
-      * 
-      * @access public
-      * @param $args (mixed|array) contains everything needed to build the field
-      * @param $repeater (boolean)
-      * @since 0.1
-      */
-      public function OpenTab($name) {
-        $args['type'] = 'OpenTab';
-        $args['id'] = $name;
-        $args['std'] = '';
-        $this->SetField($args);
-      }
+    }
+
+    /**
+     * Adds tabs listing in ul li
+     * 
+     * @access public
+     * @param $args (mixed|array) contains everything needed to build the field
+     * @param $repeater (boolean)
+     * @since 0.1
+    */
+    public function TabsListing($args) {
+      $args['type'] = 'TABS_Listing';
+      $args['id'] = 'TABS_Listing';
+      $args['std'] = '';
+      $this->SetField($args);
+    }
+
+    /**
+     * Opens a Div
+     * 
+     * @access public
+     * @param $args (mixed|array) contains everything needed to build the field
+     * @param $repeater (boolean)
+     * @since 0.1
+    */
+    public function OpenTab($name) {
+      $args['type'] = 'OpenTab';
+      $args['id'] = $name;
+      $args['std'] = '';
+      $this->SetField($args);
+    }
     
     /**
-      * close a Div
-      * 
-      * @access public
-      * @since 0.1
-      */
-      public function CloseTab() {
+     * close a Div
+     * 
+     * @access public
+     * @since 0.1
+    */
+    public function CloseTab() {
       $args['type'] = 'CloseDiv';
       $args['id'] = 'CloseDiv';
       $args['std'] = '';
       $this->SetField($args);
-      }
+    }
 
-      /**
-       * Does the repetive tasks of adding a field
-       * 
-       * @param $args (mixed|array) contains everything needed to build the field
-       * @param $repeater (boolean)
-       * @since 0.1
-       * 
-       * @access private
-       */
-      private function SetField($args) {
-        $default = array(
-            'std' => '',
-          'id' => ''
-         );
+    /**
+     * Does the repetive tasks of adding a field
+     * 
+     * @param $args (mixed|array) contains everything needed to build the field
+     * @param $repeater (boolean)
+     * @since 0.1
+     * 
+     * @access private
+     */
+    private function SetField($args) {
+      $default = array(
+          'std' => '',
+        'id' => ''
+       );
+      $args = array_merge($default, $args);
+      $this->buildOptions($args);
+      $this->_fields[] = $args;
+    }
+
+    /**
+     * Builds all the options with their std values
+     * 
+     * @access public
+     * @param $args (mixed|array) contains everything needed to build the field
+     * @since 0.1
+     * @access private
+     */
+    private function buildOptions($args) {
+      $default = array(
+          'std' => '',
+        'id' => ''
+        );
         $args = array_merge($default, $args);
-        $this->buildOptions($args);
-        $this->_fields[] = $args;
+        $saved = get_option($this->option_group);
+      if (isset($saved[$args['id']])){
+        if($saved[$args['id']] === false) {
+            $saved[$args['id']] = $args['std'];
+            update_option($this->args['option_group'],$saved);
+          }
       }
+    }
 
-      /**
-       * Builds all the options with their std values
-       * 
-       * @access public
-       * @param $args (mixed|array) contains everything needed to build the field
-       * @since 0.1
-       * @access private
-       */
-      private function buildOptions($args) {
-        $default = array(
-            'std' => '',
-          'id' => ''
-          );
-          $args = array_merge($default, $args);
-          $saved = get_option($this->option_group);
-        if (isset($saved[$args['id']])){
-          if($saved[$args['id']] === false) {
-              $saved[$args['id']] = $args['std'];
-              update_option($this->args['option_group'],$saved);
-            }
-        }
-      }
-
-      /**
-       * Adds a heading to the current page
-       *
-       * @access public
-       * @param $args (mixed|array) contains everything needed to build the field
-       * @param $repeater (boolean)
-       * @since 0.1
-       * 
-       * @param string $label simply the text for your heading
-       */
-      public function Title($label,$repeater = false) {
+    /**
+     * Adds a heading to the current page
+     *
+     * @access public
+     * @param $args (mixed|array) contains everything needed to build the field
+     * @param $repeater (boolean)
+     * @since 0.1
+     * 
+     * @param string $label simply the text for your heading
+     */
+    public function Title($label,$repeater = false) {
       $args['type'] = 'title';
       $args['std'] = '';
       $args['label'] = $label;
       $args['id'] = 'title'.$label;
       $this->SetField($args);
-      }
+    }
       
-  /**
-   * Adds a sub-heading to the current page
-   * 
-   * @access public
-   * @param $args (mixed|array) contains everything needed to build the field
-   * @param $repeater (boolean)
-   * @since 0.1
-   *
-   * @param string $label simply the text for your heading
-   */
-  public function Subtitle($label,$repeater = false) {
-    $args['type'] = 'subtitle';
-    $args['label'] = $label;
-    $args['id'] = 'title'.$label;
-    $args['std'] = '';
-    $this->SetField($args);
-  }
+    /**
+     * Adds a sub-heading to the current page
+     * 
+     * @access public
+     * @param $args (mixed|array) contains everything needed to build the field
+     * @param $repeater (boolean)
+     * @since 0.1
+     *
+     * @param string $label simply the text for your heading
+     */
+    public function Subtitle($label,$repeater = false) {
+      $args['type'] = 'subtitle';
+      $args['label'] = $label;
+      $args['id'] = 'title'.$label;
+      $args['std'] = '';
+      $this->SetField($args);
+    }
       
-  /**
-   * Adds a paragraph to the current page
-   * 
-   * @access public
-   * @param $args (mixed|array) contains everything needed to build the field
-   * @param $repeater (boolean)
-   * @since 0.1
-   *
-   * @param string $text the text you want to display
-   */
-  public function Paragraph($text,$repeater = false) {
-    $args['type'] = 'paragraph';
-    $args['text'] = $text;
-    $args['id'] = 'paragraph';
-    $args['std'] = '';
-    $this->SetField($args);
-  }
+    /**
+     * Adds a paragraph to the current page
+     * 
+     * @access public
+     * @param $args (mixed|array) contains everything needed to build the field
+     * @param $repeater (boolean)
+     * @since 0.1
+     *
+     * @param string $text the text you want to display
+     */
+    public function Paragraph($text,$repeater = false) {
+      $args['type'] = 'paragraph';
+      $args['text'] = $text;
+      $args['id'] = 'paragraph';
+      $args['std'] = '';
+      $this->SetField($args);
+    }
   
     
   /**
@@ -3324,6 +3334,147 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     //In themes/plugins/mu-plugins directory
     load_textdomain( 'apc', dirname(__FILE__) . '/lang/' . get_locale() .'.mo' );
   }
+
+  /**
+   * Validation functions
+   * 
+   */
+  
+  /**
+   * validate field 
+   * @param  array $field field data
+   * @param  mixed $meta  value to validate
+   * @return boolean
+   */
+  public function validate_field($field,$meta){
+    if (!isset($field['validate']) || !is_array($field['validate'] ))
+      return true;
+
+    $ret = true;
+    foreach ($field['validate'] as $type => $args) {
+      if (method_exists($this,'is_' . $type)){  
+        if (call_user_func ( array( $this, 'is_' . $type ), $data ,$args['param']) === false){
+          $this->errors[$field['id']]['name'] = $field['name'];
+          $this->errors[$field['id']]['m'][] = (isset($args['message'])? $args['message'] : __('Not Valid ','apc') . $type);
+          $ret = false;
+        }
+      }
+    }
+    return $ret;
+  }
+
+  /**
+   * displayErrors function to print out validation errors.
+   * @return void
+   */
+  public function displayErrors(){
+    if (count($this->errors) > 0){
+      echo '<div class="alert">';
+      foreach ($this->errors as $id => $arr) {
+        echo "<p><strong>{$arr['name']}</strong>:";
+        foreach ($arr['m'] as $m) {
+          echo "<br />{$m}";
+        }
+        echo '</p>';
+      }
+      echo '</div>';
+    }
+  }
+
+  /**
+   * has_error check if a field has errors
+   * @param  string  $field_id field ID
+   * @return boolean
+   */
+  public function has_error($field_id){
+    //exit if not saved or no validation errors
+    if (!$saved_flag || count($this->errors) <= 0)
+      return false;
+    //check if this field has validation errors
+    return in_array($field_id, $this->errors);
+  }
+
+  /**
+   * valid email
+   * @param   string
+   * @return  boolean 
+   */
+  public function is_email($val){
+    return (bool)(preg_match("/^([a-z0-9+_-]+)(.[a-z0-9+_-]+)*@([a-z0-9-]+.)+[a-z]{2,6}$/ix",$val));
+  }
+
+  /**
+   * check a number optional -,+,. values
+   * @param   string
+   * @return  boolean
+   */
+  public function is_numeric($val){
+    return (bool)preg_match('/^[-+]?[0-9]*.?[0-9]+$/', $val);
+  }
+
+  /**
+   * check given number below value
+   * @param   string
+   * @return  boolean
+   */
+  public function is_minvalue($number){
+    return ($number < $max);
+  }
+
+  /**
+   * check given number exceeds max values
+   * @param   string
+   * @return  boolean
+   */
+  public function is_maxvalue($number,$max){
+    return ($number >$max);
+  }
+
+  /**
+   *Check the string length has minimum length
+   * @param   string
+   * @return  boolean
+   */
+  public function is_minlength($val, $min){
+    return (strlen($val) >= (int)$min);
+  }
+
+  /**
+   * check string length exceeds maximum length
+   * @param   string
+   * @return  boolean
+   */
+  public function is_maxlength($val, $max){
+    return (strlen($val) <= (int)$max);
+  }
+
+  /**
+   * check for exactly length of string
+   * @param   string
+   * @return  boolean
+   */
+  public function is_length($val, $length){
+    return (strlen($val) == (int)$length);
+  }
+
+  /**
+   * Valid URL or web address
+   * @param   string
+   * @return  boolean
+   */
+  public function is_url($val){
+    return (bool)preg_match("^((((https?|ftps?|gopher|telnet|nntp)://)|(mailto:|news:))(%[0-9A-Fa-f]{2}|[-()_.!~*';/?:@&=+$,A-Za-z0-9])+)([).!';/?:,][[:blank:]])?$",$val);
+  }
+
+  /**
+   * Matches alpha and numbers only
+   * @param   string
+   * @return  boolean
+   */
+  public function is_alphanumeric($val){
+    return (bool)preg_match("/^([a-zA-Z0-9])+$/i", $val);
+  }
+
 
 } // End Class
 
