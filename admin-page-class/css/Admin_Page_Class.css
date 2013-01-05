@@ -149,6 +149,11 @@
 .alert-success, .alert-success .alert-heading {
     color: #468847;
 }
+.alert-danger, .alert-error {
+    background-color: #F2DEDE;
+    border-color: #EED3D7;
+    color: #B94A48;
+}
 .widget-sort{
     background-color: #F5F5F5;
     background-image: -moz-linear-gradient(center top , #F9F9F9, #F5F5F5);
