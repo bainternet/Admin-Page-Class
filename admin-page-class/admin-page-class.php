@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.2.0
+ * @version 1.2.1
  * @copyright 2012 - 2013
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -1995,7 +1995,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $html = array();
     
       foreach ($field['options'] as $key => $value) {
-        $html[] = "<label><input type='checkbox' class='at-checkbox_list".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " />{$value}</label>";
+        $html[] = "<label class='at-checkbox_list-label'><input type='checkbox' class='at-checkbox_list".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " />{$value}</label>";
       }
     
       echo implode( '<br />' , $html );
@@ -2052,7 +2052,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     if ('checkbox_list' == $options['type']) {
       foreach ($posts as $p) {
         if (isset($field['class']) && $field['class']== 'no-toggle')
-          echo "<label><input type='checkbox' class='at-posts-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$p->ID'" . checked(in_array($p->ID, $meta), true, false) . " /> {$p->post_title}</label>";
+          echo "<label class='at-posts-checkbox-label'><input type='checkbox' class='at-posts-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$p->ID'" . checked(in_array($p->ID, $meta), true, false) . " /> {$p->post_title}</label>";
         else
           echo "{$p->post_title}<input type='checkbox' class='at-posts-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$p->ID'" . checked(in_array($p->ID, $meta), true, false) . " />";
       }
@@ -2091,7 +2091,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     if ('checkbox_list' == $options['type']) {
       foreach ($terms as $term) {
         if (isset($field['class']) && $field['class'] == 'no-toggle')
-          echo "<label><input type='checkbox' class='at-tax-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$term->slug'" . checked(in_array($term->slug, $meta), true, false) . " /> {$term->name}</label>";
+          echo "<label class='at-tax-checkbox-label'><input type='checkbox' class='at-tax-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$term->slug'" . checked(in_array($term->slug, $meta), true, false) . " /> {$term->name}</label>";
         else
           echo "{$term->name} <input type='checkbox' class='at-tax-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$term->slug'" . checked(in_array($term->slug, $meta), true, false) . " />";
       }   
@@ -2132,7 +2132,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       if ('checkbox_list' == $options['type']) {
         foreach ($names as $n) {
           if (isset($field['class']) && $field['class'] == 'no-toggle')
-            echo "<label><input type='checkbox'  class='at-role-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$n'" . checked(in_array($n, $meta), true, false) . " /> ".$n."</label>";
+            echo "<label class='at-posts-checkbox-label'><input type='checkbox'  class='at-role-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$n'" . checked(in_array($n, $meta), true, false) . " /> ".$n."</label>";
           else
             echo "{$n} <input type='checkbox'  class='at-role-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}[]' value='$n'" . checked(in_array($n, $meta), true, false) . " />";
         }

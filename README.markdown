@@ -41,6 +41,9 @@ Copyright © 2012 Ohad Raz, <admin@bainternet.info>  , Licensed under the [GPL](
 
 ##Changelog
 
+###1.2.1
+   * Added class to checkbox labels.
+
 ##1.2.0
    * Added field description to demo plugin.
    * Fixed validation function.
