@@ -171,6 +171,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     public $errors_flag = false;
 
     /**
+     * data_type  holds type of data (options, post_meta, tax_meta, user_meta)
+     * @var string
+     * @since
+     */
+    public $data_type = 'options';
+    /**
      * Builds a new Page 
      * @param $args (string|mixed array) - 
      *
