@@ -3,7 +3,7 @@
 Plugin Name: Demo Admin Page
 Plugin URI: http://en.bainternet.info
 Description: My Admin Page Class usage demo
-Version: 1.2.1
+Version: 1.2.2
 Author: Bainternet, Ohad Raz
 Author URI: http://en.bainternet.info
 */
@@ -103,7 +103,7 @@ Author URI: http://en.bainternet.info
   //Image field
   $options_panel->addImage('image_field_id',array('name'=> __('My Image ','apc'),'preview_height' => '120px', 'preview_width' => '440px', 'desc' => __('Simple image field description','apc')));
   //PLupload field
-  $options_panel->addPlupload('plupload_field_ID',array('name' => __('PlUpload Field','apc'), 'multiple' => true, 'desc' => __('Simple multiple image field description','apc')));
+  $options_panel->addPlupload('plupload_field_ID',array('name' => __('PlUpload Field','apc'), 'multiple' => true, 'desc' => __('Simple multiple image field description','apc')));  
   //date field
   $options_panel->addDate('date_field_id',array('name'=> __('My Date ','apc'), 'desc' => __('Simple date picker field description','apc')));
   //Time field

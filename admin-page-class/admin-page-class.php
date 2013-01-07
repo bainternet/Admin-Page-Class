@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.2.1
+ * @version 1.2.2
  * @copyright 2012 - 2013
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -974,7 +974,6 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   }
 
 
-
   /**
    * Check Field code editor
    *
@@ -1065,11 +1064,17 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     // Add data encoding type for file uploading.  
     add_action( 'post_edit_form_tag', array( &$this, 'add_enctype' ) );
     
-    // Make upload feature work event when custom post type doesn't support 'editor'
-    wp_enqueue_script( 'media-upload' );
-    add_thickbox();
-    wp_enqueue_script( 'jquery-ui-core' );
-    wp_enqueue_script( 'jquery-ui-sortable' );
+    if( wp_style_is( 'wp-color-picker', 'registered' ) ){ //since WordPress 3.5
+      wp_enqueue_media();
+      wp_enqueue_script('media-upload');
+    }else{
+      // Make upload feature work event when custom post type doesn't support 'editor'
+      wp_enqueue_script( 'media-upload' );
+      add_thickbox();
+      wp_enqueue_script( 'jquery-ui-core' );
+      wp_enqueue_script( 'jquery-ui-sortable' );
+    }
+    
     
     // Add filters for media upload.
     add_filter( 'media_upload_gallery', array( &$this, 'insert_images' ) );
@@ -1841,6 +1846,32 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     echo "</td>";
   }
   
+
+  public function show_field_media_manager($field,$meta){
+    $this->show_field_begin( $field, $meta );
+    $html = wp_nonce_field( "at-delete-mupload_{$field['id']}", "nonce-delete-mupload_".$field['id'], false, false );
+    $height = (isset($field['preview_height']))? $field['preview_height'] : '150px';
+    $width = (isset($field['preview_width']))? $field['preview_width'] : '150px';
+    $multi = (isset($field['multiple']) && $field['multiple'] == true) ? 'true' : 'false';
+    if (is_array($meta)){
+      if(isset($meta[0]) && is_array($meta[0]))
+      $meta = $meta[0];
+    }
+    if (is_array($meta) && isset($meta['src']) && $meta['src'] != ''){
+      $html .= "<span class='mupload_img_holder' data-wi='".$width."' data-he='".$height."'><img src='".$meta['src']."' style='height: ".$height.";width: ".$width.";' /></span>";
+      $html .= "<input type='hidden' name='".$field['id']."[id]' id='".$field['id']."[id]' value='".$meta['id']."' />";
+      $html .= "<input type='hidden' name='".$field['id']."[src]' id='".$field['id']."[src]' value='".$meta['src']."' />";
+      $html .= "<input class='at-delete_image_button button' type='button' rel='".$field['id']."' value='".__('Delete Image','apc')."' />";
+    }else{
+      $html .= "<span class='mupload_img_holder'  data-wi='".$width."' data-he='".$height."' data-multi='".$multi."'></span>";
+      $html .= "<input type='hidden' name='".$field['id']."[id]' id='".$field['id']."[id]' value='' />";
+      $html .= "<input type='hidden' name='".$field['id']."[src]' id='".$field['id']."[src]' value='' />";
+      $html .= "<input class='at-mm-upload_image_button button' type='button' rel='".$field['id']."' value='".__('Upload Image','apc')."' />";
+    }
+    echo $html;
+    $this->show_field_end( $field, $meta );
+  }
+
   /**
    * Show Image Field.
    *
@@ -1854,6 +1885,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     $html = wp_nonce_field( "at-delete-mupload_{$field['id']}", "nonce-delete-mupload_".$field['id'], false, false );
     $height = (isset($field['preview_height']))? $field['preview_height'] : '150px';
     $width = (isset($field['preview_width']))? $field['preview_width'] : '150px';
+    $upload_type = (!function_exists('wp_enqueue_media')) ? 'tk' : 'mm';
     if (is_array($meta)){
       if(isset($meta[0]) && is_array($meta[0]))
       $meta = $meta[0];
@@ -1862,12 +1894,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $html .= "<span class='mupload_img_holder' data-wi='".$width."' data-he='".$height."'><img src='".$meta['src']."' style='height: ".$height.";width: ".$width.";' /></span>";
       $html .= "<input type='hidden' name='".$field['id']."[id]' id='".$field['id']."[id]' value='".$meta['id']."' />";
       $html .= "<input type='hidden' name='".$field['id']."[src]' id='".$field['id']."[src]' value='".$meta['src']."' />";
-      $html .= "<input class='at-delete_image_button' type='button' rel='".$field['id']."' value='".__('Delete Image','apc')."' />";
+      $html .= "<input class='at-delete_image_button button' type='button' data-u='".$upload_type."' rel='".$field['id']."' value='".__('Delete Image','apc')."' />";
     }else{
       $html .= "<span class='mupload_img_holder'  data-wi='".$width."' data-he='".$height."'></span>";
       $html .= "<input type='hidden' name='".$field['id']."[id]' id='".$field['id']."[id]' value='' />";
       $html .= "<input type='hidden' name='".$field['id']."[src]' id='".$field['id']."[src]' value='' />";
-      $html .= "<input class='at-upload_image_button' type='button' rel='".$field['id']."' value='".__('Upload Image','apc')."' />";
+      $html .= "<input class='at-upload_image_button button' type='button' data-u='".$upload_type."' rel='".$field['id']."' value='".__('Upload Image','apc')."' />";
     }
     echo $html;
     $this->show_field_end( $field, $meta );
@@ -2871,8 +2903,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       return $new_field;
     }
   }
-  
 
+  
   /**
    *  Add WYSIWYG Field to Page
    *  @author Ohad Raz
