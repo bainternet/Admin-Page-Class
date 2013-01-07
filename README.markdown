@@ -1,7 +1,7 @@
 #Wordpress Admin Page Class
 
 The Admin Page Class is used by including it in your plugin files and using its methods to create custom Admin Pages. It is meant to be very simple and straightforward. 
-###Stable tag: 1.2.2
+###Stable tag: 1.2.3
 ###Tested up to Wordpress: 3.5
 
 ##Description
@@ -40,6 +40,11 @@ Ohad Raz http://en.bainternet.info [Donate](http://en.bainternet.info/donations)
 Copyright © 2012 Ohad Raz, <admin@bainternet.info>  , Licensed under the [GPL](http://www.gnu.org/licenses/gpl.html).
 
 ##Changelog
+
+###1.2.3
+   * Better handling custom validation class with `apc_validattion_class_name` filter hook.
+   * Fixed #27
+   * Fixed #28
 
 ###1.2.2
    * Added WordPress 3.5 media manager as image upload.

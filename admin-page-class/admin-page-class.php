@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.2.2
+ * @version 1.2.3
  * @copyright 2012 - 2013
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -498,7 +498,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
         function eraseCookie(name) {setCookie(name,"",-1);}
 
-        var last_tab = getCookie("apc_last_tab");
+        var last_tab = getCookie("apc_'.$this->option_group.'last");
         if (last_tab) {
            var last_tab = last_tab;
         }else{
@@ -513,7 +513,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
               tab  = jQuery(li).find("a").attr("href");
               jQuery(li).addClass("active_tab");
               jQuery(tab).show("fast");
-              setCookie("apc_last_tab",tab);
+              setCookie("apc_'.$this->option_group.'last",tab);
             }
           }
           //hide all
@@ -2212,8 +2212,10 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
               
 
         //Validate and senitize meta value
-        if ( class_exists( 'BF_Admin_Page_Class_Validate' ) && isset($field['validate_func']) && method_exists( 'BF_Admin_Page_Class_Validate', $field['validate_func'] ) ) {
-          $new = call_user_func( array( apply_filters('apc_validattion_class_name', 'BF_Admin_Page_Class_Validate'), $field['validate_func'] ), $new ,&$this);
+        //issue #27
+        $validationClass = apply_filters('apc_validattion_class_name', 'BF_Admin_Page_Class_Validate',&$this);
+        if ( class_exists( $validationClass ) && isset($field['validate_func']) && method_exists( $validationClass, $field['validate_func'] ) ) {
+          $new = call_user_func( array( $validationClass, $field['validate_func'] ), $new ,&$this);
         }
 
         //native validation
