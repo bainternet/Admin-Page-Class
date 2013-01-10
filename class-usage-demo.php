@@ -17,7 +17,8 @@ Author URI: http://en.bainternet.info
   /**
    * configure your admin page
    */
-  $config = array(    
+  $config = array(
+    'data_type' => 'options',
 		'menu'=> 'settings',             //sub page to settings page
 		'page_title' => __('Demo Admin Page','apc'),       //The name of this page 
 		'capability' => 'edit_themes',         // The capability needed to view the page 

@@ -170,9 +170,6 @@ function loadColorPicker(){
       $.farbtastic($(colorPicker), function(a) { $(input).val(a).css('background', a); });
 
       colorPicker.show();
-      //e.preventDefault();
-
-      //$(document).mousedown( function() { $(colorPicker).hide(); });
     }
 
     function hide_colorPicker(ele){
@@ -186,7 +183,8 @@ function loadColorPicker(){
         $(this).css('background',colo);
     });
   }else{
-    $('.at-color-iris').wpColorPicker();
+    if ($.wpColorPicker)
+      $('.at-color-iris').wpColorPicker();
   }
 }
 
