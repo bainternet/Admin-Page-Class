@@ -186,7 +186,9 @@ function loadColorPicker(){
         $(this).css('background',colo);
     });
   }else{
-    $('.at-color-iris').wpColorPicker();
+    if ($.wpColorPicker){
+      $('.at-color-iris').wpColorPicker();
+    }
   }
 }
 
