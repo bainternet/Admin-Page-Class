@@ -41,6 +41,9 @@ Copyright © 2012 Ohad Raz, <admin@bainternet.info>  , Licensed under the [GPL](
 
 ##Changelog
 
+###1.2.4
+   * Fixed color picker not loading
+
 ###1.2.3
    * Better handling custom validation class with `apc_validattion_class_name` filter hook.
    * Fixed #27
