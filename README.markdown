@@ -33,7 +33,9 @@ Simple steps:
  *PHP 5.2 and up.
  
 ##Author
-Ohad Raz http://en.bainternet.info [Donate](http://en.bainternet.info/donations)
+Ohad Raz http://en.bainternet.info 
+
+[Donate](http://en.bainternet.info/donations)
 
 ##License:
 
