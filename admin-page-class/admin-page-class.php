@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.2.4
+ * @version 1.2.5
  * @copyright 2012 - 2013
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -281,7 +281,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
       // Assign page values to local variables and add it's missed values.
       $this->_Page_Config = $args;
-      $this->_fields = &$this->_Page_Config['fields'];
+      $this->_fields = $this->_Page_Config['fields'];
       $this->_Local_images = (isset($args['local_images'])) ? true : false;
       $this->_div_or_row = (isset($args['div_or_row'])) ? $args['div_or_row'] : false;
       $this->add_missed_values();
@@ -373,7 +373,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       //pluploader code
       add_action('admin_head-'.$page, array($this,'plupload_head_js'));
       //scripts and styles
-      add_action( 'admin_print_styles', array( &$this, 'load_scripts_styles' ) );
+      add_action( 'admin_print_styles', array( $this, 'load_scripts_styles' ) );
       //panel script
       add_action('admin_footer-' . $page, array($this,'panel_script'));
       //add mising scripts
@@ -959,7 +959,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     
     //this replaces the ugly check fields methods calls
     foreach (array('upload','color','date','time','code','select','editor','plupload') as $type) {
-      call_user_func ( array( &$this, 'check_field_' . $type ));
+      call_user_func ( array( $this, 'check_field_' . $type ));
     }
     
     wp_enqueue_script('common');
@@ -1068,7 +1068,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       return;
     
     // Add data encoding type for file uploading.  
-    add_action( 'post_edit_form_tag', array( &$this, 'add_enctype' ) );
+    add_action( 'post_edit_form_tag', array( $this, 'add_enctype' ) );
     
     if( wp_style_is( 'wp-color-picker', 'registered' ) ){ //since WordPress 3.5
       wp_enqueue_media();
@@ -1083,13 +1083,13 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     
     
     // Add filters for media upload.
-    add_filter( 'media_upload_gallery', array( &$this, 'insert_images' ) );
-    add_filter( 'media_upload_library', array( &$this, 'insert_images' ) );
-    add_filter( 'media_upload_image',   array( &$this, 'insert_images' ) );
+    add_filter( 'media_upload_gallery', array( $this, 'insert_images' ) );
+    add_filter( 'media_upload_library', array( $this, 'insert_images' ) );
+    add_filter( 'media_upload_image',   array( $this, 'insert_images' ) );
     
     // Delete all attachments when delete custom post type.
-    add_action( 'wp_ajax_at_delete_file',     array( &$this, 'delete_file' ) );
-    add_action( 'wp_ajax_at_reorder_images',   array( &$this, 'reorder_images' ) );
+    add_action( 'wp_ajax_at_delete_file',     array( $this, 'delete_file' ) );
+    add_action( 'wp_ajax_at_reorder_images',   array( $this, 'reorder_images' ) );
     // Delete file via Ajax
     add_action( 'wp_ajax_at_delete_mupload', array( $this, 'wp_ajax_delete_image' ) );
   }
@@ -1337,7 +1337,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     
     // Loop through array
     foreach ( $this->_meta_box['pages'] as $page ) {
-      add_meta_box( $this->_meta_box['id'], $this->_meta_box['title'], array( &$this, 'show' ), $page, $this->_meta_box['context'], $this->_meta_box['priority'] );
+      add_meta_box( $this->_meta_box['id'], $this->_meta_box['title'], array( $this, 'show' ), $page, $this->_meta_box['context'], $this->_meta_box['priority'] );
     }
     
   }
@@ -1361,7 +1361,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       echo '<tr>';
     
       // Call Separated methods for displaying each type of field.
-      call_user_func ( array( &$this, 'show_field_' . $field['type'] ), $field, $meta );
+      call_user_func ( array( $this, 'show_field_' . $field['type'] ), $field, $meta );
       echo '</tr>';
     }
     echo '</table>';
@@ -1419,7 +1419,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
             if (!$field['inline']){
               echo '<tr>';
             }
-            call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, $m);
+            call_user_func ( array( $this, 'show_field_' . $f['type'] ), $f, $m);
             if (!$field['inline']){
               echo '</tr>';
             } 
@@ -1471,7 +1471,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         echo '<tr>';
       }
       $m = isset($f['std'])? $f['std'] : '';
-      call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, $m);
+      call_user_func ( array( $this, 'show_field_' . $f['type'] ), $f, $m);
       if (!$field['inline']){
         echo '</tr>';
       }  
@@ -1782,7 +1782,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         $m = is_array( $m) ? array_map( 'esc_attr', $m ) : esc_attr( $m);
         //set new id for field in array format
         $f['id'] = $id;
-        call_user_func ( array( &$this, 'show_field_' . $f['type'] ), $f, $m);
+        call_user_func ( array( $this, 'show_field_' . $f['type'] ), $f, $m);
     }
     echo '</div>';
     $this->show_field_end( $field, $meta );
@@ -2219,9 +2219,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
         //Validate and senitize meta value
         //issue #27
-        $validationClass = apply_filters('apc_validattion_class_name', 'BF_Admin_Page_Class_Validate',&$this);
+        $validationClass = apply_filters('apc_validattion_class_name', 'BF_Admin_Page_Class_Validate',$this);
         if ( class_exists( $validationClass ) && isset($field['validate_func']) && method_exists( $validationClass, $field['validate_func'] ) ) {
-          $new = call_user_func( array( $validationClass, $field['validate_func'] ), $new ,&$this);
+          $new = call_user_func( array( $validationClass, $field['validate_func'] ), $new ,$this);
         }
 
         //native validation
@@ -2234,7 +2234,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         // Call defined method to save meta value, if there's no methods, call common one.
         $save_func = 'save_field_' . $type;
         if ( method_exists( $this, $save_func ) ) {
-          call_user_func( array( &$this, 'save_field_' . $type ), $field, $old, $new );
+          call_user_func( array( $this, 'save_field_' . $type ), $field, $old, $new );
         } else {
           $this->save_field( $field, $old, $new );
         }
@@ -3133,7 +3133,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       );
       if ($this->google_fonts){
         $gs = wp_remote_get( 'http://phat-reaction.com/googlefonts.php?format=php' );
-        if( is_wp_error( $gs ) ) {
+        if(! is_wp_error( $gs ) ) {
           $fontsSeraliazed = $gs['body'];
           $fontArray = unserialize( $fontsSeraliazed );
           foreach ( $fontArray as $f ){
