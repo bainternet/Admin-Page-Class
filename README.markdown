@@ -45,7 +45,7 @@ Copyright © 2012 Ohad Raz, <admin@bainternet.info>  , Licensed under the [GPL](
 
 ###1.2.5
    *Fix references for the class for PHP 5.4 compatibility.
-   *Fixed google fonts not loading
+   *Fixed google fonts not loading.
 
 ###1.2.4
    * Fixed color picker not loading
