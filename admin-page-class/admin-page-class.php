@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.2.5
+ * @version 1.2.6
  * @copyright 2012 - 2013
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -326,9 +326,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $default = array(
         'capability' => 'edit_themes',
         'menu_title' => '',
-        'id' => 'id',
-        'icon_url' => '',
-        'position' => null
+        'id'         => 'id',
+        'icon_url'   => '',
+        'position'   => null
       );
 
       $this->args = array_merge($default, $this->args);
@@ -388,22 +388,22 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     public function plupload_head_js(){
       if ($this->has_field('plupload')){
          $plupload_init = array(
-            'runtimes' => 'html5,silverlight,flash,html4',
-            'browse_button' => 'plupload-browse-button', // will be adjusted per uploader
-            'container' => 'plupload-upload-ui', // will be adjusted per uploader
-            'drop_element' => 'drag-drop-area', // will be adjusted per uploader
-            'file_data_name' => 'async-upload', // will be adjusted per uploader
-            'multiple_queues' => true,
-            'max_file_size' => wp_max_upload_size() . 'b',
-            'url' => admin_url('admin-ajax.php'),
-            'flash_swf_url' => includes_url('js/plupload/plupload.flash.swf'),
+            'runtimes'            => 'html5,silverlight,flash,html4',
+            'browse_button'       => 'plupload-browse-button', // will be adjusted per uploader
+            'container'           => 'plupload-upload-ui', // will be adjusted per uploader
+            'drop_element'        => 'drag-drop-area', // will be adjusted per uploader
+            'file_data_name'      => 'async-upload', // will be adjusted per uploader
+            'multiple_queues'     => true,
+            'max_file_size'       => wp_max_upload_size() . 'b',
+            'url'                 => admin_url('admin-ajax.php'),
+            'flash_swf_url'       => includes_url('js/plupload/plupload.flash.swf'),
             'silverlight_xap_url' => includes_url('js/plupload/plupload.silverlight.xap'),
-            'filters' => array(array('title' => __('Allowed Files','apc'), 'extensions' => '*')),
-            'multipart' => true,
-            'urlstream_upload' => true,
-            'multi_selection' => false, // will be added per uploader
+            'filters'             => array(array('title' => __('Allowed Files','apc'), 'extensions' => '*')),
+            'multipart'           => true,
+            'urlstream_upload'    => true,
+            'multi_selection'     => false, // will be added per uploader
              // additional post data to send to our ajax hook
-            'multipart_params' => array(
+            'multipart_params'    => array(
                 '_ajax_nonce' => "", // will be added per uploader
                 'action' => 'plupload_action', // the ajax action name
                 'imgid' => 0 // will be added per uploader
@@ -801,8 +801,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     */
     public function CloseDiv_Container() {
       $args['type'] = 'CloseDiv';
-      $args['id'] = 'CloseDiv';
-      $args['std'] = '';
+      $args['id']   = 'CloseDiv';
+      $args['std']  = '';
       $this->SetField($args);
     }
 
@@ -816,8 +816,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     */
     public function TabsListing($args) {
       $args['type'] = 'TABS_Listing';
-      $args['id'] = 'TABS_Listing';
-      $args['std'] = '';
+      $args['id']   = 'TABS_Listing';
+      $args['std']  = '';
       $this->SetField($args);
     }
 
@@ -831,8 +831,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     */
     public function OpenTab($name) {
       $args['type'] = 'OpenTab';
-      $args['id'] = $name;
-      $args['std'] = '';
+      $args['id']   = $name;
+      $args['std']  = '';
       $this->SetField($args);
     }
     
@@ -844,8 +844,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     */
     public function CloseTab() {
       $args['type'] = 'CloseDiv';
-      $args['id'] = 'CloseDiv';
-      $args['std'] = '';
+      $args['id']   = 'CloseDiv';
+      $args['std']  = '';
       $this->SetField($args);
     }
 
@@ -861,7 +861,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     private function SetField($args) {
       $default = array(
           'std' => '',
-        'id' => ''
+          'id' => ''
        );
       $args = array_merge($default, $args);
       $this->buildOptions($args);
@@ -879,7 +879,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     private function buildOptions($args) {
       $default = array(
           'std' => '',
-        'id' => ''
+          'id' => ''
         );
         $args = array_merge($default, $args);
         $saved = get_option($this->option_group);
@@ -902,10 +902,10 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
      * @param string $label simply the text for your heading
      */
     public function Title($label,$repeater = false) {
-      $args['type'] = 'title';
-      $args['std'] = '';
+      $args['type']  = 'title';
+      $args['std']   = '';
       $args['label'] = $label;
-      $args['id'] = 'title'.$label;
+      $args['id']    = 'title'.$label;
       $this->SetField($args);
     }
       
@@ -920,10 +920,10 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
      * @param string $label simply the text for your heading
      */
     public function Subtitle($label,$repeater = false) {
-      $args['type'] = 'subtitle';
+      $args['type']  = 'subtitle';
       $args['label'] = $label;
-      $args['id'] = 'title'.$label;
-      $args['std'] = '';
+      $args['id']    = 'title'.$label;
+      $args['std']   = '';
       $this->SetField($args);
     }
       
@@ -940,8 +940,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     public function Paragraph($text,$repeater = false) {
       $args['type'] = 'paragraph';
       $args['text'] = $text;
-      $args['id'] = 'paragraph';
-      $args['std'] = '';
+      $args['id']   = 'paragraph';
+      $args['std']  = '';
       $this->SetField($args);
     }
   
@@ -3132,18 +3132,26 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         ),
       );
       if ($this->google_fonts){
-        $gs = wp_remote_get( 'http://phat-reaction.com/googlefonts.php?format=php' );
+        $api_keys = array(
+          'AIzaSyDXgT0NYjLhDmUzdcxC5RITeEDimRmpq3s',
+          'AIzaSyD6j7CsUTblh29PAXN3NqxBjnN-5nuuFGU',
+          'AIzaSyB8Ua6XIfe-gqbkE8P3XL4spd0x8Ft7eWo',
+          'AIzaSyDJYYVPLT9JaoMPF8G5cFm1YjTZMjknizE',
+          'AIzaSyDXt6e2t_gCfhlSfY8ShpR9WpqjMsjEimU'
+        );
+        $k = rand(0,count($api_keys) -1 );
+        $gs = wp_remote_get( 'https://www.googleapis.com/webfonts/v1/webfonts?sort=popularity&key='.$api_keys[$k] ,array('sslverify' => false)); 
         if(! is_wp_error( $gs ) ) {
           $fontsSeraliazed = $gs['body'];
-          $fontArray = unserialize( $fontsSeraliazed );
+          $fontArray = json_decode($gs['body']);
+          $fontArray = $fontArray->items;
           foreach ( $fontArray as $f ){
-            $key = strtolower(str_replace(" ", "_", $f['font-name']));
+            $key = strtolower(str_replace(" ", "_", $f->family));
             $fonts[$key] = array(
-              'name' => $f['font-name'],
-                  'import' => '@import url(http://fonts.googleapis.com/css?family='.$f['css-name'].');',
-                  'google' => $f['css-name'],
-                  'css' => $f['font-family']
-              );
+              'name' => $f->family,
+              'import' => str_replace(" ","+",$f->family),
+              'css' => 'font-family: '.$f->family .';', //@import url(http://fonts.googleapis.com/css?family=
+            );
           }
         }
       }
