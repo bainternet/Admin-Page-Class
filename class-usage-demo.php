@@ -3,7 +3,7 @@
 Plugin Name: Demo Admin Page
 Plugin URI: http://en.bainternet.info
 Description: My Admin Page Class usage demo
-Version: 1.2.5
+Version: 1.2.6
 Author: Bainternet, Ohad Raz
 Author URI: http://en.bainternet.info
 */
@@ -18,14 +18,14 @@ Author URI: http://en.bainternet.info
    * configure your admin page
    */
   $config = array(    
-		'menu'=> 'settings',             //sub page to settings page
-		'page_title' => __('Demo Admin Page','apc'),       //The name of this page 
-		'capability' => 'edit_themes',         // The capability needed to view the page 
-		'option_group' => 'demo_options',       //the name of the option to create in the database
-		'id' => 'admin_page',            // meta box id, unique per page
-		'fields' => array(),            // list of fields (can be added by field arrays)
-		'local_images' => false,          // Use local or hosted images (meta box images for add/remove)
-		'use_with_theme' => false          //change path if used with theme set to true, false for a plugin or anything else for a custom path(default false).
+    'menu'           => 'settings',             //sub page to settings page
+    'page_title'     => __('Demo Admin Page','apc'),       //The name of this page 
+    'capability'     => 'edit_themes',         // The capability needed to view the page 
+    'option_group'   => 'demo_options',       //the name of the option to create in the database
+    'id'             => 'admin_page',            // meta box id, unique per page
+    'fields'         => array(),            // list of fields (can be added by field arrays)
+    'local_images'   => false,          // Use local or hosted images (meta box images for add/remove)
+    'use_with_theme' => false          //change path if used with theme set to true, false for a plugin or anything else for a custom path(default false).
   );  
   
   /**
@@ -216,10 +216,10 @@ Author URI: http://en.bainternet.info
   //conditinal block 
   $options_panel->addCondition('conditinal_fields',
       array(
-        'name'=> __('Enable conditinal fields? ','apc'),
-        'desc' => __('<small>Turn ON if you want to enable the <strong>conditinal fields</strong>.</small>','apc'),
+        'name'   => __('Enable conditinal fields? ','apc'),
+        'desc'   => __('<small>Turn ON if you want to enable the <strong>conditinal fields</strong>.</small>','apc'),
         'fields' => $Conditinal_fields,
-        'std' => false
+        'std'    => false
       ));
   /**
    * Close 5th tab
@@ -244,9 +244,9 @@ Author URI: http://en.bainternet.info
   //email validation
   $options_panel->addText('email_text_field_id',
     array(
-      'name'=> __('My Email validation ','apc'),
-      'std' => 'test@domain.com',
-      'desc' => __("Field with email validation","apc"),
+      'name'     => __('My Email validation ','apc'),
+      'std'      => 'test@domain.com',
+      'desc'     => __("Field with email validation","apc"),
       'validate' => array(
           'email' => array('param' => '','message' => __("must be a valid email address","apc"))
       )
@@ -256,9 +256,9 @@ Author URI: http://en.bainternet.info
   //alphanumeric validation
   $options_panel->addText('an_text_field_id',
     array(
-      'name'=> __('My alpha numeric validation ','apc'),
-      'std' => 'abcd1234',
-      'desc' => __("Field with alpa numeric validation, try entring something like #$","apc"),
+      'name'     => __('My alpha numeric validation ','apc'),
+      'std'      => 'abcd1234',
+      'desc'     => __("Field with alpa numeric validation, try entring something like #$","apc"),
       'validate' => array(
           'alphanumeric' => array('param' => '','message' => __("must be a valid alpha numeric chars only","apc"))
       )
@@ -269,9 +269,9 @@ Author URI: http://en.bainternet.info
   // string length exceeds maximum length validation
   $options_panel->addText('max_text_field_id',
     array(
-      'name'=> __('My Max length of string validation ','apc'),
-      'std' => 'abcdefghi',
-      'desc' => __("Field with max string lenght validation,So try entering a longer string","apc"),
+      'name'     => __('My Max length of string validation ','apc'),
+      'std'      => 'abcdefghi',
+      'desc'     => __("Field with max string lenght validation,So try entering a longer string","apc"),
       'validate' => array(
           'maxlength' => array('param' => 10,'message' => __("must be not exceed 10 chars long","apc"))
       )
@@ -281,9 +281,9 @@ Author URI: http://en.bainternet.info
   // string length exceeds maximum length validation
   $options_panel->addText('min_text_field_id',
     array(
-      'name'=> __('My Min length of string validation ','apc'),
-      'std' => 'abcdefghi',
-      'desc' => __("Field with min string lenght validation, So try entering a shorter string","apc"),
+      'name'     => __('My Min length of string validation ','apc'),
+      'std'      => 'abcdefghi',
+      'desc'     => __("Field with min string lenght validation, So try entering a shorter string","apc"),
       'validate' => array(
           'minlength' => array('param' => 8,'message' => __("must be a minimum length of 8 chars long","apc"))
       )
@@ -295,9 +295,9 @@ Author URI: http://en.bainternet.info
   // check for exactly length of string validation
   $options_panel->addText('exact_text_field_id',
     array(
-      'name'=> __('My exactly length of string validation ','apc'),
-      'std' => 'abcdefghij',
-      'desc' => __("Field with exact string lenght validation, So try entering a shorter or longer string","apc"),
+      'name'     => __('My exactly length of string validation ','apc'),
+      'std'      => 'abcdefghij',
+      'desc'     => __("Field with exact string lenght validation, So try entering a shorter or longer string","apc"),
       'validate' => array(
           'length' => array('param' => 10,'message' => __("must be exactly 10 chars long","apc"))
       )
@@ -307,9 +307,9 @@ Author URI: http://en.bainternet.info
   //is_numeric
   $options_panel->addText('n_text_field_id',
     array(
-      'name'=> __('My numeric validation ','apc'),
-      'std' => 1,
-      'desc' => __("Field with numeric value validation","apc"),
+      'name'     => __('My numeric validation ','apc'),
+      'std'      => 1,
+      'desc'     => __("Field with numeric value validation","apc"),
       'validate' => array(
           'numeric' => array('param' => '','message' => __("must be numeric value","apc"))
       )
@@ -319,9 +319,9 @@ Author URI: http://en.bainternet.info
   //min numeric value
   $options_panel->addText('nmin_text_field_id',
     array(
-      'name'=> __('My Min numeric validation ','apc'),
-      'std' => 9,
-      'desc' => __("Field with min numeric value validation","apc"),
+      'name'     => __('My Min numeric validation ','apc'),
+      'std'      => 9,
+      'desc'     => __("Field with min numeric value validation","apc"),
       'validate' => array(
           'minvalue' => array('param' => 8,'message' => __("must be numeric with a min value of 8","apc"))
       )
@@ -331,9 +331,9 @@ Author URI: http://en.bainternet.info
   //max numeric value
   $options_panel->addText('nmax_text_field_id',
     array(
-      'name'=> __('My Max numeric validation ','apc'),
-      'std' => 9,
-      'desc' => __("Field with max numeric value validation","apc"),
+      'name'     => __('My Max numeric validation ','apc'),
+      'std'      => 9,
+      'desc'     => __("Field with max numeric value validation","apc"),
       'validate' => array(
           'maxvalue' => array('param' => 10,'message' => __("must be numeric with a Max value of 10","apc"))
       )
@@ -343,9 +343,9 @@ Author URI: http://en.bainternet.info
   //is_url validation
   $options_panel->addText('url_text_field_id',
     array(
-      'name'=> __('My URL validation ','apc'),
-      'std' => 'http://en.bainternet.info',
-      'desc' => __("Field with url value validation","apc"),
+      'name'     => __('My URL validation ','apc'),
+      'std'      => 'http://en.bainternet.info',
+      'desc'     => __("Field with url value validation","apc"),
       'validate' => array(
           'url' => array('param' => '','message' => __("must be a valid URL","apc"))
       )
@@ -378,13 +378,13 @@ Author URI: http://en.bainternet.info
 
   //Now Just for the fun I'll add Help tabs
   $options_panel->HelpTab(array(
-    'id'=>'tab_id',
-    'title'=> __('My help tab title','apc'),
-    'content'=>'<p>'.__('This is my Help Tab content','apc').'</p>'
+    'id'      =>'tab_id',
+    'title'   => __('My help tab title','apc'),
+    'content' =>'<p>'.__('This is my Help Tab content','apc').'</p>'
   ));
   $options_panel->HelpTab(array(
-    'id' => 'tab_id2',
-    'title' => __('My 2nd help tab title','apc'),
+    'id'       => 'tab_id2',
+    'title'    => __('My 2nd help tab title','apc'),
     'callback' => 'help_tab_callback_demo'
   ));
   
