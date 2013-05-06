@@ -1,7 +1,7 @@
 #Wordpress Admin Page Class
 
 The Admin Page Class is used by including it in your plugin files and using its methods to create custom Admin Pages. It is meant to be very simple and straightforward. 
-###Stable tag: 1.2.6
+###Stable tag: 1.2.7
 ###Tested up to Wordpress: 3.6
 
 ##Description
