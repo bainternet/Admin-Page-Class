@@ -3,7 +3,7 @@
 Plugin Name: Demo Admin Page
 Plugin URI: http://en.bainternet.info
 Description: My Admin Page Class usage demo
-Version: 1.2.6
+Version: 1.2.7
 Author: Bainternet, Ohad Raz
 Author URI: http://en.bainternet.info
 */
@@ -29,7 +29,7 @@ Author URI: http://en.bainternet.info
   );  
   
   /**
-   * Initiate your admin page
+   * instantiate your admin page
    */
   $options_panel = new BF_Admin_Page_Class($config);
   $options_panel->OpenTabs_container('');
@@ -39,13 +39,13 @@ Author URI: http://en.bainternet.info
    */
   $options_panel->TabsListing(array(
     'links' => array(
-    'options_1' =>  __('Simple Options','apc'),
-    'options_2' =>  __('Fancy Options','apc'),
-    'options_3' => __('Editor Options','apc'),
-    'options_4' => __('WordPress Options','apc'),
-    'options_5' =>  __('Advanced Options','apc'),
-    'options_6' =>  __('Field Validation','apc'),
-    'options_7' =>  __('Import Export','apc'),
+      'options_1' =>  __('Simple Options','apc'),
+      'options_2' =>  __('Fancy Options','apc'),
+      'options_3' => __('Editor Options','apc'),
+      'options_4' => __('WordPress Options','apc'),
+      'options_5' =>  __('Advanced Options','apc'),
+      'options_6' =>  __('Field Validation','apc'),
+      'options_7' =>  __('Import Export','apc'),
     )
   ));
   

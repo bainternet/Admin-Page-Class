@@ -19,5 +19,5 @@
 }
 .on {background-position: 0% 100%;}
 .off {background-position: 100% 0%;}
-.hidden{display: none;}
+.hidden{display: none !important;}
 /* Checkbox style */

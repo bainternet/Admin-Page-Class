@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.2.6
+ * @version 1.2.7
  * @copyright 2012 - 2013
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -477,8 +477,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
        * @since 0.1
      */
     public function panel_script(){
-      echo '<script>';
-      echo '
+      ?>
+      <script>
+      
         /* cookie stuff */
         function setCookie(name,value,days) {
           if (days) {
@@ -496,7 +497,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
           var ca = document.cookie.split(";");
           for(var i=0;i < ca.length;i++) {
             var c = ca[i]; 
-            while (c.charAt(0)==\' \') c = c.substring(1,c.length);
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
             if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
           }
           return null;
@@ -504,7 +505,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
         function eraseCookie(name) {setCookie(name,"",-1);}
 
-        var last_tab = getCookie("apc_'.$this->option_group.'last");
+        var last_tab = getCookie("apc_<?php echo $this->option_group; ?>last");
         if (last_tab) {
            var last_tab = last_tab;
         }else{
@@ -519,7 +520,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
               tab  = jQuery(li).find("a").attr("href");
               jQuery(li).addClass("active_tab");
               jQuery(tab).show("fast");
-              setCookie("apc_'.$this->option_group.'last",tab);
+              setCookie("apc_<?php echo $this->option_group; ?>last",tab);
             }
           }
           //hide all
@@ -531,7 +532,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
             var tab  = jQuery(".panel_menu li:first a").attr("href");
             jQuery(tab).show();
           }else{
-            show_tab(jQuery(\'[href="\' + last_tab + \'"]\').parent());
+            show_tab(jQuery(\'[href="' + last_tab + '"]').parent());
           }
       
           //bind click on menu action to show the right tab.
@@ -539,12 +540,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
             event.preventDefault()
             show_tab(jQuery(this));
 
-          });';
+          });
+      <?php
       if ($this->has_Field('upload')){
-        echo 'function load_images_muploader(){
+        ?>
+          function load_images_muploader(){
             jQuery(".mupload_img_holder").each(function(i,v){
               if (jQuery(this).next().next().val() != ""){
-                jQuery(this).append("<img src=\"" + jQuery(this).next().next().val() + "\" style=\"height: 150px;width: 150px;\" />");
+                jQuery(this).append('<img src="' + jQuery(this).next().next().val() + '" style="height: 150px;width: 150px;" />');
                 jQuery(this).next().next().next().val("Delete");
                 jQuery(this).next().next().next().removeClass("apc_upload_image_button").addClass("apc_delete_image_button");
               }
@@ -584,10 +587,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
                   alert(response.message);
                 }
               }, "json");
-
               return false;
             }
-            
           });
           
 
@@ -612,11 +613,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
             //restore old send to editor function
             window.send_to_editor = window.restore_send_to_editor;
           }
-          ';
+          <?php
       }
-      echo '
+      ?>
         });
-        </script>';
+        </script>
+        <?php
     }
     
     
@@ -637,7 +639,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         else
           return str_replace(__('Insert into Post'), __('Use this Image','apc'), $safe_text);
       }
-      return $text;
+      return $safe_text;
     }
 
     /* print out panel Style (deprecated)
@@ -3339,7 +3341,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     //here you get the options to export and set it as content, ex:
     $options= get_option($_REQUEST['option_group']);
     $content = "<!*!* START export Code !*!*>\n".base64_encode(serialize($options))."\n<!*!* END export Code !*!*>";
-    $file_name = 'theme_export.txt';
+    $file_name = apply_filters('apc_theme_export_filename', 'options.txt');
     header('HTTP/1.1 200 OK');
 
     if ( !current_user_can('edit_themes') )
