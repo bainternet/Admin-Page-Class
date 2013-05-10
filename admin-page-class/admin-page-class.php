@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.2.7
+ * @version 1.2.8
  * @copyright 2012 - 2013
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -532,7 +532,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
             var tab  = jQuery(".panel_menu li:first a").attr("href");
             jQuery(tab).show();
           }else{
-            show_tab(jQuery(\'[href="' + last_tab + '"]').parent());
+            show_tab(jQuery('[href="' + last_tab + '"]').parent());
           }
       
           //bind click on menu action to show the right tab.
