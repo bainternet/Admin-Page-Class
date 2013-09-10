@@ -1496,12 +1496,12 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     echo '<script>
         jQuery(document).ready(function() {
           var '.$counter.' = '.$c.';
-          jQuery("#add-'.$jsid.'").live(\'click\', function() {
+          jQuery("#add-'.$jsid.'").on(\'click\', function() {
             '.$counter.' = '.$counter.' + 1;
             jQuery(this).before(\''.$js_code.'\');            
             update_repeater_fields();
           });
-              jQuery("#remove-'.$jsid.'").live(\'click\', function() {
+              jQuery("#remove-'.$jsid.'").on(\'click\', function() {
                   jQuery(this).parent().remove();
               });
           });
