@@ -46,7 +46,7 @@ function apc_init(){
   //select 2
   fancySelect();
   // repeater edit
-  $(".at-re-toggle").live('click', function() {$(this).prev().toggle('slow');});
+  bindOn('click','.at-re-toggle',function() {$(this).prev().toggle('slow');});
   /**
    * Datepicker Field.
    *
@@ -107,33 +107,37 @@ function apc_init(){
   //new image upload field  
   load_images_muploader();
   //delete img button
-  $('.at-delete_image_button').live('click', function(event){
+  bindOn('click','.at-delete_image_button',function(event){
     event.preventDefault();
     remove_image($(this));
     return false;
   });
   //upload images
-  $('.at-upload_image_button').live('click',function(event){
+  bindOn('click','.at-upload_image_button',function(event){
     event.preventDefault();
     image_upload($(this));
     return false;
   });
+
   /**
    * listen for import button click
    * @since 0.8
    * @return void
    */
-  $("#apc_import_b").live("click",function(){do_ajax_import_export('import');});
+  bindOn('click','#apc_import_b',function(){do_ajax_import_export('import');});
+
   /**
    * listen for export button click
    * @since 0.8
    * @return void
    */
-  $("#apc_export_b").live("click",function(){do_ajax_import_export('export');});
+  bindOn('click','#apc_export_b',function(){do_ajax_import_export('export');});
+  
   //refresh page
-  $("#apc_refresh_page_b").live("click",function(){refresh_page();});
+  bindOn('click','#apc_refresh_page_b',function(){refresh_page();});
+
   //status alert dismiss
-  $('[data-dismiss="alert"]').live("click",function(){$(this).parent().remove()});
+  bindOn('click','[data-dismiss="alert"]',function(){$(this).parent().remove()});
 }
 
 /**
@@ -143,20 +147,15 @@ function apc_init(){
  */
 function loadColorPicker(){
   if ($.farbtastic){//since WordPress 3.5
-    $('.at-color').live('focus', function() {
-      load_colorPicker($(this).next());
-    });
-
-    $('.at-color').live('focusout', function() {
-      hide_colorPicker($(this).next());
-    });
+    bindOn('focus','at-color','focus', function() {load_colorPicker($(this).next());});
+    bindOn('focusout','at-color','focus', function() {hide_colorPicker($(this).next());});
 
     /**
      * Select Color Field.
      *
      * @since 1.0
      */
-    $('.at-color-select').live('click', function(){
+    bindOn('click','.at-color-select',function(){
       if ($(this).next('div').css('display') == 'none')
         load_colorPicker($(this));
       else
@@ -170,9 +169,6 @@ function loadColorPicker(){
       $.farbtastic($(colorPicker), function(a) { $(input).val(a).css('background', a); });
 
       colorPicker.show();
-      //e.preventDefault();
-
-      //$(document).mousedown( function() { $(colorPicker).hide(); });
     }
 
     function hide_colorPicker(ele){
@@ -228,7 +224,7 @@ function fancyCheckbox(){
     if(! $el.hasClass('no-toggle')){
       $el.FancyCheckbox();
       if ($el.hasClass("conditinal_control")){
-        $el.live('change', function() {
+        $el.on('change', function() {
           var $el = $(this);
           if($el.is(':checked'))
             $el.next().next().show('fast');    
@@ -238,7 +234,7 @@ function fancyCheckbox(){
       }
     }else{
       if ($el.hasClass("conditinal_control")){
-      $el.live('change', function() { 
+      $el.on('change', function() { 
         var $el = $(this);
         if($el.is(':checked'))
           $el.next().show('fast');    
@@ -273,26 +269,13 @@ function remove_image(ele){
   var at_id = $el.prev().prev();
   var at_src = $el.prev();
   var t_button = $el;
-  data = {
-      action: 'apc_delete_mupload',
-      _wpnonce: $('#nonce-delete-mupload_' + field_id).val(),
-      field_id: field_id,
-      attachment_id: jQuery(at_id).val()
-  };
-
-  $.getJSON(ajaxurl, data, function(response) {
-    if ('success' == response.status){
-      $(t_button).val("Upload Image");
-      $(t_button).removeClass('at-delete_image_button').addClass('at-upload_image_button');
-      //clear html values
-      $(at_id).val('');
-      $(at_src).val('');
-      $(at_id).prev().html('');
-      load_images_muploader();
-    }else{
-      alert(response.message);
-    }
-  }); 
+  $(t_button).val("Upload Image");
+  $(t_button).removeClass('at-delete_image_button').addClass('at-upload_image_button');
+  //clear html values
+  $(at_id).val('');
+  $(at_src).val('');
+  $(at_id).prev().html('');
+  load_images_muploader();
 }
 
 /**
@@ -640,4 +623,15 @@ function get_query_var( name ) {
 
   var match = RegExp('[?&]' + name + '=([^&#]*)').exec(location.href);
   return match && decodeURIComponent(match[1].replace(/\+/g, ' '));   
+}
+
+/**
+ * bindOn 
+ * hel[er function to bind functions to events  using on()
+ * @param  string event    event name
+ * @param  string selector element selector
+ * @param  callback func   callback function
+ */
+function bindOn(event,selector,func){
+  $(document).on(event,selector,func);
 }
