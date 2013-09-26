@@ -661,30 +661,30 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
      */
     public function DisplayPage() {
       do_action('admin_page_class_before_page');
-      echo '<div class="wrap">';
+      echo '<div class="wrap">'."\n";
       echo '<form method="post" name="'.apply_filters('apc_form_name', 'admin_page_class',$this).'" class="'.apply_filters('apc_form_class', 'admin_page_class',$this).'" id="'.apply_filters('apc_form_id', 'admin_page_class',$this).'" action="" enctype="multipart/form-data">
-        <div class="header_wrap">
-        <div style="float:left">';
+        '."\n".'<div class="header_wrap">'."\n".'
+        <div style="float:left">'."\n";
         echo apply_filters('admin_page_class_before_title','');
-        echo '<h2>'.apply_filters('admin_page_class_h2',$this->args['page_title']).'</h2>'.((isset($this->args['page_header_text']))? $this->args['page_header_text'] : '').' 
-        </div>
-        <div style="float:right;margin:32px 0 0 0">
+        echo '<h2>'.apply_filters('admin_page_class_h2',$this->args['page_title']).'</h2>'."\n".((isset($this->args['page_header_text']))? $this->args['page_header_text'] : '').' 
+        </div>'."\n".'
+        <div style="float:right;margin:32px 0 0 0">'."\n".'
           <input type="submit" style="margin-left: 25px;" value="'.esc_attr(__('Save Changes','apc')).'" name="Submit" class="'.apply_filters('admin_page_class_submit_class', 'btn-info').' btn"><br><br>
-        </div>
+        </div>'."\n".'
       <br style="clear:both"><br>
-      </div>';
+      </div>'."\n";
       wp_nonce_field( basename(__FILE__), 'BF_Admin_Page_Class_nonce' );
 
       if ($this->saved_flag){
-        echo '<div class="update-status">';
+        echo '<div class="update-status">'."\n";
         $this->errors = apply_filters('admin_page_class_errors', $this->errors,$this);
         if (is_array($this->errors) && count($this->errors) > 0 ){
           $this->errors_flag = true;
           $this->displayErrors();
         }else{
-          echo '<div class="alert alert-success"><button data-dismiss="alert" class="close" type="button">×</button><strong>'.__('Settings saved.','apc').'</strong></div>';
+          echo '<div class="alert alert-success"><button data-dismiss="alert" class="close" type="button">×</button><strong>'.__('Settings saved.','apc').'</strong></div>'."\n";
         }
-        echo '</div>';
+        echo '</div>'."\n";
       }
         
         
@@ -696,16 +696,16 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         if (!in_array($field['type'],$skip)){
           if(!$this->table) {
             if ($this->_div_or_row){
-              echo '<table class="form-table">';
+              echo '<table class="form-table">'."\n";
               $this->table = true;
             }else{
-              echo '<div class="form-table">';
+              echo '<div class="form-table">'."\n";
               $this->table = true;
             }
           }
         }else{
           if($this->table) {
-            if ($this->_div_or_row){echo '</table>';}else{echo '</div>';}
+            if ($this->_div_or_row){echo '</table>'."\n";}else{echo '</div>'."\n";}
             $this->table = false;
           }
         }
@@ -716,39 +716,39 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
             $data = $field['std'];
 
         if (method_exists($this,'show_field_' . $field['type'])){
-          if ($this->_div_or_row){echo '<td>';}else{echo apply_filters('admin_page_class_field_container_open','<div class="field">',$field);}
+          if ($this->_div_or_row){echo '<td>'."\n";}else{echo apply_filters('admin_page_class_field_container_open','<div class="field">'."\n",$field);}
           call_user_func ( array( $this, 'show_field_' . $field['type'] ), $field, $data );
-          if ($this->_div_or_row){echo '</td>';}else{echo apply_filters('admin_page_class_field_container_close','</div>',$field);}
+          if ($this->_div_or_row){echo '</td>'."\n";}else{echo apply_filters('admin_page_class_field_container_close','</div>'."\n",$field);}
         }else{
           switch($field['type']) {
             case 'TABS':
-              echo '<div id="tabs">';
+              echo '<div id="tabs">'."\n";
               break;
             case 'CloseDiv':
               $this->tab_div = false;
-              echo '</div>';
+              echo '</div>'."\n";
               break;
             case 'TABS_Listing':
-              echo '<div class="panel_menu"><ul>';
+              echo '<div class="panel_menu">'."\n".'<ul>'."\n";
               foreach($field['links'] as $id => $name){
                 $extra_classes = strtolower(str_replace(' ','-',$name)).' '.strtolower(str_replace(' ','-',$id));
-                echo '<li class="'.apply_filters('APC_tab_li_extra_class',$extra_classes).'"><a class="nav_tab_link" href="#'.$id.'">'.$name.'</a></li>';
+                echo '<li class="'.apply_filters('APC_tab_li_extra_class',$extra_classes).'">'."\n\t".'<a class="nav_tab_link" href="#'.$id.'">'.$name.'</a>'."\n".'</li>'."\n";
               }
-              echo '</ul></div><div class="sections">';
+              echo '</ul>'."\n".'</div>'."\n".'<div class="sections">'."\n";
               break;
             case 'OpenTab':
               $this->tab_div = true;
-              echo '<div class="setingstab" id="'.$field['id'].'">';
+              echo '<div class="setingstab" id="'.$field['id'].'">'."\n";
               do_action('admin_page_class_after_tab_open');
               break;
             case 'title':
-              echo '<h2>'.$field['label'].'</h2>';
+              echo '<h2>'.$field['label'].'</h2>'."\n";
               break;
             case 'subtitle':
-              echo '<h3>'.$field['label'].'</h3>';
+              echo '<h3>'.$field['label'].'</h3>'."\n";
               break;
             case 'paragraph':
-              echo '<p>'.$field['text'].'</p>';
+              echo '<p>'.$field['text'].'</p>'."\n";
               break;
             case 'repeater':
               do_action('admin_page_class_before_repeater');
@@ -761,19 +761,19 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
               break;
           }
         }
-        if (!in_array($field['type'],$skip)){ echo '</tr>';}
+        if (!in_array($field['type'],$skip)){ echo '</tr>'."\n";}
      }
-    if($this->table) echo '</table>';
-    if($this->tab_div) echo '</div>';
-    echo '</div><div style="clear:both"></div><div class="footer_wrap">
-        <div style="float:right;margin:32px 0 0 0">
-          <input type="submit" style="margin-left: 25px;" name="Submit" class="'.apply_filters('admin_page_class_submit_class', 'btn-info').' btn" value="'.esc_attr(__('Save Changes','apc')).'" />
+    if($this->table) echo '</table>'."\n";
+    if($this->tab_div) echo '</div>'."\n";
+    echo '</div>'."\n".'<div style="clear:both"></div>'."\n".'<div class="footer_wrap">'."\n".'
+        <div style="float:right;margin:32px 0 0 0">'."\n".'
+          <input type="submit" style="margin-left: 25px;" name="Submit" class="'.apply_filters('admin_page_class_submit_class', 'btn-info').' btn" value="'.esc_attr(__('Save Changes','apc')).'" />'."\n".'
           <br><br>
-        </div>
+        </div>'."\n".'
         <br style="clear:both"><br>
-      </div>';
-    echo '<input type="hidden" name="action" value="save" />';
-    echo '</form></div></div>';
+      </div>'."\n";
+    echo '<input type="hidden" name="action" value="save" />'."\n";
+    echo '</form>'."\n".'</div>'."\n".'</div>'."\n";
     do_action('admin_page_class_after_page');
     }
 
@@ -1002,7 +1002,6 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       wp_enqueue_script('at-code-js-css',$plugin_path .'/js/codemirror/css.js',array('jquery'),false,true);
       wp_enqueue_script('at-code-js-clike',$plugin_path .'/js/codemirror/clike.js',array('jquery'),false,true);
       wp_enqueue_script('at-code-js-php',$plugin_path .'/js/codemirror/php.js',array('jquery'),false,true);
-      
     }
   }
 
@@ -1354,19 +1353,19 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     
     global $post;
     wp_nonce_field( basename(__FILE__), 'BF_Admin_Page_Class_nonce' );
-    echo '<table class="form-table">';
+    echo '<table class="form-table">'."\n";
     foreach ( $this->_fields as $field ) {
       $meta = get_post_meta( $post->ID, $field['id'], !$field['multiple'] );
       $meta = ( $meta !== '' ) ? $meta : $field['std'];
       if ('image' != $field['type'] && $field['type'] != 'repeater')
         $meta = is_array( $meta ) ? array_map( 'esc_attr', $meta ) : esc_attr( $meta );
-      echo '<tr>';
+      echo '<tr>'."\n";
     
       // Call Separated methods for displaying each type of field.
       call_user_func ( array( $this, 'show_field_' . $field['type'] ), $field, $meta );
-      echo '</tr>';
+      echo '</tr>'."\n";
     }
-    echo '</table>';
+    echo '</table>'."\n";
   }
   
   /**
@@ -1386,7 +1385,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     if ($field['sortable'])
       $class = " repeater-sortable";
     $jsid = ltrim(strtolower(str_replace(' ','',$field['id'])), '0123456789');
-    echo "<div class='at-repeat".$class."' id='{$jsid}'>";
+    echo "<div class='at-repeat".$class."' id='{$jsid}'>\n";
     
     $c = 0;
     $temp_div_row = $this->_div_or_row;
@@ -1459,9 +1458,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     
     //create all fields once more for js function and catch with object buffer
     ob_start();
-    echo '<div class="at-repater-block"><table class="repeater-table">';
+    echo '<div class="at-repater-block"><table class="repeater-table">'."\n";
     if ($field['inline']){
-      echo '<tr class="at-inline" VALIGN="top">';
+      echo '<tr class="at-inline" VALIGN="top">'."\n";
     } 
     foreach ($field['fields'] as $f){
       //reset var $id for repeater
@@ -1470,16 +1469,16 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $id = $field['id'].'[CurrentCounter]['.$f['id'].']';
       $f['id'] = $id; 
       if (!$field['inline']){
-        echo '<tr>';
+        echo '<tr>'."\n";
       }
       $m = isset($f['std'])? $f['std'] : '';
       call_user_func ( array( $this, 'show_field_' . $f['type'] ), $f, $m);
       if (!$field['inline']){
-        echo '</tr>';
+        echo '</tr>'."\n";
       }  
     }
     if ($field['inline']){
-      echo '</tr>';
+      echo '</tr>'."\n";
     } 
     echo '</table><img src="';
     if ($this->_Local_images){
@@ -1488,24 +1487,26 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       echo 'http://i.imgur.com/g8Duj.png';
     }
     
-    echo '" alt="'.__('Remove','apc').'" title="'.__('Remove','apc').'" id="remove-'.$jsid.'"></div>';
+    echo '" alt="'.__('Remove','apc').'" title="'.__('Remove','apc').'" id="remove-'.$jsid.'"></div>'."\n";
     $counter = 'countadd_'.$jsid;
     $js_code = ob_get_clean ();    
     $js_code = str_replace("'","\"",$js_code);
-    $js_code = str_replace("CurrentCounter","' + ".$counter." + '",$js_code);
+    //$js_code = str_replace("CurrentCounter","' + ".$counter." + '",$js_code);
+    echo "\n".'<script type="text/template" id="'.$jsid.'-template">'.$js_code.'</script>'."\n";
     echo '<script>
-        jQuery(document).ready(function() {
+        jQuery(document).ready(function($) {
           var '.$counter.' = '.$c.';
-          jQuery("#add-'.$jsid.'").live(\'click\', function() {
+          $(document).on("click","#add-'.$jsid.'", function() {
             '.$counter.' = '.$counter.' + 1;
-            jQuery(this).before(\''.$js_code.'\');            
-            update_repeater_fields();
+            var rep = $("#'.$jsid.'-template").html().replace(new RegExp("CurrentCounter", "g"), '.$counter.');
+            $(this).before(rep);
+            apc_init();
           });
-              jQuery("#remove-'.$jsid.'").live(\'click\', function() {
-                  jQuery(this).parent().remove();
-              });
+          $(document).on("click","#remove-'.$jsid.'", function() {
+            $(this).parent().remove();
           });
-        </script>';            
+        });
+        </script>'."\n";
     echo '<br/><style>
 .at-inline{line-height: 1 !important;}
 .at-inline .at-field{border: 0px !important;}
@@ -1529,7 +1530,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function show_field_begin( $field, $meta) {
     if ($this->_div_or_row){
-      echo "<td class='at-field'>";
+      echo "<td class='at-field'>\n";
     }
     
     //check for errors
@@ -1539,11 +1540,11 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       foreach ((array)$ers['m'] as $m) {
         echo "{$m}</br />";
       }
-      echo '</div>';
+      echo '</div>'."\n";
     }
       
     if ( $field['name'] != '' || $field['name'] != FALSE )
-        echo "<div class='at-label'><label for='{$field['id']}'>{$field['name']}</label></div>";
+        echo "<div class='at-label'><label for='{$field['id']}'>{$field['name']}</label></div>\n";
   }
   
   /**
@@ -1556,10 +1557,10 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function show_field_end( $field, $meta=NULL ,$group = false) {
     if ( isset($field['desc']) && $field['desc'] != '' ) 
-      echo "<div class='desc-field'>{$field['desc']}</div>";
+      echo "<div class='desc-field'>{$field['desc']}</div>\n";
     
     if ($this->_div_or_row)
-      echo "</td>";
+      echo "</td>\n";
 
     
   }
@@ -1576,19 +1577,19 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   public function show_field_sortable( $field, $meta ) {
       
     $this->show_field_begin( $field, $meta );
-    $re = '<div class="at-sortable-con"><ul class="at-sortable">';
+    $re = '<div class="at-sortable-con"><ul class="at-sortable">'."\n";
     $i = 0;
     if ( ! is_array( $meta ) || empty($meta) ){
       foreach ( $field['options'] as $value => $label ) {
-        $re .= '<li class="widget-sort at-sort-item_'.$i.'">'.$label.'<input type="hidden" value="'.$label.'" name="'.$field['id'].'['.$value.']">';
+        $re .= '<li class="widget-sort at-sort-item_'.$i.'">'.$label.'<input type="hidden" value="'.$label.'" name="'.$field['id'].'['.$value.']">'."\n";
       }
     }
     else{
       foreach ( $meta as $value => $label ) {
-        $re .= '<li class="widget-sort at-sort-item_'.$i.'">'.$label.'<input type="hidden" value="'.$label.'" name="'.$field['id'].'['.$value.']">';
+        $re .= '<li class="widget-sort at-sort-item_'.$i.'">'.$label.'<input type="hidden" value="'.$label.'" name="'.$field['id'].'['.$value.']">'."\n";
       }
     }
-    $re .= '</ul></div>';
+    $re .= '</ul>'."\n".'</div>'."\n";
     echo $re;
     $this->show_field_end( $field, $meta );
   }
@@ -1603,7 +1604,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function show_field_text( $field, $meta) {  
     $this->show_field_begin( $field, $meta );
-    echo "<input type='text' class='at-text".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='30' />";
+    echo "<input type='text' class='at-text".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='30' />"."\n";
     $this->show_field_end( $field, $meta );
   }
 
@@ -1678,7 +1679,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function show_field_paragraph( $field) {  
-    echo '<p>'.$field['value'].'</p>';
+    echo '<p>'.$field['value'].'</p>'."\n";
   }
     
   /**
@@ -1691,7 +1692,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function show_field_textarea( $field, $meta ) {
     $this->show_field_begin( $field, $meta );
-      echo "<textarea class='at-textarea large-text".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>{$meta}</textarea>";
+      echo "<textarea class='at-textarea large-text".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>{$meta}</textarea>"."\n";
     $this->show_field_end( $field, $meta );
   }
   
@@ -1709,11 +1710,11 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $meta = (array) $meta;
 
     $this->show_field_begin( $field, $meta );
-      echo "<select class='at-select".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}" . ((isset($field['multiple']) && $field['multiple']) ? "[]' id='{$field['id']}' multiple='multiple'" : "'" ) . ">";
+      echo "<select class='at-select".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}" . ((isset($field['multiple']) && $field['multiple']) ? "[]' id='{$field['id']}' multiple='multiple'" : "'" ) . ">\n";
       foreach ( $field['options'] as $key => $value ) {
-        echo "<option value='{$key}'" . selected( in_array( $key, $meta ), true, false ) . ">{$value}</option>";
+        echo "\t<option value='{$key}'" . selected( in_array( $key, $meta ), true, false ) . ">{$value}</option>\n";
       }
-      echo "</select>";
+      echo "</select>"."\n";
     $this->show_field_end( $field, $meta );
   }
   
@@ -1732,7 +1733,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       
     $this->show_field_begin( $field, $meta );
       foreach ( $field['options'] as $key => $value ) {
-        echo "<input type='radio' class='at-radio".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " /> <span class='at-radio-label'>{$value}</span>";
+        echo "<input type='radio' class='at-radio".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' value='{$key}'" . checked( in_array( $key, $meta ), true, false ) . " /> <span class='at-radio-label'>{$value}</span>"."\n";
       }
     $this->show_field_end( $field, $meta );
   }
@@ -1749,7 +1750,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   
     $this->show_field_begin($field, $meta);
     $meta = ($meta == 'on')? true: $meta;
-    echo "<input type='checkbox' class='rw-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}'" . checked($meta, true, false) . " />";
+    echo "<input type='checkbox' class='rw-checkbox".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}'" . checked($meta, true, false) . " />"."\n";
     $this->show_field_end( $field, $meta );
   }
 
@@ -1866,15 +1867,15 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       $meta = $meta[0];
     }
     if (is_array($meta) && isset($meta['src']) && $meta['src'] != ''){
-      $html .= "<span class='mupload_img_holder' data-wi='".$width."' data-he='".$height."'><img src='".$meta['src']."' style='height: ".$height.";width: ".$width.";' /></span>";
-      $html .= "<input type='hidden' name='".$field['id']."[id]' id='".$field['id']."[id]' value='".$meta['id']."' />";
-      $html .= "<input type='hidden' name='".$field['id']."[src]' id='".$field['id']."[src]' value='".$meta['src']."' />";
-      $html .= "<input class='at-delete_image_button button' type='button' rel='".$field['id']."' value='".__('Delete Image','apc')."' />";
+      $html .= "<span class='mupload_img_holder' data-wi='".$width."' data-he='".$height."'><img src='".$meta['src']."' style='height: ".$height.";width: ".$width.";' /></span>"."\n";
+      $html .= "<input type='hidden' name='".$field['id']."[id]' id='".$field['id']."[id]' value='".$meta['id']."' />"."\n";
+      $html .= "<input type='hidden' name='".$field['id']."[src]' id='".$field['id']."[src]' value='".$meta['src']."' />"."\n";
+      $html .= "<input class='at-delete_image_button button' type='button' rel='".$field['id']."' value='".__('Delete Image','apc')."' />"."\n";
     }else{
-      $html .= "<span class='mupload_img_holder'  data-wi='".$width."' data-he='".$height."' data-multi='".$multi."'></span>";
-      $html .= "<input type='hidden' name='".$field['id']."[id]' id='".$field['id']."[id]' value='' />";
-      $html .= "<input type='hidden' name='".$field['id']."[src]' id='".$field['id']."[src]' value='' />";
-      $html .= "<input class='at-mm-upload_image_button button' type='button' rel='".$field['id']."' value='".__('Upload Image','apc')."' />";
+      $html .= "<span class='mupload_img_holder'  data-wi='".$width."' data-he='".$height."' data-multi='".$multi."'></span>"."\n";
+      $html .= "<input type='hidden' name='".$field['id']."[id]' id='".$field['id']."[id]' value='' />"."\n";
+      $html .= "<input type='hidden' name='".$field['id']."[src]' id='".$field['id']."[src]' value='' />"."\n";
+      $html .= "<input class='at-mm-upload_image_button button' type='button' rel='".$field['id']."' value='".__('Upload Image','apc')."' />"."\n";
     }
     echo $html;
     $this->show_field_end( $field, $meta );
@@ -1935,57 +1936,57 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         'weight' => '',
       );
     }
-    $html = '<select class="at-typography at-typography-size" name="' . esc_attr( $field['id'] . '[size]' ) . '" id="' . esc_attr( $field['id'] . '_size' ) . '">';
+    $html = '<select class="at-typography at-typography-size" name="' . esc_attr( $field['id'] . '[size]' ) . '" id="' . esc_attr( $field['id'] . '_size' ) . '">'."\n";
     $op = '';
     for ($i = 9; $i < 71; $i++) {
       $size = $i . 'px';
-      $op .= '<option value="' . esc_attr( $size ) . '">' . esc_html( $size ) . '</option>';
+      $op .= "\t".'<option value="' . esc_attr( $size ) . '">' . esc_html( $size ) . '</option>'."\n";
     }
     if (isset($meta['size']))
       $op = str_replace('value="'.$meta['size'].'"', 'value="'.$meta['size'].'" selected="selected"', $op);
-    $html .=$op. '</select>';
+    $html .=$op. '</select>'."\n";
 
     // Font Face
-    $html .= '<select class="at-typography at-typography-face" name="' . esc_attr( $field['id'] .'[face]' ) . '" id="' . esc_attr( $field['id'] . '_face' ) . '">';
+    $html .= '<select class="at-typography at-typography-face" name="' . esc_attr( $field['id'] .'[face]' ) . '" id="' . esc_attr( $field['id'] . '_face' ) . '">'."\n";
 
     $faces = $this->get_fonts_family();
     $op = '';
     foreach ( $faces as $key => $face ) {
-      $op .= '<option value="' . esc_attr( $key ) . '">' . esc_html( $face['name'] ) . '</option>';
+      $op .= "\t".'<option value="' . esc_attr( $key ) . '">' . esc_html( $face['name'] ) . '</option>'."\n";
     }
     if (isset($meta['face']))
       $op = str_replace('value="'.$meta['face'].'"', 'value="'.$meta['face'].'" selected="selected"', $op);
-    $html .= $op. '</select>';
+    $html .= $op. '</select>'."\n";
 
     // Font Weight
-    $html .= '<select class="at-typography at-typography-weight" name="' . esc_attr( $field['id'] .'[weight]' ) . '" id="' . esc_attr( $field['id'] . '_weight' ) . '">';
+    $html .= '<select class="at-typography at-typography-weight" name="' . esc_attr( $field['id'] .'[weight]' ) . '" id="' . esc_attr( $field['id'] . '_weight' ) . '">'."\n";
     $weights = $this->get_font_weight();
     $op = '';
     foreach ( $weights as $key => $label ) {
-      $op .= '<option value="' . esc_attr( $key ) . '">' . esc_html( $label ) . '</option>';
+      $op .= "\t".'<option value="' . esc_attr( $key ) . '">' . esc_html( $label ) . '</option>'."\n";
     }
     if (isset($meta['weight']))
       $op = str_replace('value="'.$meta['weight'].'"', 'value="'.$meta['weight'].'" selected="selected"', $op);
-    $html .= $op. '</select>';
+    $html .= $op. '</select>'."\n";
 
-    /* Font Style */    
-    $html .= '<select class="at-typography at-typography-style" name="'.$field['id'].'[style]" id="'. $field['id'].'_style">';
+    /* Font Style */
+    $html .= '<select class="at-typography at-typography-style" name="'.$field['id'].'[style]" id="'. $field['id'].'_style">'."\n";
     $styles = $this->get_font_style();
     $op = '';
     foreach ( $styles as $key => $style ) {
-      $op .= '<option value="' . esc_attr( $key ) . '">'. $style .'</option>';
+      $op .= "\t".'<option value="' . esc_attr( $key ) . '">'. $style .'</option>'."\n";
     }
     if (isset($meta['style']))
       $op = str_replace('value="'.$meta['style'].'"', 'value="'.$meta['style'].'" selected="selected"', $op);
-    $html .= $op. '</select>';
+    $html .= $op. '</select>'."\n";
 
     // Font Color
     if( wp_style_is( 'wp-color-picker', 'registered' ) ) { //iris color picker since 3.5
-      $html .= "<input class='at-color-iris' type='text' name='{$field['id']}[color]' id='{$field['id']}[color]' value='".$meta['color']."' size='8' />";  
+      $html .= "<input class='at-color-iris' type='text' name='{$field['id']}[color]' id='{$field['id']}[color]' value='".$meta['color']."' size='8' />"."\n";  
     }else{
-      $html .= "<input class='at-color' type='text' name='".$field['id']."[color]' id='".$field['id']."[color]' value='".$meta['color'] ."' size='6' />";
-      $html .= "<input type='button' class='at-color-select button' rel='".$field['id']."[color]' value='" . __( 'Select a color' ,'apc') . "'/>";
-      $html .= "<div style='display:none' class='at-color-picker' rel='".$field['id']."[color]'></div>";
+      $html .= "<input class='at-color' type='text' name='".$field['id']."[color]' id='".$field['id']."[color]' value='".$meta['color'] ."' size='6' />"."\n";
+      $html .= "<input type='button' class='at-color-select button' rel='".$field['id']."[color]' value='" . __( 'Select a color' ,'apc') . "'/>"."\n";
+      $html .= "<div style='display:none' class='at-color-picker' rel='".$field['id']."[color]'></div>"."\n";
     }
     
     echo $html;
