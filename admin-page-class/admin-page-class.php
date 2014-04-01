@@ -10,7 +10,7 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.2.8
+ * @version 1.2.9
  * @copyright 2012 - 2013
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
@@ -2083,7 +2083,6 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function show_field_posts($field, $meta) {
     global $post;
-    
     if (!is_array($meta)) $meta = (array) $meta;
     $this->show_field_begin($field, $meta);
     $options = $field['options'];
@@ -3014,7 +3013,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function addPosts($id,$options,$args,$repeater=false){
     $temp = array('type'=>'select','args'=>array('posts_per_page' => -1,'post_type' =>'post'));
-    $options = array_merge($temp,$options);
+    $options = array_replace_recursive($temp,$options);
     $new_field = array('type' => 'posts','id'=> $id,'desc' => '','name' => 'Posts Field','options'=> $options, 'multiple' => false);
     $new_field = array_merge($new_field, $args);
     if(false === $repeater){

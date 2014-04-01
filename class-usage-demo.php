@@ -3,7 +3,7 @@
 Plugin Name: Demo Admin Page
 Plugin URI: http://en.bainternet.info
 Description: My Admin Page Class usage demo
-Version: 1.2.8
+Version: 1.2.9
 Author: Bainternet, Ohad Raz
 Author URI: http://en.bainternet.info
 */
@@ -161,7 +161,7 @@ Author URI: http://en.bainternet.info
   //taxonomy select field
   $options_panel->addTaxonomy('taxonomy_field_id',array('taxonomy' => 'category'),array('name'=> __('My Taxonomy Select','apc'),'class' => 'no-fancy','desc' => __('This field has a <pre>.no-fancy</pre> class which disables the fancy select2 functions','apc') ));
   //posts select field
-  $options_panel->addPosts('posts_field_id',array('post_type' => 'post'),array('name'=> __('My Posts Select','apc'), 'desc' => __('posts select field description','apc')));
+  $options_panel->addPosts('posts_field_id',array('args' => array('post_type' => 'post')),array('name'=> __('My Posts Select','apc'), 'desc' => __('posts select field description','apc')));
   //Roles select field
   $options_panel->addRoles('roles_field_id',array(),array('name'=> __('My Roles Select','apc'), 'desc' => __('roles select field description','apc')));
   //taxonomy checkbox field

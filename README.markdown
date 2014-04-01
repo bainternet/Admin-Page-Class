@@ -1,8 +1,8 @@
 #Wordpress Admin Page Class
 
 The Admin Page Class is used by including it in your plugin files and using its methods to create custom Admin Pages. It is meant to be very simple and straightforward. 
-###Stable tag: 1.2.8
-###Tested up to Wordpress: 3.6
+###Stable tag: 1.2.9
+###Tested up to Wordpress: 3.9 beta 2
 
 ##Description
 
@@ -42,6 +42,9 @@ Ohad Raz http://en.bainternet.info
 Copyright © 2012 Ohad Raz, <admin@bainternet.info>  , Licensed under the [GPL](http://www.gnu.org/licenses/gpl.html).
 
 ##Changelog
+###1.2.9
+   *Fixed  #38. the post type parameter should be passed inside args array. see demo plugin.
+
 ###1.2.8
    *Fixed tab cookie extra backslash issue.
 
