@@ -380,8 +380,10 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       //add_action('admin_enqueue_scripts',array($this,'Finish'));
       
       if(isset($_POST['action']) && $_POST['action'] == 'save') {
+        do_action('WP_EX_before_save',$this);
         $this->save();
         $this->saved_flag = true;
+        do_action('WP_EX_after_save',$this);
       }
     }
 
