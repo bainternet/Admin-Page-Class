@@ -1,7 +1,7 @@
 #Wordpress Admin Page Class
 
 The Admin Page Class is used by including it in your plugin files and using its methods to create custom Admin Pages. It is meant to be very simple and straightforward. 
-###Stable tag: 1.2.9
+###Stable tag: 1.3.0
 ###Tested up to Wordpress: 3.9 beta 2
 
 ##Description
@@ -42,6 +42,16 @@ Ohad Raz http://en.bainternet.info
 Copyright © 2012 Ohad Raz, <admin@bainternet.info>  , Licensed under the [GPL](http://www.gnu.org/licenses/gpl.html).
 
 ##Changelog
+###1.3.0
+   *Added action hooks to allow callback support #50.
+      `WP_EX_before_save`
+      `WP_EX_after_save`
+
+   *Fixed import export function #54.
+   *Fixed #46.
+   *Fixed #42.
+   *Updated  Select2 to ver 3.4.6.
+
 ###1.2.9
    *Fixed  #38. the post type parameter should be passed inside args array. see demo plugin.
 
