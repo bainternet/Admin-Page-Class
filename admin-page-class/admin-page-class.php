@@ -10,8 +10,8 @@
  * a class for creating custom meta boxes for WordPress. 
  * 
  *  
- * @version 1.2.9
- * @copyright 2012 - 2013
+ * @version 1.3.0
+ * @copyright 2012 - 2014
  * @author Ohad Raz (email: admin@bainternet.info)
  * @link http://en.bainternet.info
  * 
