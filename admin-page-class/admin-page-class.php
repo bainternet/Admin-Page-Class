@@ -1607,7 +1607,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function show_field_text( $field, $meta) {  
     $this->show_field_begin( $field, $meta );
-    echo "<input type='text' class='at-text".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='30' />"."\n";
+    echo "<input type='text' class='at-text".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' value='".stripslashes($meta)."' size='30' />"."\n";
     $this->show_field_end( $field, $meta );
   }
 
@@ -1695,7 +1695,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    */
   public function show_field_textarea( $field, $meta ) {
     $this->show_field_begin( $field, $meta );
-      echo "<textarea class='at-textarea large-text".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>{$meta}</textarea>"."\n";
+    echo "<textarea class='at-textarea large-text".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>".stripslashes($meta)."</textarea>"."\n";
     $this->show_field_end( $field, $meta );
   }
   
