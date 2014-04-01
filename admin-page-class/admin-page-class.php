@@ -712,10 +712,11 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
           }
         }
         $data = '';
+        if(!$this->saved_flag && $saved === false)
+          $data = isset($field['std'])? $field['std'] : '';
+        
         if (isset($saved[$field['id']]))
             $data = $saved[$field['id']];
-        if (isset($field['std']) && $data === '')
-            $data = $field['std'];
 
         if (method_exists($this,'show_field_' . $field['type'])){
           if ($this->_div_or_row){echo '<td>'."\n";}else{echo apply_filters('admin_page_class_field_container_open','<div class="field">'."\n",$field);}
@@ -2260,7 +2261,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   public function save_field( $field, $old, $new ) {
     $name = $field['id'];
     unset($this->_saved[$name]);
-    if ( $new === '' || $new === array() ) 
+    if ( $new === '' || $new === array() && (!in_array($field['type'],array('text','textarea')) ) 
       return;
     if ( isset($field['multiple'] ) && $field['multiple'] && $field['type'] != 'plupload') {
       foreach ( $new as $add_new ) {
@@ -3246,7 +3247,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         <div class="export_code">
           <label for="export_code">'. __('Export Code','apc').'</label><br/>
           <textarea id="export_code"></textarea>        
-          <input class="button-primary" type="button" value="'. __('Get Export','apc').'" id="apc_export_b" />'.$this->create_export_download_link().'
+          <input class="button" type="button" value="'. __('Get Export','apc').'" id="apc_export_b" />'.$this->create_export_download_link().'
           <div class="export_status" style="display: none;"><img src="http://i.imgur.com/l4pWs.gif" alt="loading..."/></div>
           <div class="export_results alert" style="display: none;"></div>
         </div>
@@ -3256,7 +3257,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         <div class="import_code">
           <label for="import_code">'. __('Import Code','apc').'</label><br/>
           <textarea id="import_code"></textarea>
-                  <input class="button-primary" type="button"  value="'. __('Import','apc').'" id="apc_import_b" />
+                  <input class="button" type="button"  value="'. __('Import','apc').'" id="apc_import_b" />
           <div class="import_status" style="display: none;"><img src="http://i.imgur.com/l4pWs.gif" alt="loading..."/></div>
           <div class="import_results alert" style="display: none;"></div>
         </div>
@@ -3375,7 +3376,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
         echo '<a href="'.$export_url.'" target="_blank">'.__('Download Export','apc').'</a>';
     elseif ($echo == 'url')
         return $export_url;
-    return '<a class="button-primary" href="'.$export_url.'" target="_blank">'.__('Download Export','apc').'</a>';
+    return '<a class="button" href="'.$export_url.'" target="_blank">'.__('Download Export','apc').'</a>';
   }
 
   //first  add a new query var
