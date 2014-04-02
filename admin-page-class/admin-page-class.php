@@ -2261,7 +2261,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
   public function save_field( $field, $old, $new ) {
     $name = $field['id'];
     unset($this->_saved[$name]);
-    if ( $new === '' || $new === array() && (!in_array($field['type'],array('text','textarea')) ) 
+    if ( $new === '' || $new === array() && ( !in_array($field['type'],array('text','textarea')) ) ) 
       return;
     if ( isset($field['multiple'] ) && $field['multiple'] && $field['type'] != 'plupload') {
       foreach ( $new as $add_new ) {
