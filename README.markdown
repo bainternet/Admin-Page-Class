@@ -263,4 +263,4 @@ Copyright © 2012 Ohad Raz, <admin@bainternet.info>  , Licensed under the [GPL](
 ###0.1
    * Initial public release.
 
-[![Analytics](https://ga-beacon.appspot.com/UA-XXXXX-X/your-repo/page-name)](https://github.com/igrigorik/ga-beacon)
+[![Analytics](https://ga-beacon.appspot.com/UA-50573135-2/admin-page-class/main)](https://github.com/bainternet/Admin-Page-Class)
