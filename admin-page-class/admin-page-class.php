@@ -1032,7 +1032,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    * @access public
    */
   public function check_field_select(){
-    if ($this->has_field_any(array('select','typo')) && $this->is_edit_page()) {
+    if ($this->has_field_any(array('select','typo','posts')) && $this->is_edit_page()) {
       $plugin_path = $this->SelfPath;
       // Enqueu JQuery chosen library, use proper version.
       wp_enqueue_style('at-multiselect-chosen-css', $plugin_path . '/js/select2/select2.css', array(), null);
