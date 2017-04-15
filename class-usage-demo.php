@@ -8,8 +8,6 @@ Author: Bainternet, Ohad Raz
 Author URI: http://en.bainternet.info
 */
 
-
-
   //include the main class file
   require_once("admin-page-class/admin-page-class.php");
   
@@ -27,13 +25,22 @@ Author URI: http://en.bainternet.info
     'local_images'   => false,          // Use local or hosted images (meta box images for add/remove)
     'use_with_theme' => false          //change path if used with theme set to true, false for a plugin or anything else for a custom path(default false).
   );  
-  
   /**
    * instantiate your admin page
    */
   $options_panel = new BF_Admin_Page_Class($config);
   $options_panel->OpenTabs_container('');
-  
+
+  // (optional) Set callback function, this will be executed BEFORE saving your options.
+  $options_panel->setCallback('cb_test');
+  function cb_test()
+  {
+    // This is your callback function. This function will be executed BEFORE saving your options.
+    /* You can reach your options like this :
+      $option1 = $_POST["option"];
+    */
+  }
+
   /**
    * define your admin page tabs listing
    */

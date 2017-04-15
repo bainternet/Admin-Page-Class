@@ -69,6 +69,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     protected $option_group;
     
     /**
+     * Callback function's name
+     * @access protected
+     * @var string
+     * @since 1.2.8
+     */
+    protected $cb_func;
+
+    /**
      * Contains all the information needed to build the form structure of the page
      * 
      * @access public
@@ -315,6 +323,16 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
 
     }
 
+    /**
+    * Sets callback function of save action
+    *
+    * @since 1.2.8
+    * @access public
+    **/
+    public function setCallback($func)
+    {
+      $this->cb_func = $func;
+    }
 
     /**
      * Does all the complicated stuff to build the menu and its first page
@@ -2246,6 +2264,8 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       
       }//END Skip
     } // End foreach
+
+    call_user_func($this->cb_func);
     update_option($this->args['option_group'],$this->_saved);
   }
   
