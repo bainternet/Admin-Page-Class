@@ -1811,7 +1811,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       echo "<textarea class='at-wysiwyg theEditor large-text".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>{$meta}</textarea>";
     }else{
       // Use new wp_editor() since WP 3.3
-      wp_editor( stripslashes(stripslashes(html_entity_decode($meta))), $field['id'], array( 'editor_class' => 'at-wysiwyg'.(isset($field['class'])? " {$field['class']}": "")) );
+      $settings = isset($field['wysiwyg_settings']) && is_array($field['wysiwyg_settings']) && !empty($field['wysiwyg_settings']) ? $field['wysiwyg_settings'] : array(); 
+      $settings['editor_class'] = 'at-wysiwyg'.(isset($field['class'])? " {$field['class']}": "");
+
+      wp_editor( 
+        stripslashes(stripslashes(html_entity_decode($meta))), 
+        $field['id'], 
+        $settings
+      );
     }
     $this->show_field_end( $field, $meta );
   }
