@@ -1811,7 +1811,14 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
       echo "<textarea class='at-wysiwyg theEditor large-text".(isset($field['class'])? " {$field['class']}": "")."' name='{$field['id']}' id='{$field['id']}' cols='60' rows='10'>{$meta}</textarea>";
     }else{
       // Use new wp_editor() since WP 3.3
-      wp_editor( stripslashes(stripslashes(html_entity_decode($meta))), $field['id'], array( 'editor_class' => 'at-wysiwyg'.(isset($field['class'])? " {$field['class']}": "")) );
+      $settings = isset($field['wysiwyg_settings']) && is_array($field['wysiwyg_settings']) && !empty($field['wysiwyg_settings']) ? $field['wysiwyg_settings'] : array(); 
+      $settings['editor_class'] = 'at-wysiwyg'.(isset($field['class'])? " {$field['class']}": "");
+
+      wp_editor( 
+        stripslashes(stripslashes(html_entity_decode($meta))), 
+        $field['id'], 
+        $settings
+      );
     }
     $this->show_field_end( $field, $meta );
   }
@@ -2549,7 +2556,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'style' =>   // custom style for field, string optional
    *    'validate_func' => // validate function, string optional
-   *   @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *   @param $repeater bool  is this a field inside a repeater? true|false(default) 
    */
   public function addText($id,$args,$repeater=false){
     $new_field = array('type' => 'text','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Text Field');
@@ -2573,7 +2580,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'style' =>   // custom style for field, string optional
    *    'validate_func' => // validate function, string optional
-   *   @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *   @param $repeater bool  is this a field inside a repeater? true|false(default) 
    */
   public function addPlupload($id,$args,$repeater=false){
     $new_field = array('type' => 'plupload','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'PlUpload Field','width' => null, 'height' => null,'multiple' => false);
@@ -2597,7 +2604,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'style' =>   // custom style for field, string optional
    *    'validate_func' => // validate function, string optional
-   *   @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *   @param $repeater bool  is this a field inside a repeater? true|false(default) 
    */
   public function addHidden($id,$args,$repeater=false){
     $new_field = array('type' => 'hidden','id'=> $id,'std' => '','desc' => '','style' =>'','name' => '');
@@ -2622,7 +2629,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'style' =>   // custom style for field, string optional
    *    'syntax' =>   // syntax language to use in editor (php,javascript,css,html)
    *    'validate_func' => // validate function, string optional
-   *   @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *   @param $repeater bool  is this a field inside a repeater? true|false(default) 
    */
   public function addCode($id,$args,$repeater=false){
     $new_field = array('type' => 'code','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Code Editor Field','syntax' => 'php', 'theme' => 'default');
@@ -2641,7 +2648,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *  @access public
    *  
    *  @param $p  paragraph html
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeater? true|false(default) 
    */
   public function addParagraph($p,$repeater=false){
     $new_field = array('type' => 'paragraph','id'=> '','value' => $p);
@@ -2663,7 +2670,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'desc' => // field description, string optional
    *    'std' => // default value, string optional
    *    'validate_func' => // validate function, string optional
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeater? true|false(default) 
    */
   public function addCheckbox($id,$args,$repeater=false){
     $new_field = array('type' => 'checkbox','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Checkbox Field');
@@ -2687,7 +2694,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'validate_func' => // validate function, string optional
    *    'fields' => list of fields to show conditionally.
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeater? true|false(default) 
    */
   public function addCondition($id,$args,$repeater=false){
     $new_field = array('type' => 'cond','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Conditional Field','fields' => array());
@@ -2711,7 +2718,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'desc' => // field description, string optional
    *    'std' => // default value, string optional
    *    'validate_func' => // validate function, string optional
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
+   *  @param $repeater bool  is this a field inside a repeater? true|false(default)
    *  
    *   @return : remember to call: $checkbox_list = get_post_meta(get_the_ID(), 'meta_name', false); 
    *   which means the last param as false to get the values in an array
@@ -2738,7 +2745,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'style' =>   // custom style for field, string optional
    *    'validate_func' => // validate function, string optional
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeater? true|false(default) 
    */
   public function addTextarea($id,$args,$repeater=false){
     $new_field = array('type' => 'textarea','id'=> $id,'std' => '','desc' => '','style' =>'','name' => 'Textarea Field');
@@ -2763,7 +2770,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, (array) optional
    *    'multiple' => // select multiple values, optional. Default is false.
    *    'validate_func' => // validate function, string optional
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeater? true|false(default) 
    */
   public function addSelect($id,$options,$args,$repeater=false){
     $new_field = array('type' => 'select','id'=> $id,'std' => array(),'desc' => '','style' =>'','name' => 'Select Field','multiple' => false,'options' => $options);
@@ -2787,7 +2794,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'desc' => // field description, string optional
    *    'std' => // default value, (array) optional
    *    'validate_func' => // validate function, string optional
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeater? true|false(default) 
    */
   public function addSortable($id,$options,$args,$repeater=false){
     $new_field = array('type' => 'sortable','id'=> $id,'std' => array(),'desc' => '','style' =>'','name' => 'Select Field','multiple' => false,'options' => $options);
@@ -2812,7 +2819,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'desc' => // field description, string optional
    *    'std' => // default value, string optional
    *    'validate_func' => // validate function, string optional 
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
+   *  @param $repeater bool  is this a field inside a repeater? true|false(default)
    */
   public function addRadio($id,$options,$args,$repeater=false){
     $new_field = array('type' => 'radio','id'=> $id,'std' => array(),'desc' => '','style' =>'','name' => 'Radio Field','options' => $options,'multiple' => false);
@@ -2836,7 +2843,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'validate_func' => // validate function, string optional
    *    'format' => // date format, default yy-mm-dd. Optional. Default "'d MM, yy'"  See more formats here: http://goo.gl/Wcwxn
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeater? true|false(default) 
    */
   public function addDate($id,$args,$repeater=false){
     $new_field = array('type' => 'date','id'=> $id,'std' => '','desc' => '','format'=>'d MM, yy','name' => 'Date Field');
@@ -2860,7 +2867,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'validate_func' => // validate function, string optional
    *    'format' => // time format, default hh:mm. Optional. See more formats here: http://goo.gl/83woX
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeater? true|false(default) 
    */
   public function addTime($id,$args,$repeater=false){
     $new_field = array('type' => 'time','id'=> $id,'std' => '','desc' => '','format'=>'hh:mm','name' => 'Time Field');
@@ -2883,7 +2890,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'desc' => // field description, string optional
    *    'std' => // default value, string optional
    *    'validate_func' => // validate function, string optional
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeater? true|false(default) 
    */
   public function addColor($id,$args,$repeater=false){
     $new_field = array('type' => 'color','id'=> $id,'std' => '','desc' => '','name' => 'ColorPicker Field');
@@ -2905,7 +2912,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'name' => // field name/label string optional
    *    'desc' => // field description, string optional
    *    'validate_func' => // validate function, string optional
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default) 
+   *  @param $repeater bool  is this a field inside a repeater? true|false(default) 
    */
   public function addImage($id,$args,$repeater=false){
     $new_field = array('type' => 'image','id'=> $id,'desc' => '','name' => 'Image Field');
@@ -2930,7 +2937,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'std' => // default value, string optional
    *    'style' =>   // custom style for field, string optional Default 'width: 300px; height: 400px'
    *    'validate_func' => // validate function, string optional 
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
+   *  @param $repeater bool  is this a field inside a repeater? true|false(default)
    */
   public function addWysiwyg($id,$args,$repeater=false){
     $new_field = array('type' => 'wysiwyg','id'=> $id,'std' => '','desc' => '','style' =>'width: 300px; height: 400px','name' => 'WYSIWYG Editor Field');
@@ -2957,7 +2964,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'desc' => // field description, string optional
    *    'std' => // default value, string optional
    *    'validate_func' => // validate function, string optional 
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
+   *  @param $repeater bool  is this a field inside a repeater? true|false(default)
    */
   public function addTaxonomy($id,$options,$args,$repeater=false){
     $temp = array('taxonomy'=> 'category','type' => 'select','args'=> array('hide_empty' => 0));
@@ -2984,7 +2991,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'desc' => // field description, string optional
    *    'std' => // default value, string optional
    *    'validate_func' => // validate function, string optional 
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
+   *  @param $repeater bool  is this a field inside a repeater? true|false(default)
    */
   public function addRoles($id,$options,$args,$repeater=false){
     $options = array_merge(array('type'=>'select'),$options);
@@ -3012,7 +3019,7 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
    *    'desc' => // field description, string optional
    *    'std' => // default value, string optional
    *    'validate_func' => // validate function, string optional 
-   *  @param $repeater bool  is this a field inside a repeatr? true|false(default)
+   *  @param $repeater bool  is this a field inside a repeater? true|false(default)
    */
   public function addPosts($id,$options,$args,$repeater=false){
     $temp = array('type'=>'select','args'=>array('posts_per_page' => -1,'post_type' =>'post'));
